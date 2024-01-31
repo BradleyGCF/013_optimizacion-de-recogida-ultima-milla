@@ -5,6 +5,7 @@ import { Route, Routes } from "react-router-dom";
 import Sidebar from "@/components/sidebar/sidebar";
 
 import Navbar from "@/components/nav-bar/nav-bar";
+import Maps from "@/screens/maps";
 
 const Home = React.lazy(() => import("@/screens/home"));
 const ProfileVehicle = React.lazy(() => import("@/screens/profile-vehicle"));
@@ -78,6 +79,7 @@ export default function Navigator() {
             <Route path="/profile-vehicle/:id" element={<ProfileVehicle />} />
             <Route path="/route-systems" element={<RouteSystems />} />
             <Route path="/profile-routes/:id" element={<ProfileRoutes />} />
+            <Route path="/maps" element={<Maps/>}/>
             <Route
               path="/profile-branch-office/:id"
               element={<ProfileBranchOffice />}
