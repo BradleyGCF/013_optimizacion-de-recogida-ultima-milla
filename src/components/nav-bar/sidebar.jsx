@@ -135,15 +135,17 @@ export default function SideBar() {
 								display={{ xs: 'flex', flexDirection: 'column', gap: '5px' }}
 							>
 								<NavItem to="/dashboard">Home</NavItem>
-								<NavItem to="/dashboard/branch-office">Branch office</NavItem>
-								<NavItem to="/dashboard/route-systems">Route System</NavItem>
-								<NavItem to="/dashboard/vehicles">Vehicles</NavItem>
-								<NavItem to="/dashboard/parcel-service">Parcel Service</NavItem>
-								<NavItem to="/dashboard/inventory">Inventory</NavItem>
+								<NavItem to="/dashboard/branch-office">Sucursales</NavItem>
+								<NavItem to="/dashboard/route-systems">
+									Sistema de rutas
+								</NavItem>
+								<NavItem to="/dashboard/vehicles">Vehículos</NavItem>
+								<NavItem to="/dashboard/parcel-service">Paquetería</NavItem>
+								<NavItem to="/dashboard/inventory">Inventario</NavItem>
 
 								<NavItem to="/dashboard/tracking">Tracking</NavItem>
 								<NavItem to="/dashboard/gps">GPS</NavItem>
-								<NavItem to="/dashboard/settings">Settings</NavItem>
+								<NavItem to="/dashboard/notifications">Notificaciones</NavItem>
 								<Box sx={{ mt: '20px', ml: '6px' }}>
 									<Button sx={{ color: 'text.secondary', fontWeight: 600 }}>
 										Logout
