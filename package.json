@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "start": "vite --host",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "moralis": "moralis-admin-cli watch-cloud-folder --moralisApiKey QX2nXN7ytl1vCK6 --moralisApiSecret i7OwoSFh4xTubfO --moralisSubdomain avgcactb6lbt.usemoralis.com --autoSave 1 --moralisCloudfolder ./moralis/cloud"
@@ -65,5 +66,8 @@
     "vite": "^4.2.0",
     "vite-plugin-node-polyfills": "^0.9.0",
     "vite-tsconfig-paths": "^4.2.0"
+  },
+  "engines": {
+    "node": "18.19.1"
   }
 }
