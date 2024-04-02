@@ -55,7 +55,7 @@ export default function Navigator() {
 						display: { xs: 'none', lg: 'block' },
 					}}
 				>
-					<Sidebar />
+					{location.pathname !== '/sign-in' && location.pathname !== '/sign-up' && <Sidebar />}
 				</Box>
 
 				<Box
@@ -69,7 +69,6 @@ export default function Navigator() {
 				>
 					<Routes>
 						{/* <Route path="/" element={<Home />} /> */}
-
 						<Route path="/dashboard">
 							<Route index element={<Dashboard />} />
 							<Route path="vehicles" element={<Vehicles />} />
