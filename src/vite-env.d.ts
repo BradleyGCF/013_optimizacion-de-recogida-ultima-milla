@@ -26,6 +26,7 @@ declare module '@/screens/branch-office';
 declare module '@/screens/profile-branch-office';
 declare module '@/screens/route-systems';
 declare module '@/screens/profile-routes';
+declare module '@/screens/dashboard';
 
 declare module '@/stores/index';
 
