@@ -7,6 +7,7 @@ import Sidebar from '@/components/sidebar/sidebar';
 import Navbar from '@/components/nav-bar/nav-bar';
 import Maps from '@/screens/maps';
 
+
 const Dashboard = React.lazy(() => import('@/screens/dashboard'));
 const ProfileVehicle = React.lazy(() => import('@/screens/profile-vehicle'));
 const Vehicles = React.lazy(() => import('@/screens/vehicles'));
@@ -15,6 +16,7 @@ const SignIn = React.lazy(() => import('@/screens/sign-in'));
 const BranchOffice = React.lazy(() => import('@/screens/branch-office'));
 const RouteSystems = React.lazy(() => import('@/screens/route-systems'));
 const ProfileRoutes = React.lazy(() => import('@/screens/profile-routes'));
+const RecoverPassword = React.lazy(() => import('@/screens/recover-password'));
 const ProfileBranchOffice = React.lazy(
 	() => import('@/screens/profile-branch-office')
 );
@@ -55,10 +57,12 @@ export default function Navigator() {
 						display: { xs: 'none', lg: 'block' },
 					}}
 				>
-					{location.pathname !== '/sign-in' && location.pathname !== '/sign-up' && <Sidebar />}
+					{location.pathname !== '/sign-in' && location.pathname !== '/recover-password' && <Sidebar />}
 				</Box>
 
-				<Box
+
+				{/* Este box controla el layout de la pagina */}
+				{/* <Box
 					sx={{
 						my: 4,
 						px: 4,
@@ -66,7 +70,8 @@ export default function Navigator() {
 						left: { xs: '0px', lg: '250px' },
 						width: { xs: '100%', lg: '80%', xl: '100%' },
 					}}
-				>
+				> */}
+
 					<Routes>
 						{/* <Route path="/" element={<Home />} /> */}
 						<Route path="/dashboard">
@@ -81,13 +86,14 @@ export default function Navigator() {
 						</Route>
 
 						<Route path="/sign-in" element={<SignIn />} />
+						<Route path="/recover-password" element={<RecoverPassword />} />
 
 						<Route
 							path="/profile-branch-office/:id"
 							element={<ProfileBranchOffice />}
 						/>
 					</Routes>
-				</Box>
+				{/* </Box> */}
 			</Box>
 		</React.Suspense>
 	);
