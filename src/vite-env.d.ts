@@ -5,6 +5,7 @@ declare module '@/components/nav-bar/sidebar-user';
 declare module '@/components/nav-bar/sidebar';
 declare module '@/components/sidebar/sidebar';
 declare module '@/components/card/card-link';
+declare module '@/components/carousel/carousel-preference';
 
 declare module '@/components/buttons/button-primary';
 declare module '@/components/inputs/input-search-navbar';
