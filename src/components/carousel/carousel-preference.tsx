@@ -113,7 +113,18 @@ export default function CarouselPreference({ }) {
         p: "auto"
       }}
     >
-      <Typography>Who will drive today?</Typography>
+      <Typography
+        sx={{
+          "&.MuiTypography-root": {
+            fontFamily: "Jost",
+            fontSize: "25px",
+            fontWeight: 600,
+            color: "#0062BC"
+          }
+        }}
+      >
+        Who will drive today?
+      </Typography>
 
       <Box
         sx={{
@@ -133,30 +144,39 @@ export default function CarouselPreference({ }) {
           {mockData.map((data, index) => {
             return (
               <Box
-                component="img"
-                src={data.img}
                 sx={{
-                  height: "200px",
-                  width: "200px",
-                  my: 3,
-                  mx: {lg: 2, md: 1, sm: 1},
-                  borderRadius: "10px",
-                  objectFit: "cover",
-                  boxShadow: (driver != index ? "0px 4px 4px 0px rgba(127, 132, 233, 0.25)" : "0px 0px 18px rgba(127, 132, 233, 1.25)" ),
-                  cursor: "pointer"
+                  display: "flex",
+                  justifyContent: "center",
                 }}
-                key={index}
-                onClick={() => setDriver(index)}
-              />
+              >
+                <Box
+                  component="img"
+                  src={data.img}
+                  sx={{
+                    height: "200px",
+                    width: "200px",
+                    my: 3,
+                    mx: { lg: 2, md: 1, sm: 1 },
+                    borderRadius: "10px",
+                    objectFit: "cover",
+                    boxShadow:"0px 4px 4px 0px rgba(127, 132, 233, 0.25)",
+                    border: (driver == index ? "9px solid #0062BC" : "none"),
+                    cursor: "pointer"
+                  }}
+                  key={index}
+                  onClick={() => setDriver(index)}
+                />
+              </Box>
             )
           })}
         </Carousel>
       </Box>
       <ButtonPrimary
-          width="300px"
-        >
-          Select
-        </ButtonPrimary>
+        width="300px"
+        disabled={driver == null}
+      >
+        Select
+      </ButtonPrimary>
     </Box >
   )
 }
