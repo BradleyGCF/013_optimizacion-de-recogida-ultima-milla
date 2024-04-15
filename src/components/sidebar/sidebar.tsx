@@ -1,152 +1,171 @@
-import { Sidebar, Menu, MenuItem, sidebarClasses } from "react-pro-sidebar";
-import Typography from "@mui/material/Typography";
-import { Link, useLocation } from "react-router-dom";
-import Stack from "@mui/material/Stack";
-import Button from "@mui/material/Button";
+import { Sidebar, Menu, MenuItem, sidebarClasses } from 'react-pro-sidebar';
+import Typography from '@mui/material/Typography';
+import { Link, useLocation } from 'react-router-dom';
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
+import { styled } from '@mui/material';
+
+const StyledLink = styled(Link)({
+	color: '#fff',
+	fontWeight: 600,
+	margin: '0 20px',
+});
 
 const routes = [
-  {
-    path: "/branch-office",
-    text: "Branch Office",
-    active: true,
-  },
-  {
-    path: "/route-systems",
-    text: "Route System",
-    active: true,
-  },
-  {
-    path: "/vehicles",
-    text: "Vehicles",
-    active: true,
-  },
-  {
-    path: "/parcel-service",
-    text: "Parcel Service",
-    active: true,
-  },
-  {
-    path: "/inventory",
-    text: "Inventory",
-    active: false,
-  },
-  {
-    path: "/tracking",
-    text: "Tracking",
-    active: false,
-  },
-  {
-    path: "/gps",
-    text: "GPS",
-    active: false,
-  },
+	{
+		path: '/dashboard/branch-office',
+		text: 'Sucursales',
+		active: true,
+	},
+	{
+		path: '/dashboard/route-systems',
+		text: 'Sistema de Rutas',
+		active: true,
+	},
+	{
+		path: '/dashboard/vehicles',
+		text: 'Vehículos',
+		active: true,
+	},
+	{
+		path: '/dashboard/parcel-service',
+		text: 'Paquetería',
+		active: true,
+	},
+	{
+		path: '/dashboard/inventory',
+		text: 'Inventario',
+		active: false,
+	},
+	{
+		path: '/dashboard/tracking',
+		text: 'Tracking',
+		active: false,
+	},
+	{
+		path: '/dashboard/gps',
+		text: 'GPS',
+		active: false,
+	},
 ];
 
 export default function SideBar() {
-  const location = useLocation();
-  return (
-    <Sidebar
-      rootStyles={{
-        [`.${sidebarClasses.container}`]: {
-          backgroundColor: "#00294F",
-          boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
-          height: "100vh",
-        },
-      }}
-    >
-      <Stack spacing={4} justifyContent="space-between" height="100vh" py={2}>
-        <Typography
-          sx={{
-            color: "#fff",
-            fontWeight: 600,
-            fontSize: 20,
-            px: "20px",
-          }}
-        >
-          Bienvenido, <br />
-          Administrador
-        </Typography>
-        <Menu
-          menuItemStyles={{
-            button: {
-              height: "fit-content",
-              //   pointerEvents: "none",
-              "&:hover": {
-                backgroundColor: "transparent",
-                color: "#fff",
-              },
-            },
-          }}
-          rootStyles={{
-            height: "auto",
-          }}
-        >
-          <Stack spacing={1} sx={{ my: 4 }}>
-            <MenuItem
-              component={
-                <Link
-                  to="/"
-                  style={{
-                    color: "#fff",
-                    fontWeight: 600,
-                    textDecoration:
-                      location.pathname == "/" ? "underline" : "none",
-                  }}
-                />
-              }
-            >
-              Home
-            </MenuItem>
-            {routes.map((route) => (
-              <MenuItem
-                component={
-                  <Link
-                    to={route.path}
-                    style={{
-                      color: "#fff",
-                      fontWeight: 600,
-                      textDecoration:
-                        location.pathname == route.path ? "underline" : "none",
-                    }}
-                  />
-                }
-                key={route.path}
-              >
-                {route.text}
-              </MenuItem>
-            ))}
-          </Stack>
+	const location = useLocation();
+	return (
+		<Sidebar
+			rootStyles={{
+				[`.${sidebarClasses.container}`]: {
+					backgroundColor: '#00294F',
+					boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+					height: '100vh',
+				},
+			}}
+		>
+			<Stack spacing={4} justifyContent="space-between" height="100vh" py={2}>
+				<Typography
+					sx={{
+						color: '#fff',
+						fontWeight: 600,
+						fontSize: 24,
+						px: '20px',
+					}}
+				>
+					<Typography
+						component="span"
+						sx={{
+							color: '#0062BC',
+							fontWeight: 600,
+							fontSize: 30,
+						}}
+					>
+						Bienvenido,
+					</Typography>{' '}
+					<br />
+					Administrador
+				</Typography>
+				<Menu
+					menuItemStyles={{
+						button: {
+							height: 'fit-content',
+							//   pointerEvents: "none",
+							color: '#fff',
+							'&:hover': {
+								backgroundColor: '#0062BC',
+								color: '#fff',
+							},
+						},
+					}}
+					rootStyles={{
+						height: 'auto',
+					}}
+				>
+					<Stack spacing={1} sx={{ my: 4 }}>
+						<MenuItem
+							component={
+								<StyledLink
+									to="/dashboard"
+									sx={{
+										backgroundColor:
+											location.pathname == '/dashboard'
+												? '#0062BC'
+												: 'transparent',
+									}}
+								/>
+							}
+						>
+							Home
+						</MenuItem>
+						{routes.map((route) => (
+							<MenuItem
+								component={
+									<StyledLink
+										to={route.path}
+										sx={{
+											backgroundColor:
+												location.pathname == route.path
+													? '#0062BC'
+													: 'transparent',
+										}}
+									/>
+								}
+								key={route.path}
+							>
+								{route.text}
+							</MenuItem>
+						))}
+					</Stack>
 
-          <MenuItem
-            component={
-              <Link
-                to="/settings"
-                style={{
-                  color: "#fff",
-                  fontWeight: 600,
-                  textDecoration:
-                    location.pathname == "/settings" ? "underline" : "none",
-                }}
-              />
-            }
-          >
-            Settings
-          </MenuItem>
-        </Menu>
+					<MenuItem
+						component={
+							<StyledLink
+								to="/settings"
+								sx={{
+									textDecoration:
+										location.pathname == '/notifications'
+											? '#0062BC'
+											: 'transparent',
+								}}
+							/>
+						}
+					>
+						Notificaciones
+					</MenuItem>
+				</Menu>
 
-        <Button
-          sx={{
-            textTransform: "none",
+				<Button
+					sx={{
+						textTransform: 'none',
 
-            width: "fit-content",
-            px: "20px",
-          }}
-        >
-          <Typography sx={{ color: "#fff", fontWeight: 600 }}>
-            Logout
-          </Typography>
-        </Button>
-      </Stack>
-    </Sidebar>
-  );
+						width: 'fit-content',
+						px: '20px',
+						mx: '20px',
+					}}
+				>
+					<Typography sx={{ color: '#fff', fontWeight: 600 }}>
+						Logout
+					</Typography>
+				</Button>
+			</Stack>
+		</Sidebar>
+	);
 }
