@@ -1,7 +1,6 @@
 import * as React from "react";
 import { useFormik } from "formik";
 import { styled } from "@mui/material/styles";
-import { NavLink } from "react-router-dom";
 import { LoginScheme } from "@/schemas/index";
 import {
   Box,
@@ -9,18 +8,21 @@ import {
   FormHelperText,
   Typography,
   InputBase,
-  FormControlLabel,
   Checkbox,
   IconButton,
   InputAdornment,
+  Stack,
 } from "@mui/material";
-import BackgroundImg from "../assets/Img/svg/background-init.svg";
 
 import ButtonPrimary from "@/components/buttons/button-primary";
-import CheckBoxOutlinedIcon from "@mui/icons-material/CheckBoxOutlined";
-import CheckBoxOutlineBlankOutlinedIcon from "@mui/icons-material/CheckBoxOutlineBlankOutlined";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import PersonIcon from '@mui/icons-material/Person';
+
+import AuthImg from '@/assets/Img/png/authbg.png'
+import { useNavigate } from "react-router-dom";
+
+import CarouselPreference from "@/components/carousel/carousel-preference"
 
 const CustomStyledInput = styled(InputBase)({
   padding: "2px 12px",
@@ -42,16 +44,12 @@ function StyledBoxContainer() {
 
 function StyledContainer() {
   return {
-    width: "100%",
-    height: "100vh",
+    position: "relative",
     display: "flex",
-    flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#fff",
-    backgroundSize: "cover",
-    backgroundRepeat: "no-repeat",
-    backgroundPosition: "center",
+    minHeight: "100vh",
+    width: "100%"
   };
 }
 
@@ -62,13 +60,26 @@ function StyledForm() {
     p: "30px",
     boxShadow: "-2px 11px 18px #0062bc38",
     backgroundColor: "#fff",
+    position: "relative"
   };
 }
+
+function FontStyle(size: any, weight: any) {
+  return {
+    fontFamily: "Jost",
+    fontSize: `${size}px`,
+    fontWeight: `${weight}`
+  }
+}
+
+
 
 export default function SignIn() {
   const [values, setValues] = React.useState({
     showPassword: false,
   });
+
+  const [authenticated, setAuthenticated] = React.useState(true)
 
   const formik = useFormik({
     initialValues: {
@@ -78,6 +89,7 @@ export default function SignIn() {
     validationSchema: LoginScheme,
     onSubmit: (values, { resetForm }) => {
       console.log(JSON.stringify(values));
+      setAuthenticated(true)
       resetForm();
     },
   });
@@ -91,96 +103,166 @@ export default function SignIn() {
     event.preventDefault();
   };
 
+  const nav = useNavigate()
+
   return (
+
     <Box sx={StyledContainer}>
-      <Box sx={StyledForm}>
-        <form onSubmit={formik.handleSubmit}>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-
-              gap: "40px",
-            }}
-          >
-            <FormControl sx={StyledBoxContainer}>
-              <Typography variant="h4" color="text.primary">
-                Email
-              </Typography>
-              <CustomStyledInput
-                onBlur={formik.handleBlur}
-                error={formik.touched.email && Boolean(formik.errors.email)}
-                onChange={formik.handleChange}
-                value={formik.values.email}
-                id="email"
-                name="email"
-                autoComplete="email"
-              />
-              {formik.touched.email && (
-                <FormHelperText
-                  error
-                  id="email-error"
-                  sx={{
-                    textAlign: "center",
-                  }}
-                >
-                  {formik.errors.email}
-                </FormHelperText>
-              )}
-            </FormControl>
-            <FormControl sx={StyledBoxContainer}>
-              <Typography variant="h4" color="text.primary">
-                Password
-              </Typography>
-              <CustomStyledInput
-                id="password"
-                onBlur={formik.handleBlur}
-                type={values.showPassword ? "text" : "password"}
-                value={formik.values.password}
-                error={
-                  formik.touched.password && Boolean(formik.errors.password)
-                }
-                autoComplete="current-password"
-                onChange={formik.handleChange}
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="toggle password visibility"
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                      edge="end"
-                      sx={{
-                        color: "icon.secondary",
-                      }}
-                    >
-                      {values.showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-              />
-              {formik.touched.password && (
-                <FormHelperText
-                  error
-                  id="password-error"
-                  sx={{
-                    textAlign: "center",
-                  }}
-                >
-                  {formik.errors.password}
-                </FormHelperText>
-              )}
-            </FormControl>
-
-            <ButtonPrimary
-              disabled={!(formik.dirty && formik.isValid)}
-              width={"100%"}
-              type="submit"
-            >
-              Sign In
-            </ButtonPrimary>
-          </Box>
-        </form>
+      <Box
+        sx={{
+          position: "absolute",
+          width: "100%",
+          height: "100%",
+          backgroundImage: `url(${AuthImg})`,
+          backgroundSize: "cover",
+          backgroundRepeat: "no-repeat",
+          zIndex: -1,
+        }}>
+        <Box
+          sx={{
+            height: "100%",
+            width: "100%",
+            background: "#0062BC",
+            mixBlendMode: "multiply",
+            zIndex: -2
+          }}
+        />
       </Box>
+
+      {authenticated == false ?
+        <Box sx={StyledForm}>
+          <form onSubmit={formik.handleSubmit}>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "24px",
+              }}
+            >
+              <Stack direction="row" spacing={1}>
+                <PersonIcon sx={{ height: "16px" }} />
+                <Typography sx={{ "&.MuiTypography-root": { fontSize: "12px" } }}>
+                  Sign in
+                </Typography>
+              </Stack>
+
+              <FormControl sx={StyledBoxContainer}>
+                <Typography component="h4" sx={FontStyle(25, 400)}>
+                  Plate
+                </Typography>
+                <CustomStyledInput
+                  onBlur={formik.handleBlur}
+                  error={formik.touched.email && Boolean(formik.errors.email)}
+                  onChange={formik.handleChange}
+                  value={formik.values.email}
+                  id="email"
+                  name="email"
+                  autoComplete="email"
+                />
+                {formik.touched.email && (
+                  <FormHelperText
+                    error
+                    id="email-error"
+                    sx={{
+                      textAlign: "center",
+                    }}
+                  >
+                    {formik.errors.email}
+                  </FormHelperText>
+                )}
+              </FormControl>
+
+
+              <FormControl sx={StyledBoxContainer}>
+                <Typography component="h4" sx={FontStyle(25, 400)}>
+                  Password
+                </Typography>
+                <CustomStyledInput
+                  id="password"
+                  onBlur={formik.handleBlur}
+                  type={values.showPassword ? "text" : "password"}
+                  value={formik.values.password}
+                  error={
+                    formik.touched.password && Boolean(formik.errors.password)
+                  }
+                  autoComplete="current-password"
+                  onChange={formik.handleChange}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                        sx={{
+                          color: "icon.secondary",
+                        }}
+                      >
+                        {values.showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                />
+                {formik.touched.password && (
+                  <FormHelperText
+                    error
+                    id="password-error"
+                    sx={{
+                      textAlign: "center",
+                    }}
+                  >
+                    {formik.errors.password}
+                  </FormHelperText>
+                )}
+              </FormControl>
+
+              <Stack spacing={0.3} direction="row" alignItems="center">
+                <Checkbox
+                  sx={{
+                    heigth: "15px",
+                    color: "#0062BC",
+                    '&.Mui-checked': {
+                      color: "#0062BC",
+                    },
+                    '& .MuiSvgIcon-root': { fontSize: 15 }
+                  }
+                  }
+                />
+                <Typography sx={FontStyle(16, 500)}>Remember me</Typography>
+              </Stack>
+
+              <Box display="flex" justifyContent="center">
+                <Typography
+                  sx={{
+                    "&.MuiTypography-root": {
+                      fontSize: "10px",
+                      fontWeight: 700,
+                      fontFamily: "Jost",
+                      cursor: "pointer"
+                    }
+                  }}
+                  onClick={() => nav("/recover-password")}
+                >
+                  Forgot password?
+                </Typography>
+              </Box>
+
+              <ButtonPrimary
+                disabled={!(formik.dirty && formik.isValid)}
+                width={"100%"}
+                type="submit"
+              >
+                Sign In
+              </ButtonPrimary>
+            </Box>
+          </form>
+        </Box>
+        :
+        
+          <CarouselPreference/>
+
+      }
+
     </Box>
   );
 }

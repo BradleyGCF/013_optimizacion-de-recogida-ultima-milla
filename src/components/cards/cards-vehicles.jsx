@@ -1,6 +1,6 @@
 import { Card, CardContent, Box, Typography, CardMedia } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import VehiclesImg from "@/assets/img/png/vehiclesimg.png";
+import VehiclesImg from "@/assets/Img/png/vehiclesimg.png";
 
 const styleCard = {
   height: { xs: "100%", md: "140px" },

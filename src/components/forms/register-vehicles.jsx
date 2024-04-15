@@ -13,7 +13,7 @@ import { useFormik } from "formik";
 import { CreateVehicles } from "@/schemas/index";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 
-import VehiclesImgCreate from "@/assets/img/png/vehiclesImgCreate.png";
+import VehiclesImgCreate from "@/assets/Img/png/vehiclesImgCreate.png";
 import ButtonPrimary from "@/components/buttons/button-primary";
 
 const CustomStyledInput = styled(InputBase)({
