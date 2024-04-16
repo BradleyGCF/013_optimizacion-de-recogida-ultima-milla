@@ -1,12 +1,11 @@
 import { Box, Grid } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import * as React from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import Sidebar from '@/components/sidebar/sidebar';
 
 import Navbar from '@/components/nav-bar/nav-bar';
 import Maps from '@/screens/maps';
-
 
 const Dashboard = React.lazy(() => import('@/screens/dashboard'));
 const ProfileVehicle = React.lazy(() => import('@/screens/profile-vehicle'));
@@ -21,6 +20,10 @@ const ProfileBranchOffice = React.lazy(
 	() => import('@/screens/profile-branch-office')
 );
 export default function Navigator() {
+
+	const location = useLocation()
+	const isSignInOrRecoverPassword = location.pathname === '/sign-in' || location.pathname === '/recover-password'
+
 	return (
 		<React.Suspense
 			fallback={
@@ -62,15 +65,16 @@ export default function Navigator() {
 
 
 				{/* Este box controla el layout de la pagina */}
-				{/* <Box
+				<Box
 					sx={{
 						my: 4,
 						px: 4,
 						position: 'relative',
 						left: { xs: '0px', lg: '250px' },
 						width: { xs: '100%', lg: '80%', xl: '100%' },
+						...(isSignInOrRecoverPassword && { 'my': 0, 'px': 0, width: '100%', 'position': 'fixed', left: 0 })
 					}}
-				> */}
+				>
 
 					<Routes>
 						{/* <Route path="/" element={<Home />} /> */}
@@ -93,7 +97,7 @@ export default function Navigator() {
 							element={<ProfileBranchOffice />}
 						/>
 					</Routes>
-				{/* </Box> */}
+				</Box>
 			</Box>
 		</React.Suspense>
 	);
