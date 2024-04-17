@@ -29,6 +29,7 @@ declare module '@/screens/route-systems';
 declare module '@/screens/profile-routes';
 declare module '@/screens/dashboard';
 declare module '@/screens/recover-password';
+declare module '@/screens/tracking-current';
 
 declare module '@/stores/index';
 
