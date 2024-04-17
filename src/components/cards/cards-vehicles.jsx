@@ -23,7 +23,7 @@ const styleCardContent = {
   },
 };
 
-export default function CardVehicles() {
+export default function CardVehicles({id}) {
   let navigate = useNavigate();
 
   return (
@@ -46,7 +46,7 @@ export default function CardVehicles() {
               height: { xs: "76px", md: "100%" },
               width: "140px",
             }}
-            onClick={() => navigate(`/profile-vehicle/554`)}
+            onClick={() => navigate(`/dashboard/profile-vehicle/${id}`)}
           />
         </Box>
         <Box
