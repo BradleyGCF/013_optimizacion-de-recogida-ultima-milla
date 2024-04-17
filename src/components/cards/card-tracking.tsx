@@ -15,7 +15,7 @@ import { DetailsTable } from "../tracking/detailsTable";
 
 const styleCard = {
   height: { xs: "100%", md: "140px" },
-  width: { xs: "fit-content", md: "100%" },
+  width: "100%",
   backgroundImage: "none",
   backgroundColor: "background.default",
 };
@@ -23,7 +23,7 @@ const styleCard = {
 const styleCardContent = {
   height: "100%",
   display: "flex",
-  flexDirection: { xs: "column", md: "row" },
+  flexDirection: { xs: "column", sm: "row" },
   gap: { xs: "15px", md: "0px" },
   p: "30px",
   "&:last-child": {
@@ -58,7 +58,7 @@ export default function CardTracking({ card }: any) {
                 flex: 1,
                 display: "flex",
                 alignItems: "center",
-                justifyContent: { xs: "center", md: "start" },
+                justifyContent: { xs: "center", sm: "center" },
               }}
             >
               <CardMedia
@@ -70,7 +70,7 @@ export default function CardTracking({ card }: any) {
                   height: { xs: "76px", md: "100%" },
                   width: "140px",
                 }}
-                onClick={() => navigate(`/profile-vehicle/554`)}
+                // onClick={() => navigate(`/profile-vehicle/554`)}
               />
             </Box>
             <Box

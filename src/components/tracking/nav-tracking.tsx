@@ -20,7 +20,7 @@ export const NavTracking = () => {
   return (
     <Box
       sx={{
-        display: "flex",
+        display: { xs: "-ms-grid", sm: "flex" },
         alignItems: "flex-start",
         gap: "1rem",
       }}

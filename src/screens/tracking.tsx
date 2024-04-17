@@ -47,9 +47,19 @@ export default function Tracking() {
     >
       <ArrowBack />
       <NavTracking />
-      {filter.map((card: any) => {
-        return <CardTracking key={card.id} card={card} />;
-      })}
+      <Box
+        sx={{
+          width: "100%",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-start",
+          gap: "1rem",
+        }}
+      >
+        {filter.map((card: any) => {
+          return <CardTracking key={card.id} card={card} />;
+        })}
+      </Box>
     </Container>
   );
 }
