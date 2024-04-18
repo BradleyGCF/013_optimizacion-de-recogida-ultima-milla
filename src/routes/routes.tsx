@@ -20,6 +20,8 @@ const RecoverPassword = React.lazy(() => import("@/screens/recover-password"));
 const ProfileBranchOffice = React.lazy(
   () => import("@/screens/profile-branch-office")
 );
+const Inventory = React.lazy(() => import("@/screens/inventory"));
+
 export default function Navigator() {
   const location = useLocation();
   const isSignInOrRecoverPassword =
@@ -94,6 +96,8 @@ export default function Navigator() {
               <Route path="route-systems" element={<RouteSystems />} />
               <Route path="profile-routes/:id" element={<ProfileRoutes />} />
               <Route path="maps" element={<Maps />} />
+              <Route path="inventory" element={<Inventory />} />
+              
             </Route>
 
             <Route path="/sign-in" element={<SignIn />} />
