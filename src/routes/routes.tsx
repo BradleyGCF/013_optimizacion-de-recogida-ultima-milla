@@ -8,8 +8,9 @@ import Navbar from "@/components/nav-bar/nav-bar";
 import Maps from "@/screens/maps";
 
 const Dashboard = React.lazy(() => import("@/screens/dashboard"));
-const Tracking = React.lazy(() => import("@/screens/tracking"));
 const ProfileVehicle = React.lazy(() => import("@/screens/profile-vehicle"));
+const TrackingCurrent = React.lazy(() => import("@/screens/tracking-current"));
+const Tracking = React.lazy(() => import("@/screens/tracking"));
 const Vehicles = React.lazy(() => import("@/screens/vehicles"));
 const Settings = React.lazy(() => import("@/screens/settings"));
 const SignIn = React.lazy(() => import("@/screens/sign-in"));
@@ -94,6 +95,7 @@ export default function Navigator() {
               <Route path="route-systems" element={<RouteSystems />} />
               <Route path="profile-routes/:id" element={<ProfileRoutes />} />
               <Route path="maps" element={<Maps />} />
+              <Route path="ubication/:id" element={<TrackingCurrent />} />
             </Route>
 
             <Route path="/sign-in" element={<SignIn />} />
