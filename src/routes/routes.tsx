@@ -9,6 +9,7 @@ import Maps from "@/screens/maps";
 
 const Dashboard = React.lazy(() => import("@/screens/dashboard"));
 const ProfileVehicle = React.lazy(() => import("@/screens/profile-vehicle"));
+const Package = React.lazy(() => import("@/screens/package"));
 const TrackingCurrent = React.lazy(() => import("@/screens/tracking-current"));
 const Tracking = React.lazy(() => import("@/screens/tracking"));
 const Vehicles = React.lazy(() => import("@/screens/vehicles"));
@@ -96,6 +97,7 @@ export default function Navigator() {
               <Route path="profile-routes/:id" element={<ProfileRoutes />} />
               <Route path="maps" element={<Maps />} />
               <Route path="ubication/:id" element={<TrackingCurrent />} />
+              <Route path="parcel-service" element={<Package />} />
             </Route>
 
             <Route path="/sign-in" element={<SignIn />} />
