@@ -8,6 +8,7 @@ declare module '@/components/arrow-back/arrow-back';
 declare module '@/components/card/card-link';
 declare module '@/components/cards/card-tracking';
 declare module '@/components/carousel/carousel-preference';
+declare module '@/components/chart/AreaChart';
 
 declare module '@/components/buttons/button-primary';
 declare module '@/components/inputs/input-search-navbar';
