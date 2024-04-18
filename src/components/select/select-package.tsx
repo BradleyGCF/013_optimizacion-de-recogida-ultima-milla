@@ -6,7 +6,7 @@ import {
   Select,
   styled,
 } from "@mui/material";
-import React, { useState } from "react";
+import { useState } from "react";
 
 export const SelectPackage = () => {
   const [zona, setZona] = useState("");
