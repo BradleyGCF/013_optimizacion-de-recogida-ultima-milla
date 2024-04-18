@@ -87,7 +87,9 @@ export const TableDate = ({ card }: any) => {
                         display: "flex",
                         flexDirection: "row",
                       }}
-                      onClick={() => navigate(`/ubication/${card.id}`)}
+                      onClick={() =>
+                        navigate(`/dashboard/ubication/${card.id}`)
+                      }
                     >
                       Current location
                       <LocationOnIcon />
