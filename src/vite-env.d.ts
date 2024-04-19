@@ -9,8 +9,8 @@ declare module '@/components/card/card-link';
 declare module '@/components/cards/card-tracking';
 declare module '@/components/carousel/carousel-preference';
 declare module '@/components/select/select-package';
-declare module '@/components/select/table-details';
-declare module '@/components/select/row-data/row-data-package';
+declare module '@/components/package/table-details';
+declare module '@/components/package/row-data/row-data-package';
 
 declare module '@/components/buttons/button-primary';
 declare module '@/components/inputs/input-search-navbar';

@@ -1,5 +1,5 @@
 import { SelectPackage } from "@/components/select/select-package";
-import { TableDetails } from "@/components/select/table-details";
+import { TableDetails } from "@/components/package/table-details";
 import {
   Box,
   Container,
