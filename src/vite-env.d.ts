@@ -8,6 +8,10 @@ declare module '@/components/arrow-back/arrow-back';
 declare module '@/components/card/card-link';
 declare module '@/components/cards/card-tracking';
 declare module '@/components/carousel/carousel-preference';
+declare module '@/components/select/select-package';
+declare module '@/components/select/table-details';
+declare module '@/components/select/row-data/row-data-package';
+declare module '@/components/chart/AreaChart';
 
 declare module '@/components/buttons/button-primary';
 declare module '@/components/inputs/input-search-navbar';
@@ -24,6 +28,7 @@ declare module '@assets/img/png';
 declare module '@/screens/home';
 declare module '@/screens/vehicles';
 declare module '@/screens/tracking';
+declare module "@/screens/package";
 declare module '@/screens/profile-vehicle';
 declare module '@/screens/settings';
 declare module '@/screens/sign-in';
@@ -34,6 +39,7 @@ declare module '@/screens/profile-routes';
 declare module '@/screens/dashboard';
 declare module '@/screens/recover-password';
 declare module '@/screens/tracking-current';
+declare module '@/screens/inventory';
 
 declare module '@/stores/index';
 

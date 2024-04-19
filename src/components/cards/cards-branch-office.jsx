@@ -22,7 +22,7 @@ const styleCardContent = {
   },
 };
 
-export default function CardBranchOffice() {
+export default function CardBranchOffice({id}) {
   let navigate = useNavigate();
 
   return (
@@ -35,7 +35,7 @@ export default function CardBranchOffice() {
             alignItems: "center",
             justifyContent: { xs: "center", md: "start" },
           }}
-          onClick={() => navigate(`/branch-office`)}
+          onClick={() => navigate(`/profile-branch-office/${id}`)}
         >
           <CardMedia
             title="Vehicles"

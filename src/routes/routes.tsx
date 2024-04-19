@@ -9,6 +9,7 @@ import Maps from "@/screens/maps";
 
 const Dashboard = React.lazy(() => import("@/screens/dashboard"));
 const ProfileVehicle = React.lazy(() => import("@/screens/profile-vehicle"));
+const Package = React.lazy(() => import("@/screens/package"));
 const TrackingCurrent = React.lazy(() => import("@/screens/tracking-current"));
 const Tracking = React.lazy(() => import("@/screens/tracking"));
 const Vehicles = React.lazy(() => import("@/screens/vehicles"));
@@ -21,6 +22,8 @@ const RecoverPassword = React.lazy(() => import("@/screens/recover-password"));
 const ProfileBranchOffice = React.lazy(
   () => import("@/screens/profile-branch-office")
 );
+const Inventory = React.lazy(() => import("@/screens/inventory"));
+
 export default function Navigator() {
   const location = useLocation();
   const isSignInOrRecoverPassword =
@@ -96,6 +99,8 @@ export default function Navigator() {
               <Route path="profile-routes/:id" element={<ProfileRoutes />} />
               <Route path="maps" element={<Maps />} />
               <Route path="ubication/:id" element={<TrackingCurrent />} />
+              <Route path="parcel-service" element={<Package />} />
+              <Route path="inventory" element={<Inventory />} />
             </Route>
 
             <Route path="/sign-in" element={<SignIn />} />
