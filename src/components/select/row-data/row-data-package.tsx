@@ -17,9 +17,20 @@ const DataTypography = styled(Typography)({
 export const RowDataPackage = ({ data }: any) => {
   return (
     <>
-      <TableBody sx={{ backgroundColor: "white" }}>
+      <TableBody
+        sx={{
+          backgroundColor: "white",
+          background: "#FFF",
+          borderBottom: "#e7eaf6 solid",
+        }}
+      >
         <TableRow>
-          <TableCell align="left" sx={{ paddingLeft: "3rem" }}>
+          <TableCell
+            align="left"
+            sx={{
+              paddingLeft: "3rem",
+            }}
+          >
             <DataTypography>{data.entry}</DataTypography>
           </TableCell>
           <TableCell align="left">
