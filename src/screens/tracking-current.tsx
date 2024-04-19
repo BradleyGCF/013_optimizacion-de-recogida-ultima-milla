@@ -1,9 +1,10 @@
 import { ArrowBack } from "@/components/arrow-back/arrow-back";
+import CardMaps from "@/components/cards/card-maps";
 import { References } from "@/components/tracking/reference/references";
 import { Box, CardMedia, Container } from "@mui/material";
 
 const styleMap = {
-  height: { xs: "300px", sm: "44.625rem" },
+  height: { xs: "200px", sm: "42.105rem" },
   width: "100%",
   backgroundColor: "blue",
 };
@@ -21,6 +22,7 @@ export default function TrackingCurrent() {
       <Box
         sx={{
           display: "flex",
+          width: "100%",
           flexDirection: "column",
           alignItems: "flex-start",
           gap: "2rem",
@@ -30,7 +32,7 @@ export default function TrackingCurrent() {
         <References />
       </Box>
       <Box sx={styleMap}>
-        <CardMedia title="" image="" sx={{}} />
+        <CardMaps />
       </Box>
     </Container>
   );
