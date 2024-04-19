@@ -2,7 +2,8 @@ import { Box, Typography } from "@mui/material";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import { useNavigate } from "react-router-dom";
 
-export const ArrowBack = () => {
+export const ArrowBack = ({ children }: any) => {
+  console.log(children, "CHILDREN");
   const navigate = useNavigate();
   return (
     <Box
@@ -24,7 +25,7 @@ export const ArrowBack = () => {
           lineHeight: "normal",
         }}
       >
-        Tracking
+        {children}
       </Typography>
     </Box>
   );

@@ -45,7 +45,7 @@ export default function Tracking() {
         paddingTop: "2rem",
       }}
     >
-      <ArrowBack />
+      <ArrowBack>Tracking</ArrowBack>
       <NavTracking />
       <Box
         sx={{
