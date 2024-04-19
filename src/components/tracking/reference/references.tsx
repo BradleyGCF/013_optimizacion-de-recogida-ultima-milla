@@ -6,16 +6,18 @@ export const References = () => {
     <Box
       sx={{
         display: "flex",
+        width: "100%",
         flexDirection: { xs: "column", sm: "row" },
         justifyContent: "flex-start",
         alignItems: { xs: "flex-start", sm: "flex-end" },
-        gap: { xs: "2rem", sm: "6rem", md: "25.5625rem", lg: "29.5625rem" },
+        gap: "2rem",
       }}
     >
       <Box
         sx={{
           display: "flex",
-          aligItems: "flex-start",
+          minWidth: "15rem",
+          flexGrow: 1,
           gap: "0.625rem",
         }}
       >
@@ -99,8 +101,8 @@ export const References = () => {
       <Box
         sx={{
           display: "flex",
-          alignItems: "flex-start",
-          gap: "1.1875rem",
+          flexDirection: { xs: "column", sm: "row" },
+          gap: { xs: "0", sm: "1rem" },
         }}
       >
         <Typography
