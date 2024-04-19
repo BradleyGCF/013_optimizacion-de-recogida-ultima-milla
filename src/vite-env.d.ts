@@ -11,6 +11,7 @@ declare module '@/components/carousel/carousel-preference';
 declare module '@/components/select/select-package';
 declare module '@/components/package/table-details';
 declare module '@/components/package/row-data/row-data-package';
+declare module '@/components/chart/AreaChart';
 
 declare module '@/components/buttons/button-primary';
 declare module '@/components/inputs/input-search-navbar';
@@ -38,6 +39,7 @@ declare module '@/screens/profile-routes';
 declare module '@/screens/dashboard';
 declare module '@/screens/recover-password';
 declare module '@/screens/tracking-current';
+declare module '@/screens/inventory';
 
 declare module '@/stores/index';
 
