@@ -15,6 +15,7 @@ const Tracking = React.lazy(() => import("@/screens/tracking"));
 const Vehicles = React.lazy(() => import("@/screens/vehicles"));
 const Settings = React.lazy(() => import("@/screens/settings"));
 const SignIn = React.lazy(() => import("@/screens/sign-in"));
+const SignInAdmin = React.lazy(() => import("@/screens/sign-in-admin"));
 const BranchOffice = React.lazy(() => import("@/screens/branch-office"));
 const RouteSystems = React.lazy(() => import("@/screens/route-systems"));
 const ProfileRoutes = React.lazy(() => import("@/screens/profile-routes"));
@@ -28,6 +29,7 @@ export default function Navigator() {
   const location = useLocation();
   const isSignInOrRecoverPassword =
     location.pathname === "/sign-in" ||
+    location.pathname === "/sign-in-admin" ||
     location.pathname === "/recover-password";
 
   return (
@@ -67,6 +69,7 @@ export default function Navigator() {
           }}
         >
           {location.pathname !== "/sign-in" &&
+            location.pathname !== "/sign-in-admin" &&
             location.pathname !== "/recover-password" && <Sidebar />}
         </Box>
 
@@ -104,6 +107,7 @@ export default function Navigator() {
             </Route>
 
             <Route path="/sign-in" element={<SignIn />} />
+            <Route path="/sign-in-admin" element={<SignInAdmin />} />
             <Route path="/recover-password" element={<RecoverPassword />} />
 
             <Route
