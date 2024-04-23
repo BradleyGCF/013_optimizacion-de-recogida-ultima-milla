@@ -17,12 +17,12 @@ import {
 import ButtonPrimary from "@/components/buttons/button-primary";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import PersonIcon from '@mui/icons-material/Person';
+import PersonIcon from "@mui/icons-material/Person";
 
-import AuthImg from '@/assets/Img/png/authbg.png'
+import AuthImg from "@/assets/Img/png/authbg.png";
 import { useNavigate } from "react-router-dom";
 
-import CarouselPreference from "@/components/carousel/carousel-preference"
+import CarouselPreference from "@/components/carousel/carousel-preference";
 
 const CustomStyledInput = styled(InputBase)({
   padding: "2px 12px",
@@ -49,7 +49,7 @@ function StyledContainer() {
     justifyContent: "center",
     alignItems: "center",
     minHeight: "100vh",
-    width: "100%"
+    width: "100%",
   };
 }
 
@@ -60,7 +60,7 @@ function StyledForm() {
     p: "30px",
     boxShadow: "-2px 11px 18px #0062bc38",
     backgroundColor: "#fff",
-    position: "relative"
+    position: "relative",
   };
 }
 
@@ -68,18 +68,16 @@ function FontStyle(size: any, weight: any) {
   return {
     fontFamily: "Jost",
     fontSize: `${size}px`,
-    fontWeight: `${weight}`
-  }
+    fontWeight: `${weight}`,
+  };
 }
-
-
 
 export default function SignIn() {
   const [values, setValues] = React.useState({
     showPassword: false,
   });
 
-  const [authenticated, setAuthenticated] = React.useState(true)
+  const [authenticated, setAuthenticated] = React.useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -89,7 +87,7 @@ export default function SignIn() {
     validationSchema: LoginScheme,
     onSubmit: (values, { resetForm }) => {
       console.log(JSON.stringify(values));
-      setAuthenticated(true)
+      setAuthenticated(true);
       resetForm();
     },
   });
@@ -103,10 +101,9 @@ export default function SignIn() {
     event.preventDefault();
   };
 
-  const nav = useNavigate()
+  const nav = useNavigate();
 
   return (
-
     <Box sx={StyledContainer}>
       <Box
         sx={{
@@ -117,19 +114,20 @@ export default function SignIn() {
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
           zIndex: -1,
-        }}>
+        }}
+      >
         <Box
           sx={{
             height: "100%",
             width: "100%",
             background: "#0062BC",
             mixBlendMode: "multiply",
-            zIndex: -2
+            zIndex: -2,
           }}
         />
       </Box>
 
-      {authenticated == false ?
+      {authenticated == false ? (
         <Box sx={StyledForm}>
           <form onSubmit={formik.handleSubmit}>
             <Box
@@ -141,7 +139,9 @@ export default function SignIn() {
             >
               <Stack direction="row" spacing={1}>
                 <PersonIcon sx={{ height: "16px" }} />
-                <Typography sx={{ "&.MuiTypography-root": { fontSize: "12px" } }}>
+                <Typography
+                  sx={{ "&.MuiTypography-root": { fontSize: "12px" } }}
+                >
                   Sign in
                 </Typography>
               </Stack>
@@ -172,7 +172,6 @@ export default function SignIn() {
                 )}
               </FormControl>
 
-
               <FormControl sx={StyledBoxContainer}>
                 <Typography component="h4" sx={FontStyle(25, 400)}>
                   Password
@@ -198,7 +197,11 @@ export default function SignIn() {
                           color: "icon.secondary",
                         }}
                       >
-                        {values.showPassword ? <VisibilityOff /> : <Visibility />}
+                        {values.showPassword ? (
+                          <VisibilityOff />
+                        ) : (
+                          <Visibility />
+                        )}
                       </IconButton>
                     </InputAdornment>
                   }
@@ -221,12 +224,11 @@ export default function SignIn() {
                   sx={{
                     heigth: "15px",
                     color: "#0062BC",
-                    '&.Mui-checked': {
+                    "&.Mui-checked": {
                       color: "#0062BC",
                     },
-                    '& .MuiSvgIcon-root': { fontSize: 15 }
-                  }
-                  }
+                    "& .MuiSvgIcon-root": { fontSize: 15 },
+                  }}
                 />
                 <Typography sx={FontStyle(16, 500)}>Remember me</Typography>
               </Stack>
@@ -238,8 +240,8 @@ export default function SignIn() {
                       fontSize: "10px",
                       fontWeight: 700,
                       fontFamily: "Jost",
-                      cursor: "pointer"
-                    }
+                      cursor: "pointer",
+                    },
                   }}
                   onClick={() => nav("/recover-password")}
                 >
@@ -257,12 +259,9 @@ export default function SignIn() {
             </Box>
           </form>
         </Box>
-        :
-        
-          <CarouselPreference/>
-
-      }
-
+      ) : (
+        <CarouselPreference />
+      )}
     </Box>
   );
 }

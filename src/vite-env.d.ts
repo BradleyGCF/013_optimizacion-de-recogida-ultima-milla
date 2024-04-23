@@ -32,6 +32,7 @@ declare module "@/screens/package";
 declare module '@/screens/profile-vehicle';
 declare module '@/screens/settings';
 declare module '@/screens/sign-in';
+declare module '@/screens/sign-in-admin';
 declare module '@/screens/branch-office';
 declare module '@/screens/profile-branch-office';
 declare module '@/screens/route-systems';
