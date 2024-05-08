@@ -30,7 +30,7 @@ const ChatSection = () => {
     useEffect(() => {
         // socket.on('nombre de evento', receiveMessage) //recibimos el mensaje de otro cliente
         //}) 
-
+        
         // return () => { socket.off('nombre del evento a apagar, receiveMessage) }
     }, [])
 
