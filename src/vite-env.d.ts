@@ -48,4 +48,6 @@ declare module '@/stores/index';
 
 declare module '@/theme/Theme';
 
+declare module 'parse'
+
 /// <reference types="vite/client"/>

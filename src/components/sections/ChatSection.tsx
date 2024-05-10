@@ -1,7 +1,6 @@
 import { Avatar, Badge, Box, Button, CardMedia, InputAdornment, Typography, styled, Stack } from "@mui/material";
 import { InputBase, IconButton } from "@mui/material";
-
-import { io } from 'socket.io-client'
+import Parse from "parse";
 
 import AvatarImage from '@/assets/Img/png/avatar.png'
 import LineSvg from '@/assets/Img/svg/line.svg'
@@ -12,31 +11,92 @@ import { useBoundStore } from '@/stores/index';
 import { shallow } from "zustand/shallow";
 import { useEffect, useState } from "react";
 
-const socket = io(/* Direccion del back */) // 1 conectar el socket al back
 
 const ChatSection = () => {
 
-    const { setMessage, message, setMessages, messages } = useBoundStore(
-        (state: any) => state,
-        shallow
-    )
-
-    const handleSubmit = (e: any) => {
-        e.preventDefault()
-        // setMessages([...messages, message]) // muestro mi propio mensaje en mi cliente
-        // socket.emit('nombre del evento', message) // se envia el mensaje al backend 
+    interface MessageType {
+        content: string;
+        clientId: string;
     }
+
+    const [messages, setMessages] = useState<MessageType[]>([]);
+    const [newMessage, setNewMessage] = useState("");
+    const [clientId, setClientId] = useState('ddadwdwecwe');
+
+    Parse.initialize("013");
+    Parse.serverURL = "http://localhost:2337/server";
+    let LiveQueryClient = Parse.LiveQueryClient;
+    let client = new LiveQueryClient({
+        applicationId: "013",
+        serverURL: "ws://localhost:2337",
+        masterKey: "Yzhl06W5O7Vhf8iwlYBQCxs6hY8Fs2PQewNGjsl0",
+    });
+
+    client.open("open", () => {
+        console.log("connect");
+    });
+
+    client.on("error", (error: any) => {
+        console.log(error);
+    });
+
+    const Chatroom = Parse.Object.extend("chatroom");
+
+    console.log('por entrar al useeffect')
 
     useEffect(() => {
-        // socket.on('nombre de evento', receiveMessage) //recibimos el mensaje de otro cliente
-        //}) 
-        
-        // return () => { socket.off('nombre del evento a apagar, receiveMessage) }
-    }, [])
 
-    const receiveMessage = (message: any) => {
-        setMessages((state: any) => [...state, message] )
-    }
+        console.log('entrada al useffect')
+        console.log('numero de sms en el state:', messages)
+        console.log('por subscribirse')
+
+        
+        const query = new Parse.Query(Chatroom);
+        const subscription = client.subscribe(query);
+
+        subscription.on("create", (message: any) => {
+            setMessages((prevMessages) => [
+                ...prevMessages,
+                { content: message.get("content"), clientId: message.get("clientId") },
+            ]);
+        });
+        console.log('subscrito!')
+
+        //Notificacion 
+        // subscription.on("update", () => {  
+        //   Notification.requestPermission().then(perm => { 
+        //     if (perm === "granted") { 
+        //       new Notification("Notificacion update 11111") 
+        //     } 
+        //   })  
+        // }); 
+
+        return () => {
+            subscription.unsubscribe();
+        };
+    }, []);
+
+
+
+    const sendMessage = (content: any) => {
+        const message = new Chatroom();
+        message.set("content", content);
+        message.set("clientId", clientId);
+        message.save().catch((error: any) => {
+            console.log("Error al enviar mensaje: ", error);
+        });
+    };
+
+    const handleInputChange = (event: any) => {
+        setNewMessage(event.target.value);
+    };
+
+    const handleFormSubmit = (event: any) => {
+        event.preventDefault();
+        sendMessage(newMessage);
+        setNewMessage("");
+    };
+
 
     const StyledBadge = styled(Badge)(({ theme }) => ({
         '& .MuiBadge-badge': {
@@ -64,7 +124,6 @@ const ChatSection = () => {
                 fontWeight: 400
             }
         }
-
     }
 
 
@@ -128,10 +187,14 @@ const ChatSection = () => {
 
             <Box
                 sx={{
-                    backgroundColor: 'grey'
+                    m: 3
                 }}
             >
-                Chat
+                {messages.map((message, index) => (
+                    <Box key={index} sx={{ display: 'flex', m: 1, p: 2, backgroundColor: 'grey' }}>
+                        <Typography>{message.clientId}</Typography>: <Typography>{message.content}</Typography>
+                    </Box>
+                ))}
             </Box>
 
             <Box
@@ -152,11 +215,12 @@ const ChatSection = () => {
                         display: { 'xs': 'none', md: 'inline-block' }
                     }}
                 />
-                <form onSubmit={handleSubmit} style={{width: '100%', display: 'flex', alignItems: 'center'}}>
+                <form onSubmit={handleFormSubmit} style={{ width: '100%', display: 'flex', alignItems: 'center' }}>
                     <InputBase
                         sx={InputBaseStyled}
                         placeholder='Send a message...'
-                        onChange={(e) => setMessage(e.target.value)}
+                        onChange={(e) => handleInputChange(e)}
+                        value={newMessage}
                     />
                     <IconButton
                         type='submit'
