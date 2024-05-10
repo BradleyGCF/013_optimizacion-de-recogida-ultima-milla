@@ -17,7 +17,16 @@ export default function ProfileVehicle() {
         <Typography variant="subtitle1" color="text.fourth">
           Branch Office
         </Typography>
-        <CardBranchOffice />
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "20px"
+          }}
+        >
+          <CardBranchOffice id={1} />
+          <CardBranchOffice id={2} />
+        </Box>
       </Box>
     </Box>
   );

@@ -26,9 +26,9 @@ export default function Vehicles() {
           justifyContent: { xs: "center", sm: "start" },
         }}
       >
-        <CardVehicles />
-        <CardVehicles />
-        <CardVehicles />
+        {[1, 2, 3].map((v, index) => {
+          return <CardVehicles id={index}/>
+        })}
       </Box>
       <RegisterVehicles />
     </Box>
