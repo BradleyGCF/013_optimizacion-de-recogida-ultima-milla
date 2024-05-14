@@ -63,6 +63,48 @@ export const LoginScheme = yup.object().shape({
     ),
 });
 
+export const modalInventorySchema = yup.object().shape({
+  date: yup
+    .string()
+    .strict(true)
+    .required("Date is required"),
+
+  id: yup
+    .number()
+    .positive("Height must be a positive number")
+    .moreThan(0, "Height must be greater than 0")
+    .required("ID is required"),
+
+  height: yup
+    .number()
+    .positive("Height must be a positive number")
+    .moreThan(0, "Height must be greater than 0")
+    .required("Height is required"),
+
+  width: yup
+    .number()
+    .positive("Width must be a positive number")
+    .moreThan(0, "Width must be greater than 0")
+    .required("Width is required"),
+
+  length: yup
+    .number()
+    .positive("Length must be a positive number")
+    .moreThan(0, "Length must be greater than 0")
+    .required("Lenght is required"),
+
+    weight: yup
+    .number()
+    .positive("Weight must be a positive number")
+    .moreThan(0, "Weight must be greater than 0")
+    .required("Weight is required"),
+
+  branch: yup
+    .string()
+    .strict(true)
+    .required("Branch is required"),
+})
+
 export const CreateUserScheme = yup.object().shape({
   fullname: yup
     .string()
