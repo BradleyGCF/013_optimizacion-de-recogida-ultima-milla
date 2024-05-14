@@ -15,6 +15,8 @@ import { CreateBranchOffice } from "@/schemas/index";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import ButtonPrimary from "@/components/buttons/button-primary";
 import AddPhotoAlternateOutlinedIcon from "@mui/icons-material/AddPhotoAlternateOutlined";
+import { BranchContext } from "@/context/Branch/BranchContext";
+
 const CustomStyledInput = styled(InputBase)({
   borderRadius: "10px",
   background: "#FFF",
@@ -30,7 +32,7 @@ const CustomStyledInput = styled(InputBase)({
 const styleForm = {
   height: "100%",
   display: "flex",
-  flexDirection: { xs: "column", lg: "row" },
+  flexDirection: { xs: "column", md: "row" },
   justifyContent: "center",
   alignItems: "center",
   gap: { xs: "15px", md: "50px" },
@@ -43,6 +45,7 @@ const styleForm = {
 function StyledFormControl() {
   return {
     display: "flex",
+    width: '100%',
     flex: "1",
     flexDirection: "column",
     gap: "10px",
@@ -77,7 +80,7 @@ function ImageInputBanner(props) {
       sx={{
         display: "flex",
         height: { xs: "285px", md: "300px", xl: "500px" },
-        width: { xs: "100%", sm: "490px", lg: "100%" },
+        width: { xs: "100%", sm: "490px", md: "100%" },
         borderRadius: "20px",
         justifyContent: "center",
         alignItems: "center",
@@ -121,6 +124,7 @@ function ImageInputBanner(props) {
 }
 
 export default function RegisterBranchOffice(props) {
+  const { RegisterBranch } = useContext(BranchContext);
   const formik = useFormik({
     initialValues: {
       fileigmbranchoffice: "",
@@ -130,9 +134,10 @@ export default function RegisterBranchOffice(props) {
       city: "",
       manager: "",
     },
-    validationSchema: CreateBranchOffice,
+    // validationSchema: CreateBranchOffice,
     onSubmit: (values, { resetForm }) => {
-      console.log(JSON.stringify(values));
+      // console.log(JSON.stringify(values));
+      RegisterBranch(values);
       resetForm();
     },
   });
@@ -151,6 +156,7 @@ export default function RegisterBranchOffice(props) {
               flex: "1",
               flexDirection: "column",
               gap: "10px",
+              alignItems: 'center',
               alignSelf: { xs: "center", lg: "start" },
               width: "100%",
             }}
@@ -298,9 +304,8 @@ export default function RegisterBranchOffice(props) {
 
             <Box
               sx={{ display: "flex", justifyContent: "center" }}
-              type="submit"
             >
-              <ButtonPrimary> To register</ButtonPrimary>
+              <ButtonPrimary type="submit">To register</ButtonPrimary>
             </Box>
           </Box>
         </Box>
