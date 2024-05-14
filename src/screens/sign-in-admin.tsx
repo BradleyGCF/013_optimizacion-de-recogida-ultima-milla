@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useFormik } from "formik";
 import { styled } from "@mui/material/styles";
-import { LoginScheme } from "@/schemas/index";
+import { LoginScheme } from "@/schemas/LoginScheme";
 import {
   Box,
   FormControl,
