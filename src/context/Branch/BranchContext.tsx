@@ -3,10 +3,12 @@ import { useMoralis } from "react-moralis";
 import { Moralis } from "moralis-v1";
 
 import { useBoundStore } from "@/stores/index";
+import { object } from "yup";
 
 type BranchContextType = {
   RegisterBranch: (values: any) => void;
   getAllBranch: () => Promise<void>;
+  getAllBranchSearch: () => Promise<void>;
 } | null;
 
 export const BranchContext = createContext<BranchContextType>(null);
@@ -45,21 +47,32 @@ async function checkUserRole(roleName: string, ethAddress: string) {
 }
 
 const BranchState = (props: { children: any }) => {
-  const { setDataPerfilVehicles, Vehicles, setVehicles } = useBoundStore();
+  const { setDataPerfilBranch, setBranch, setDataBranchSearch } =
+    useBoundStore();
 
   const RegisterBranch = async (values: any) => {
-    console.log(values, "REGISTER BRANCH");
+    console.log(values, "REGISTER SUCURSAL");
     try {
       const res = await Moralis.Cloud.run("createBranch", {
-        objetData: values,
+        objectData: {
+          branchImage: values.brachaImage,
+          name: values.fullname,
+          direction: values.address,
+          city: values.city,
+          country: values.country,
+          manager: values.manager,
+        },
       });
-      console.log(res, "Vehicles LOGIN");
-      setVehicles();
-      // return { ok: true }
+      console.log(res.data.id, "Vehicles LOGIN");
+      if (res?.status === "success") {
+        setBranch({ ...res.data.attributes, object: res.data.id });
+        return { ok: true };
+      }
+      return { ok: false };
     } catch (error) {
       const errorMessage = JSON.stringify(error);
       const errorObjeto = JSON.parse(errorMessage);
-      console.error("🚀 error de login", errorMessage);
+      console.error("🚀 error de registro", errorMessage);
     }
   };
 
@@ -68,27 +81,29 @@ const BranchState = (props: { children: any }) => {
       const res = await Moralis.Cloud.run("getAllBranch", {
         page: "1",
       });
-      console.log(res, "GETALLBranch");
-      setDataPerfilVehicles(res);
+      setDataPerfilBranch(res.data);
     } catch (error: any) {
       console.error("🚀 error de SettingsUser", error);
     }
   };
 
-  // const LogoutFunc = async () => {
-  //   const Authenticated = true;
-  //   await logout();
-  //   setAuthenticated(false);
-  //   setVehicles([]);
-  //   location.reload();
-  // };
+  const getAllBranchSearch = async () => {
+    try {
+      const res = await Moralis.Cloud.run("getAllBranch", {
+        page: "1",
+      });
+      setDataBranchSearch(res.data);
+    } catch (error: any) {
+      console.error("🚀 error de SettingsUser", error);
+    }
+  };
 
   return (
     <BranchContext.Provider
       value={{
         RegisterBranch,
         getAllBranch,
-        // LogoutFunc,
+        getAllBranchSearch,
       }}
     >
       {props.children}

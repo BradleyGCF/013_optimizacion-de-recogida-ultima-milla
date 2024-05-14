@@ -9,6 +9,7 @@ import {
   FormHelperText,
   InputAdornment,
 } from "@mui/material";
+import { toast } from "react-hot-toast";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { useFormik } from "formik";
 import { CreateBranchOffice } from "@/schemas/index";
@@ -29,18 +30,13 @@ const CustomStyledInput = styled(InputBase)({
   },
 });
 
-const styleForm = {
+const StyleForm = styled(Box)({
   height: "100%",
   display: "flex",
-  flexDirection: { xs: "column", md: "row" },
-  justifyContent: "center",
-  alignItems: "center",
-  gap: { xs: "15px", md: "50px" },
-  p: { xs: "0px", sm: "30px" },
   "&:last-child": {
     paddingBottom: { xs: "0px", sm: "30px" },
   },
-};
+});
 
 function StyledFormControl() {
   return {
@@ -85,7 +81,7 @@ function ImageInputBanner(props) {
         justifyContent: "center",
         alignItems: "center",
         cursor: "pointer",
-        position: "relative",
+        // position: "relative",
         backgroundColor: "background.paper",
       }}
       onClick={onImageClickNft}
@@ -134,11 +130,22 @@ export default function RegisterBranchOffice(props) {
       city: "",
       manager: "",
     },
-    // validationSchema: CreateBranchOffice,
-    onSubmit: (values, { resetForm }) => {
-      // console.log(JSON.stringify(values));
-      RegisterBranch(values);
-      resetForm();
+    validationSchema: CreateBranchOffice,
+    onSubmit: async (values, { resetForm }) => {
+      const res = await RegisterBranch(values);
+      if (res?.ok === true) {
+        toast.success("Successfully created", {
+          duration: 3000,
+          position: "top-center",
+        });
+        resetForm();
+      } else {
+        toast.error("Something went wrong. Try again", {
+          duration: 2000,
+          position: "top-center",
+        });
+      }
+      return
     },
   });
 
@@ -148,7 +155,12 @@ export default function RegisterBranchOffice(props) {
         <Typography variant="subtitle1" color="text.fourth">
           Register Branch Office
         </Typography>
-        <Box sx={styleForm}>
+        <StyleForm sx={{
+          flexDirection: { xs: "column", md: "row" },
+          justifyContent: { xs: "center", sm: 'start' },
+          gap: { xs: "15px", md: "50px" },
+          p: { xs: "0px", sm: "30px" },
+        }}>
           <FormControl
             variant="standard"
             sx={{
@@ -302,13 +314,15 @@ export default function RegisterBranchOffice(props) {
               )}
             </FormControl>
 
-            <Box
-              sx={{ display: "flex", justifyContent: "center" }}
-            >
-              <ButtonPrimary type="submit">To register</ButtonPrimary>
+            <Box sx={{ display: "flex", justifyContent: "center" }}>
+              <ButtonPrimary
+                disabled={!(formik.dirty && formik.isValid)}
+                type="submit">
+                To register
+              </ButtonPrimary>
             </Box>
           </Box>
-        </Box>
+        </StyleForm>
       </Box>
     </form>
   );

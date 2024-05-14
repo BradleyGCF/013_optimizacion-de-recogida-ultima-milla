@@ -49,7 +49,7 @@ export default function Navigator() {
           }}
         >
           <CircularProgress
-            style={{ color: "#C02327" }}
+            style={{ color: "#00294F" }}
             sx={{ m: 2 }}
             size="68px"
           />
@@ -116,10 +116,7 @@ export default function Navigator() {
               path="/profile-branch-office/:id"
               element={<ProfileBranchOffice />}
             />
-            <Route
-              path="/chat"
-              element={<Chat />}
-            />
+            <Route path="/chat" element={<Chat />} />
           </Routes>
         </Box>
       </Box>
