@@ -56,7 +56,8 @@ export default function Navigator() {
         </Grid>
       }
     >
-      <Navbar />
+      {!isSignInOrRecoverPassword && <Navbar />}
+
       <Box
         sx={{
           display: { xs: "block", lg: "flex" },

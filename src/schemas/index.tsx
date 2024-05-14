@@ -2,7 +2,7 @@ import * as yup from "yup";
 
 const usernameMatch =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#.*\$%\^&\*])(?=.{8,})/;
-const passwordRules =
+export const passwordRules =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#.*%&@\$%\^&\*])(?=.{8,})/;
 const usernameSignUp = /^(\S+$)/g;
 const minPriceVerify = /^[0-9]*$/;
@@ -48,11 +48,11 @@ export const CollectionScheme = yup.object().shape({
 });
 
 export const LoginScheme = yup.object().shape({
-  email: yup
+  username: yup
     .string()
-    .max(255)
-    .required("Email is required")
-    .matches(/^[^@]+@[^@]+\.[^@]+$/, "Email must contain '@' before '.'"),
+    .min(15, "Decription Collection must be at least 15 characters long")
+    .max(200, "Decription Collection must contain a maximum of 200 characters")
+    .required("Required, Please Enter decription Collection"),
 
   password: yup
     .string()
@@ -122,8 +122,9 @@ export const CreateUserScheme = yup.object().shape({
   email: yup
     .string()
     .max(255)
-    .email("Must be a valid email")
-    .required("Email is required"),
+    .required("Email is required")
+    .matches(/^[^@]+@[^@]+\.[^@]+$/, "Email must contain '@' before '.'"),
+
   password: yup
     .string()
     .required("Please Enter your password")
@@ -285,49 +286,32 @@ export const CreateVehicles = yup.object().shape({
   fileigmvehicles: yup.mixed().nullable().required(),
   model: yup
     .string()
-    .min(5, "model must be at least 5 characters long")
     .max(65, "model must contain a maximum of 65 characters")
     .required("Require"),
-
   ability: yup
     .string()
-    .min(5, "ability must be at least 5 characters long")
     .max(65, "ability must contain a maximum of 65 characters")
     .required("Require"),
-
   vehicleregistration: yup
     .string()
-    .min(5, "vehiclere gistration must be at least 5 characters long")
-    .max(65, "vehiclere gistration must contain a maximum of 65 characters")
-    .required("Require"),
-  mileage: yup
-    .string()
-    .min(5, "mileage must be at least 5 characters long")
-    .max(65, "mileage must contain a maximum of 65 characters")
+    .min(5, "vehicle registration must be at least 5 characters long")
+    .max(10, "vehiclere gistration must contain a maximum of 65 characters")
     .required("Require"),
   drivers: yup
     .string()
     .min(5, "drivers must be at least 5 characters long")
     .max(65, "drivers must contain a maximum of 65 characters")
     .required("Require"),
-  vehiclegps: yup
-    .string()
-    .min(5, "vehiclegps must be at least 5 characters long")
-    .max(65, "vehiclegps must contain a maximum of 65 characters")
-    .required("Require"),
+  // vehiclegps: yup
+  //   .string()
+  //   .min(5, "vehiclegps must be at least 5 characters long")
+  //   .max(65, "vehiclegps must contain a maximum of 65 characters")
+  //   .required("Require"),
   branchofficesone: yup
     .string()
     .min(5, "branch offices must be at least 5 characters long")
     .max(65, "branch soffices must contain a maximum of 65 characters")
     .required("Require"),
-  branchofficestwo: yup
-    .string()
-    .min(5, "branch offices must be at least 5 characters long")
-    .max(65, "branch soffices must contain a maximum of 65 characters"),
-  branchofficestree: yup
-    .string()
-    .min(5, "branch offices must be at least 5 characters long")
-    .max(65, "branch soffices must contain a maximum of 65 characters"),
 });
 
 export const CreateBranchOffice = yup.object().shape({

@@ -1,9 +1,24 @@
 import { Box, Typography } from "@mui/material";
 import CardVehicles from "@/components/cards/cards-vehicles";
 import InputSearchGlobal from "@/components/inputs/inputs-search-global";
-import RegisterVehicles from "@/components/forms/register-vehicles";
+import RegisterVehicles from "../components/forms/register-vehicles";
+import { useContext, useEffect, useState } from "react";
+import { VehiclesContext } from "@/context/Vehicles/VehiclesContext";
+import { useBoundStore } from "@/stores/index";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export default function Vehicles() {
+  const [loading, setLoading] = useState(true);
+  const { getAllVehicles } = useContext(VehiclesContext);
+  const { DataPerfilVehicles } = useBoundStore();
+  useEffect(() => {
+    const allVehicles = async () => await getAllVehicles()
+    allVehicles();
+    setTimeout(() => {
+      setLoading(false)
+    }, 3000)
+
+  }, [])
   return (
     <Box
       sx={{
@@ -26,9 +41,35 @@ export default function Vehicles() {
           justifyContent: { xs: "center", sm: "start" },
         }}
       >
-        {[1, 2, 3].map((v, index) => {
-          return <CardVehicles id={index}/>
+        {loading &&
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              height: "100px",
+              width: '100%'
+            }}
+          >
+            <CircularProgress size="100px" color="secondary" />
+          </Box>
+        }
+        {DataPerfilVehicles?.length === 0 && !loading && (
+          <Box sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: '10rem',
+          }}>
+            <Typography variant="body1" color="text.primary" sx={{ fontSize: '20px !important', }}>
+              Vehicles not found
+            </Typography>
+          </Box>
+        )}
+        {DataPerfilVehicles?.map((v, index) => {
+          return <CardVehicles id={index} />
         })}
+
       </Box>
       <RegisterVehicles />
     </Box>
