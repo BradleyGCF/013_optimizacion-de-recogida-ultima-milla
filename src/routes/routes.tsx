@@ -24,6 +24,7 @@ const ProfileBranchOffice = React.lazy(
   () => import("@/screens/profile-branch-office")
 );
 const Inventory = React.lazy(() => import("@/screens/inventory"));
+const Chat = React.lazy(() => import("@/screens/chat"));
 
 export default function Navigator() {
   const location = useLocation();
@@ -114,6 +115,10 @@ export default function Navigator() {
             <Route
               path="/profile-branch-office/:id"
               element={<ProfileBranchOffice />}
+            />
+            <Route
+              path="/chat"
+              element={<Chat />}
             />
           </Routes>
         </Box>

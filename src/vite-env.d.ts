@@ -12,11 +12,13 @@ declare module '@/components/select/select-package';
 declare module '@/components/select/table-details';
 declare module '@/components/select/row-data/row-data-package';
 declare module '@/components/chart/AreaChart';
+declare module '@/components/sections/ChatSection';
 
 declare module '@/components/buttons/button-primary';
 declare module '@/components/inputs/input-search-navbar';
 declare module '@/stores/container/container';
 declare module '@/stores/theme/theme';
+declare module '@/stores/vehicles/storeVehicles';
 declare module '@/stores/tracking/storeTracking';
 declare module '@/stores/useGetNativeBalance/useGetNativeBalance';
 declare module '@/stores/useGetWalletTokenBalances/useGetWalletTokenBalances';
@@ -41,9 +43,12 @@ declare module '@/screens/dashboard';
 declare module '@/screens/recover-password';
 declare module '@/screens/tracking-current';
 declare module '@/screens/inventory';
+declare module '@/screens/chat'
 
 declare module '@/stores/index';
 
 declare module '@/theme/Theme';
+
+declare module 'parse'
 
 /// <reference types="vite/client"/>
