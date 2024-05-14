@@ -12,7 +12,7 @@ import {
 import { useFormik } from "formik";
 import { CreateVehicles } from "@/schemas/index";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
-
+import { VehiclesContext } from "@/context/Vehicles/VehiclesContext";
 import VehiclesImgCreate from "@/assets/Img/png/vehiclesImgCreate.png";
 import ButtonPrimary from "@/components/buttons/button-primary";
 
@@ -142,7 +142,8 @@ function ImageInputBanner(props) {
   );
 }
 
-export default function RegisterVehicles(props) {
+function RegisterVehicles(props) {
+  const { RegisterVehicles } = useContext(VehiclesContext);
   const formik = useFormik({
     initialValues: {
       fileigmvehicles: "",
@@ -156,9 +157,10 @@ export default function RegisterVehicles(props) {
       branchofficestwo: "",
       branchofficestree: "",
     },
-    validationSchema: CreateVehicles,
+    // validationSchema: CreateVehicles,
     onSubmit: (values, { resetForm }) => {
       console.log(JSON.stringify(values));
+      RegisterVehicles(values)
       resetForm();
     },
   });
@@ -437,9 +439,11 @@ export default function RegisterVehicles(props) {
             </FormControl>
             <Box
               sx={{ display: "flex", justifyContent: "center" }}
-              type="submit"
             >
-              <ButtonPrimary> To register</ButtonPrimary>
+              <ButtonPrimary
+                // disabled={!(formik.dirty && formik.isValid)}
+                type="submit"
+              >To register</ButtonPrimary>
             </Box>
           </Box>
         </Box>
@@ -447,3 +451,5 @@ export default function RegisterVehicles(props) {
     </form>
   );
 }
+
+export default RegisterVehicles;

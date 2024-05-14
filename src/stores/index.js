@@ -1,5 +1,6 @@
 import { createWithEqualityFn } from 'zustand/traditional';
 import { storeUser } from '@/stores/user/storeUser';
+import { storeVehicles } from '@/stores/vehicles/storeVehicles';
 import { storeTracking } from '@/stores/tracking/storeTracking';
 import { storeTheme } from '@/stores/Actions/Theme/storeTheme';
 import { storeHome } from '@/stores/Screens/storeHome';
@@ -14,5 +15,6 @@ export const useBoundStore = createWithEqualityFn((...a) => ({
 	...storeAlert(...a),
 	...storeModal(...a),
 	...storeTracking(...a),
+	...storeVehicles(...a)
 	...storeChat(...a)
 }));

@@ -18,6 +18,7 @@ declare module '@/components/buttons/button-primary';
 declare module '@/components/inputs/input-search-navbar';
 declare module '@/stores/container/container';
 declare module '@/stores/theme/theme';
+declare module '@/stores/vehicles/storeVehicles';
 declare module '@/stores/tracking/storeTracking';
 declare module '@/stores/useGetNativeBalance/useGetNativeBalance';
 declare module '@/stores/useGetWalletTokenBalances/useGetWalletTokenBalances';

@@ -1,7 +1,7 @@
 //Moralis Access
-const serverUrl: string = import.meta.env.VITE_MORALIS_SERVER_URL;
+const serverUrl: string = import.meta.env.VITE_MORALIS_SERVER_URL_DEV;
 const appId: string = import.meta.env.VITE_MORALIS_APP_ID;
-const moralisApiKey: string = import.meta.env.VITE_MORALIS_API_KEY;
+const moralisApiKey: string = import.meta.env.VITE_MORALIS_API_KEY_DEV;
 const masterKey: string = import.meta.env.VITE_MORALIS_MASTER_KEY;
 const urlProvider: string = import.meta.env.VITE_ALCHEMY_URL_PROVIDER;
 const apiAlchemy: string = import.meta.env.VITE_ALCHEMY_PRIVATE_API_KEY;
