@@ -17,6 +17,6 @@ export const useBoundStore = createWithEqualityFn((...a) => ({
 	...storeModal(...a),
 	...storeTracking(...a),
 	...storeChat(...a),
-	...storeInventoryModal(...a)
-  ...storeVehicles(...a)
+	...storeInventoryModal(...a),
+  ...storeVehicles(...a),
 }));

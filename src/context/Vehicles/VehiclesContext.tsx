@@ -5,17 +5,18 @@ import { Moralis } from "moralis-v1";
 import { useBoundStore } from "@/stores/index";
 
 type VehiclesContextType = {
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   RegisterVehicles: (values: any) => void;
   getAllVehicles: () => Promise<void>;
 } | null;
 
 export const VehiclesContext = createContext<VehiclesContextType>(null);
 
-async function assignRoleToVehicles(vehivlesId: string, roleName: string) {
+async function assignRoleToVehicles(vehiclesId: string, roleName: string) {
   try {
     // Llamar a la función de nube en Moralis
     const result = await Moralis.Cloud.run("assignRoleToUser", {
-      vehivlesId,
+      vehiclesId,
       roleName,
     });
     console.log(result);
@@ -32,9 +33,11 @@ async function checkUserRole(roleName: string, ethAddress: string) {
       ethAddress,
     });
 
+    // biome-ignore lint/complexity/useOptionalChain: <explanation>
     if (result && result.hasRole) {
       console.log(`El usuario actual tiene el rol '${roleName}'.`);
       return result.hasRole;
+    // biome-ignore lint/style/noUselessElse: <explanation>
     } else {
       console.log(`El usuario actual NO tiene el rol '${roleName}'.`);
       return result.hasRole;
@@ -44,9 +47,11 @@ async function checkUserRole(roleName: string, ethAddress: string) {
   }
 }
 
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 const VehicleState = (props: { children: any }) => {
   const { setDataPerfilVehicles, Vehicles, setVehicles } = useBoundStore();
 
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const RegisterVehicles = async (values: any) => {
     console.log(values, "REGISTER VEHICLES");
     try {
@@ -65,11 +70,12 @@ const VehicleState = (props: { children: any }) => {
 
   const getAllVehicles = async () => {
     try {
-      const res = await Moralis.Cloud.run("getAllVehicles", {
+      const res = await Moralis.Cloud.run("getAllVehicle", {
         page: "1",
       });
-      console.log(res, "GETALLVEHICLES");
-      setDataPerfilVehicles(res);
+      console.log(res.data, "console de res getallvehicles");
+      setDataPerfilVehicles(res.data);
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     } catch (error: any) {
       console.error("🚀 error de SettingsUser", error);
     }
