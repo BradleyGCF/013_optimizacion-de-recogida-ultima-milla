@@ -67,6 +67,7 @@ function StyledForm() {
   };
 }
 
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 function FontStyle(size: any, weight: any) {
   return {
     fontFamily: "Jost",
@@ -77,7 +78,9 @@ function FontStyle(size: any, weight: any) {
 
 export default function SignIn() {
   const navigate = useNavigate();
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const { Authenticated } = useBoundStore((state: any) => state, shallow);
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const { LoginMail }: any = React.useContext(UserContext);
   const [values, setValues] = React.useState({
     showPassword: false,
@@ -124,6 +127,7 @@ export default function SignIn() {
       showPassword: !values.showPassword,
     });
   };
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const handleMouseDownPassword = (event: any) => {
     event.preventDefault();
   };

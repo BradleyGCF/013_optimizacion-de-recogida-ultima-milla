@@ -10,15 +10,17 @@ import CircularProgress from "@mui/material/CircularProgress";
 export default function Vehicles() {
   const [loading, setLoading] = useState(true);
   const { getAllVehicles } = useContext(VehiclesContext);
+  // const [vehicles, setVehicles] = useState([]);
+
   const { DataPerfilVehicles } = useBoundStore();
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
-    const allVehicles = async () => await getAllVehicles()
+    const allVehicles = async () => await getAllVehicles();
     allVehicles();
     setTimeout(() => {
-      setLoading(false)
-    }, 3000)
-
-  }, [])
+      setLoading(false);
+    }, 3000);
+  }, []);
   return (
     <Box
       sx={{
@@ -41,35 +43,44 @@ export default function Vehicles() {
           justifyContent: { xs: "center", sm: "start" },
         }}
       >
-        {loading &&
+        {loading && (
           <Box
             sx={{
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               height: "100px",
-              width: '100%'
+              width: "100%",
             }}
           >
             <CircularProgress size="100px" color="secondary" />
           </Box>
-        }
+        )}
         {DataPerfilVehicles?.length === 0 && !loading && (
-          <Box sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            height: '10rem',
-          }}>
-            <Typography variant="body1" color="text.primary" sx={{ fontSize: '20px !important', }}>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              height: "10rem",
+            }}
+          >
+            <Typography
+              variant="body1"
+              color="text.primary"
+              sx={{ fontSize: "20px !important" }}
+            >
               Vehicles not found
             </Typography>
           </Box>
         )}
-        {DataPerfilVehicles?.map((v, index) => {
-          return <CardVehicles id={index} />
+        {DataPerfilVehicles?.map((DataPerfilVehicles, index) => {
+          // biome-ignore lint/correctness/useJsxKeyInIterable: <explanation>
+          return (
+            // biome-ignore lint/correctness/useJsxKeyInIterable: <explanation>
+            <CardVehicles id={index} DataPerfilVehicles={DataPerfilVehicles} />
+          );
         })}
-
       </Box>
       <RegisterVehicles />
     </Box>

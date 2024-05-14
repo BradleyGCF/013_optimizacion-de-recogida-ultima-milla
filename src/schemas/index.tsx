@@ -95,7 +95,10 @@ export const CreateUserScheme = yup.object().shape({
     .string()
     .required("Repeat Password is required")
     .when("password", {
-      is: (val: string | any[]) => (val && val.length > 0 ? true : false),
+      // biome-ignore lint/complexity/noUselessTernary: <explanation>
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+            is: (val: string | any[]) => (val && val.length > 0 ? true : false),
+      // biome-ignore lint/suspicious/noThenProperty: <explanation>
       then: yup
         .string()
         .oneOf([yup.ref("password")], "Both password need to be the same"),
@@ -269,8 +272,20 @@ export const CreateVehicles = yup.object().shape({
     .string()
     .min(5, "branch offices must be at least 5 characters long")
     .max(65, "branch soffices must contain a maximum of 65 characters")
-    .required("Require"),
+    .required("Branch Office 1 is required"),
+    branchofficestwo: yup
+    .string()
+    .min(5, "branch offices must be at least 5 characters long")
+    .max(65, "branch soffices must contain a maximum of 65 characters")
+    .required("Branch Office 2 is required"),
+    branchofficestree: yup
+    .string()
+    .min(5, "branch offices must be at least 5 characters long")
+    .max(65, "branch soffices must contain a maximum of 65 characters")
+    .required("Branch Office 3 is required"),
 });
+
+export type NewVehicle = yup.InferType<typeof CreateVehicles>
 
 export const CreateBranchOffice = yup.object().shape({
   fileigmbranchoffice: yup.mixed().nullable().required(),
