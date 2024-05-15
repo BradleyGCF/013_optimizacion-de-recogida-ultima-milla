@@ -3,6 +3,9 @@ import { Box, Button, Typography } from "@mui/material";
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import { useNavigate } from "react-router-dom";
 import { TableDetails } from "@/components/tracking/table/table-details";
+import InventoryModal from "@/components/modal/inventory-modal";
+import { useBoundStore } from '@/stores/index';
+import { shallow } from "zustand/shallow";
 
 
 const TypographyStyled = {
@@ -18,6 +21,8 @@ const TypographyStyled = {
 export default function Inventory() {
 
     const nav = useNavigate()
+
+    const { setOpenInventoryModal } = useBoundStore((state: any) => state, shallow);
 
     return (
         <Box
@@ -72,10 +77,12 @@ export default function Inventory() {
                         padding: '8px 16px',
                         textTransform: 'capitalize'
                     }}
+                    onClick={() => setOpenInventoryModal(true)}
                 >
                     Add new item
                 </Button>
             </Box>
+            <InventoryModal/>
         </Box>
     )
 }

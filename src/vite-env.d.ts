@@ -13,6 +13,7 @@ declare module '@/components/select/table-details';
 declare module '@/components/select/row-data/row-data-package';
 declare module '@/components/chart/AreaChart';
 declare module '@/components/sections/ChatSection';
+declare module '@/components/modal/inventoryModal';
 
 declare module '@/components/buttons/button-primary';
 declare module '@/components/inputs/input-search-navbar';
@@ -35,7 +36,6 @@ declare module "@/screens/package";
 declare module '@/screens/profile-vehicle';
 declare module '@/screens/settings';
 declare module '@/screens/sign-in';
-declare module '@/screens/sign-in-admin';
 declare module '@/screens/branch-office';
 declare module '@/screens/profile-branch-office';
 declare module '@/screens/route-systems';
