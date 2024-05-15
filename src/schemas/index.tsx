@@ -330,32 +330,32 @@ export const CreateVehicles = yup.object().shape({
 export type NewVehicle = yup.InferType<typeof CreateVehicles>
 
 export const CreateBranchOffice = yup.object().shape({
-  fileigmbranchoffice: yup.mixed().nullable().required(),
+  // fileigmbranchoffice: yup.mixed().nullable().required(),
   fullname: yup
     .string()
-    .min(5, "fullname must be at least 5 characters long")
+    .min(3, "fullname must be at least 3 characters long")
     .max(65, "fullname must contain a maximum of 65 characters")
     .required("Require"),
 
   address: yup
     .string()
-    .min(5, "address must be at least 5 characters long")
+    .min(3, "address must be at least 3 characters long")
     .max(65, "address must contain a maximum of 65 characters")
     .required("Require"),
 
   country: yup
     .string()
-    .min(5, "country must be at least 5 characters long")
+    .min(3, "country must be at least 3 characters long")
     .max(65, "country must contain a maximum of 65 characters")
     .required("Require"),
   city: yup
     .string()
-    .min(5, "city must be at least 5 characters long")
+    .min(3, "city must be at least 3 characters long")
     .max(65, "city must contain a maximum of 65 characters")
     .required("Require"),
   manager: yup
     .string()
-    .min(5, "manager must be at least 5 characters long")
+    .min(3, "manager must be at least 3 characters long")
     .max(65, "manager must contain a maximum of 65 characters")
     .required("Require"),
 });

@@ -22,9 +22,8 @@ const styleCardContent = {
   },
 };
 
-export default function CardBranchOffice({id}) {
+export default function CardBranchOffice({ id, branch }) {
   let navigate = useNavigate();
-
   return (
     <Card sx={styleCard}>
       <CardContent sx={styleCardContent}>
@@ -39,6 +38,7 @@ export default function CardBranchOffice({id}) {
         >
           <CardMedia
             title="Vehicles"
+            image={branch?.attributes.fileImage}
             sx={{
               backgroundSize: "cover",
               objectFit: "cover",
@@ -61,7 +61,7 @@ export default function CardBranchOffice({id}) {
             variant="h4"
             sx={{ color: "text.fourth", textAlign: "center" }}
           >
-            Name
+            {branch?.attributes.name ? branch.attributes.name : 'Name'}
           </Typography>
         </Box>
         <Box
@@ -76,7 +76,7 @@ export default function CardBranchOffice({id}) {
             variant="h4"
             sx={{ color: "text.fourth", textAlign: "center" }}
           >
-            Country
+            {branch?.attributes.contry ? branch.attributes.contry : 'Country'}
           </Typography>
         </Box>
         <Box
@@ -91,7 +91,7 @@ export default function CardBranchOffice({id}) {
             variant="h4"
             sx={{ color: "text.fourth", textAlign: "center" }}
           >
-            City
+            {branch?.attributes.city ? branch.attributes.city : 'City'}
           </Typography>
         </Box>
         <Box
@@ -106,7 +106,7 @@ export default function CardBranchOffice({id}) {
             variant="h4"
             sx={{ color: "text.fourth", textAlign: "center" }}
           >
-            Manager
+            {branch?.attributes.manager ? branch.attributes.manager : 'Manager'}
           </Typography>
         </Box>
       </CardContent>
