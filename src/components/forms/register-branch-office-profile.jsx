@@ -14,6 +14,10 @@ import { useFormik } from "formik";
 import { EditBranchOffice } from "@/schemas/index";
 import ButtonPrimary from "@/components/buttons/button-primary";
 import AddPhotoAlternateOutlinedIcon from "@mui/icons-material/AddPhotoAlternateOutlined";
+import { useBoundStore } from "@/stores/index";
+import { BranchContext } from "@/context/Branch/BranchContext";
+import { getImageUrl } from "../../config/getImageUrl";
+
 const CustomStyledInput = styled(InputBase)({
   borderRadius: "10px",
   background: "#FFF",
@@ -43,25 +47,36 @@ function StyledFormControl() {
   return {
     display: "flex",
     flex: "1",
+    width: "100%",
     flexDirection: "column",
     gap: "10px",
   };
 }
 
 function ImageInputBanner(props) {
-  const [selectedFile, setSelectedFile] = React.useState();
+  console.log(props.branch, 'PROPS');
+  const image = props?.branch.branchImage;
+  const [selectedFile, setSelectedFile] = React.useState(image);
   const inputFile = React.useRef(null);
+
   const changeHandlerNFt = async (event) => {
-    const img = event.target.files[0];
+    // if (event.currentTarget.files && event.currentTarget.files[0]) {
+    //   setSelectedFile(URL.createObjectURL(event.currentTarget.files[0]));
+    //   props.formik.setFieldValue("fileigmbranchoffice", event.currentTarget.files[0]);
+    //   // setSelectedFile(event.currentTarget.files[0]);
+    // }
+
+
+    const img = event.currentTarget.files[0];
     setSelectedFile(URL.createObjectURL(img));
-
     try {
-      const compressedImage = await imageCompression(img, {
-        maxSizeMB: 2,
-        maxWidthOrHeight: 1920,
-      });
-
-      props.onChangeImageNft(compressedImage);
+      const formData = new FormData();
+      console.log('ENTREEE');
+      formData.append("file", img);
+      formData.append("upload_preset", "gravitad_preset");
+      const imageUrl = await getImageUrl(formData);
+      console.log(imageUrl, 'CLUDY');
+      props.onChangeImageNft(imageUrl);
     } catch (error) {
       return error;
     }
@@ -93,10 +108,10 @@ function ImageInputBanner(props) {
         onChange={changeHandlerNFt}
         style={{ display: "none" }}
       />
-      {selectedFile ? (
+      {image ? (
         <CardMedia
           component="img"
-          image={selectedFile}
+          image={image}
           alt="image company"
           sx={{
             borderRadius: "20px",
@@ -119,7 +134,8 @@ function ImageInputBanner(props) {
   );
 }
 
-export default function RegisterBranchOfficeProfile(props) {
+export default function RegisterBranchOfficeProfile({ branch, id }) {
+  const { upDataBranch } = useContext(BranchContext)
   const formik = useFormik({
     initialValues: {
       fileigmbranchoffice: "",
@@ -131,8 +147,16 @@ export default function RegisterBranchOfficeProfile(props) {
     },
     validationSchema: EditBranchOffice,
     onSubmit: (values, { resetForm }) => {
-      console.log(JSON.stringify(values));
-      resetForm();
+      // console.log(JSON.stringify(values));
+      // const formData = new FormData();
+      // formData.append("file", values.fileigmbranchoffice);
+      // formData.append("upload_preset", "gravitad_preset");
+      try {
+        // const imageUrl = await getImageUrl(formData);
+        upDataBranch(id, values);
+      } catch (error) {
+        console.error(error, "ERROR");
+      }
     },
   });
 
@@ -147,14 +171,16 @@ export default function RegisterBranchOfficeProfile(props) {
               flex: "1",
               flexDirection: "column",
               gap: "10px",
-              alignSelf: { xs: "center", lg: "start" },
+              justifyContent: 'center',
+              alignItems: { xs: "center", lg: "center" },
               width: "100%",
             }}
           >
             <ImageInputBanner
-              onChangeImageNft={(fileigmvehicles) =>
-                formik.setFieldValue("fileigmvehicles", fileigmvehicles)
+              onChangeImageNft={(fileigmbranchoffice) =>
+                formik.setFieldValue("fileigmbranchoffice", fileigmbranchoffice)
               }
+              branch={branch}
             />
           </FormControl>
           <Box sx={StyledFormControl}>
@@ -172,6 +198,7 @@ export default function RegisterBranchOfficeProfile(props) {
                 id="fullname"
                 name="fullname"
                 autoComplete="fullname"
+                placeholder={branch?.name}
               />
               {formik.touched.fullname && (
                 <FormHelperText
@@ -202,6 +229,7 @@ export default function RegisterBranchOfficeProfile(props) {
                     <LocationOnIcon sx={{ color: "background.paper" }} />
                   </InputAdornment>
                 }
+                placeholder={branch?.direction}
               />
               {formik.touched.address && (
                 <FormHelperText
@@ -228,6 +256,7 @@ export default function RegisterBranchOfficeProfile(props) {
                 id="country"
                 name="country"
                 autoComplete="country"
+                placeholder={branch?.country}
               />
               {formik.touched.country && (
                 <FormHelperText
@@ -253,6 +282,7 @@ export default function RegisterBranchOfficeProfile(props) {
                 id="city"
                 name="city"
                 autoComplete="city"
+                placeholder={branch?.city}
               />
               {formik.touched.city && (
                 <FormHelperText
@@ -278,6 +308,7 @@ export default function RegisterBranchOfficeProfile(props) {
                 id="manager"
                 name="manager"
                 autoComplete="manager"
+                placeholder={branch?.manager}
               />
               {formik.touched.manager && (
                 <FormHelperText
@@ -292,12 +323,9 @@ export default function RegisterBranchOfficeProfile(props) {
               )}
             </FormControl>
 
-            <Box
-              sx={{ display: "flex", justifyContent: "center" }}
-              type="submit"
-            >
-              <ButtonPrimary width="100%">Edit</ButtonPrimary>
-              <ButtonPrimary width="100%">Delete</ButtonPrimary>
+            <Box sx={{ display: "flex", justifyContent: "center", gap: '1rem' }}>
+              <ButtonPrimary type="submit" width="100%">Edit</ButtonPrimary>
+              <ButtonPrimary width="100%" onClick={() => formik.resetForm}>Delete</ButtonPrimary>
             </Box>
           </Box>
         </Box>

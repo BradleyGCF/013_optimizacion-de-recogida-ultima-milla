@@ -38,9 +38,8 @@ export default function InputSearchGlobal(props) {
       label: option.attributes.name,
     }))
     : [];
-  console.log(option, 'OPTION');
   useEffect(() => {
-    SetSearchNavbar([]);
+    // SetSearchNavbar([]);
     const allThought = async (value) => {
       await getAllBranchSearch();
       // await getAllThoughtSearch(value);
@@ -49,7 +48,7 @@ export default function InputSearchGlobal(props) {
     // const filterFunc = async (inputValue) => {
     //   const resultFilterQuery = await getSearchArtistsPag(0, inputValue, true);
     // };
-    filterFunc(inputValue);
+    // filterFunc(inputValue);
   }, [inputValue]);
 
   useEffect(() => {

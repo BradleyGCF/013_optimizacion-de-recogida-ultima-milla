@@ -48,6 +48,10 @@ declare module '@/screens/chat'
 
 declare module '@/stores/index';
 
+declare module '@/hooks/getLocalStorage';
+
+declare module '@/config/getImageUrl';
+
 declare module '@/theme/Theme';
 
 declare module 'parse'

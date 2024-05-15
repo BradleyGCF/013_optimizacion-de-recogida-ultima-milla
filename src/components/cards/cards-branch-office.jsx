@@ -17,15 +17,16 @@ const styleCardContent = {
   flexDirection: { xs: "column", md: "row" },
   gap: { xs: "15px", md: "0px" },
   p: { xs: "20px 15px", md: "30px" },
+  cursor: 'pointer',
   "&:last-child": {
     paddingBottom: { xs: "20px 15px", md: "30px" },
   },
 };
 
-export default function CardBranchOffice({ id, branch }) {
+export default function CardBranchOffice({ branch }) {
   let navigate = useNavigate();
   return (
-    <Card sx={styleCard}>
+    <Card sx={styleCard} onClick={() => navigate(`/profile-branch-office/${branch.id}`)}>
       <CardContent sx={styleCardContent}>
         <Box
           sx={{

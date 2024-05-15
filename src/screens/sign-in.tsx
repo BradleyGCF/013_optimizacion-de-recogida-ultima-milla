@@ -106,7 +106,7 @@ export default function SignIn() {
           });
           resetForm();
         } else {
-          toast.error("username o contraseña incorrecto, vuleve a intentarlo", {
+          toast.error("Username o contraseña incorrecto, vuleve a intentarlo", {
             duration: 4000,
             position: "top-center",
           });
