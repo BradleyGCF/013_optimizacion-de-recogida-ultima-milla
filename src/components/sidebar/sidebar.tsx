@@ -8,6 +8,7 @@ import { useBoundStore } from "@/stores/index";
 import { shallow } from "zustand/shallow";
 import { UserContext } from "@/context/User/UserContext";
 import { useContext } from "react";
+import { getLocalStorage } from "@/hooks/getLocalStorage";
 
 const StyledLink = styled(Link)({
   color: "#fff",
@@ -18,27 +19,27 @@ const StyledLink = styled(Link)({
 const routes = [
   {
     path: "/dashboard/branch-office",
-    text: "Sucursales",
+    text: "Branch offices",
     active: true,
   },
   {
     path: "/dashboard/route-systems",
-    text: "Sistema de Rutas",
+    text: "Route System",
     active: true,
   },
   {
     path: "/dashboard/vehicles",
-    text: "Vehículos",
+    text: "Vehicles",
     active: true,
   },
   {
     path: "/dashboard/parcel-service",
-    text: "Paquetería",
+    text: "Parcel",
     active: true,
   },
   {
     path: "/dashboard/inventory",
-    text: "Inventario",
+    text: "Inventory",
     active: false,
   },
   {
@@ -56,6 +57,7 @@ const routes = [
 export default function SideBar() {
   const navigate = useNavigate();
   const { Authenticated } = useBoundStore((state: any) => state, shallow);
+  const localStorage = getLocalStorage("Parse/013/currentUser");
   const { LogoutFunc }: any = useContext(UserContext);
   const location = useLocation();
   return (
@@ -85,10 +87,10 @@ export default function SideBar() {
               fontSize: 30,
             }}
           >
-            Bienvenido,
+            Welcome,
           </Typography>{" "}
           <br />
-          Administrador
+          {localStorage?.type_user === "admin" ? "Administrator" : "Driver"}
         </Typography>
         <Menu
           menuItemStyles={{
@@ -155,7 +157,7 @@ export default function SideBar() {
               />
             }
           >
-            Notificaciones
+            Notifications
           </MenuItem>
         </Menu>
 
@@ -168,7 +170,7 @@ export default function SideBar() {
             mx: "20px",
           }}
         >
-          {Authenticated ? (
+          {Authenticated || localStorage ? (
             <Typography
               sx={{ color: "#fff", fontWeight: 600 }}
               onClick={() => LogoutFunc()}

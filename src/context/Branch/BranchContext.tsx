@@ -9,42 +9,11 @@ type BranchContextType = {
   RegisterBranch: (values: any) => void;
   getAllBranch: () => Promise<void>;
   getAllBranchSearch: () => Promise<void>;
+  getBranchId: (value: string) => Promise<void>;
+  upDataBranch: (id: string, values: any) => Promise<void>;
 } | null;
 
 export const BranchContext = createContext<BranchContextType>(null);
-
-async function assignRoleToVehicles(vehivlesId: string, roleName: string) {
-  try {
-    // Llamar a la función de nube en Moralis
-    const result = await Moralis.Cloud.run("assignRoleToUser", {
-      vehivlesId,
-      roleName,
-    });
-    console.log(result);
-  } catch (error) {
-    console.error("Error al asignar el rol:", error);
-  }
-}
-
-async function checkUserRole(roleName: string, ethAddress: string) {
-  try {
-    // Llamar a la función de nube en Parse Server
-    const result = await Moralis.Cloud.run("checkUserRoleFront", {
-      roleName,
-      ethAddress,
-    });
-
-    if (result && result.hasRole) {
-      console.log(`El usuario actual tiene el rol '${roleName}'.`);
-      return result.hasRole;
-    } else {
-      console.log(`El usuario actual NO tiene el rol '${roleName}'.`);
-      return result.hasRole;
-    }
-  } catch (error) {
-    console.error("Error al verificar el rol:", error);
-  }
-}
 
 const BranchState = (props: { children: any }) => {
   const { setDataPerfilBranch, setBranch, setDataBranchSearch } =
@@ -76,6 +45,46 @@ const BranchState = (props: { children: any }) => {
     }
   };
 
+  const getBranchId = async (id: string) => {
+    try {
+      const res = await Moralis.Cloud.run("getBranchByIdOrName", {
+        objectId: id,
+      });
+      setBranch(res.data[0].attributes);
+    } catch (error: any) {
+      console.error("🚀 error de SettingsUser", error);
+    }
+  };
+
+  const upDataBranch = async (id: string, values: any) => {
+    console.log(values, "CONTEXT");
+
+    try {
+      const resId = await Moralis.Cloud.run("getBranchByIdOrName", {
+        objectId: id,
+      });
+      const obj = {
+        branchImage:
+          values?.fileigmbranchoffice ||
+          resId.data.attributes?.branchImage ||
+          "",
+        name: values?.fullname || resId.data[0].attributes.name,
+        direction: values?.address || resId.data[0].attributes.direction,
+        city: values?.city || resId.data[0].attributes.city,
+        country: values?.country || resId.data[0].attributes.country,
+        // manager: values?.manager,
+      };
+      const res = await Moralis.Cloud.run("updateBranch", {
+        objectData: obj,
+        branchId: id,
+      });
+      console.log(res, "RESPONSE UPDATA");
+      // setBranch({ objectId: res.data.id, ...res.data.attributes });
+    } catch (error: any) {
+      console.error("🚀 error de SettingsUser", error);
+    }
+  };
+
   const getAllBranch = async () => {
     try {
       const res = await Moralis.Cloud.run("getAllBranch", {
@@ -104,6 +113,8 @@ const BranchState = (props: { children: any }) => {
         RegisterBranch,
         getAllBranch,
         getAllBranchSearch,
+        getBranchId,
+        upDataBranch,
       }}
     >
       {props.children}
