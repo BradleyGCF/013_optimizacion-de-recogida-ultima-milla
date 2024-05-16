@@ -3,7 +3,7 @@ import { useBoundStore } from '@/stores/index';
 import { shallow } from "zustand/shallow";
 import { useFormik } from 'formik';
 import { useState } from 'react';
-import { modalInventorySchema } from '@/schemas';
+import { modalInventoryScheme } from '@/schemas/index';
 
 
 export default function InventoryModal() {
@@ -18,7 +18,7 @@ export default function InventoryModal() {
             weight: 0,
             branch: ""
         },
-        validationSchema: modalInventorySchema,
+        validationSchema: modalInventoryScheme,
         onSubmit: (values: any, { resetForm }) => {
             console.log(JSON.stringify(values));
             //enviar form al back
