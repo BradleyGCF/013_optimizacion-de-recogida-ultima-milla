@@ -232,8 +232,9 @@ export default function RegisterNewRoute() {
             <ButtonPrimary
               width="80%"
               type='onSubmit'
+              disabled={!formik.isValid || formik.isSubmitting}
             >
-              to register
+              To register
             </ButtonPrimary>
           </Box>
         </form>
