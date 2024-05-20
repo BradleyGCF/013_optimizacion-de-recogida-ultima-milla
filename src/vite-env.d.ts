@@ -21,6 +21,7 @@ declare module '@/stores/container/container';
 declare module '@/stores/theme/theme';
 declare module '@/stores/vehicles/storeVehicles';
 declare module '@/stores/branch/storeBranch';
+declare module '@/stores/inventory/storeInventory';
 declare module '@/stores/tracking/storeTracking';
 declare module '@/stores/useGetNativeBalance/useGetNativeBalance';
 declare module '@/stores/useGetWalletTokenBalances/useGetWalletTokenBalances';
@@ -49,8 +50,9 @@ declare module '@/screens/chat'
 declare module '@/stores/index';
 
 declare module '@/hooks/getLocalStorage';
+declare module '@/hooks/getWeight';
 
-declare module '@/config/getImageUrl';
+declare module '@/config/getWeight';
 
 declare module '@/theme/Theme';
 
