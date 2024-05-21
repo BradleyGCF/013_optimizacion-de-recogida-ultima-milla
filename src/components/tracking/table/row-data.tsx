@@ -21,19 +21,29 @@ export const RowData = ({ data }: any) => {
       <TableBody sx={{ backgroundColor: "white" }}>
         <TableRow>
           <TableCell align="center">
-            <DataTypography>{data.item}</DataTypography>
+            <DataTypography>{data?.attributes?.name}</DataTypography>
           </TableCell>
           <TableCell align="center">
-            <DataTypography>Entry date</DataTypography>
+            <DataTypography>
+              {data?.attributes?.entryDate
+                ? data?.attributes.entryDate
+                : "Entry date"}
+            </DataTypography>
           </TableCell>
           <TableCell align="center">
-            <DataTypography>ID</DataTypography>
+            <DataTypography>{data?.id ? data.id : "ID"}</DataTypography>
           </TableCell>
           <TableCell align="center">
-            <DataTypography>Quantity</DataTypography>
+            <DataTypography>
+              {data?.attributes?.productLength
+                ? data?.attributes.productLength
+                : "Quantity"}
+            </DataTypography>
           </TableCell>
           <TableCell align="center">
-            <DataTypography>State</DataTypography>
+            <DataTypography>
+              {data?.attributes?.status ? data?.attributes.status : "State"}
+            </DataTypography>
           </TableCell>
         </TableRow>
       </TableBody>

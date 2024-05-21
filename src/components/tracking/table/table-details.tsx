@@ -22,30 +22,7 @@ const HeadTypography = styled(Typography)({
   transform: "rotate(-0.014deg)",
 });
 
-export const TableDetails = () => {
-  const row = [
-    {
-      item: "Item name",
-      entry: "Entry date",
-      id: "ID",
-      quantity: "Quantity",
-      state: "State",
-    },
-    {
-      item: "Item name",
-      entry: "Entry date",
-      id: "ID",
-      quantity: "Quantity",
-      state: "State",
-    },
-    {
-      item: "Item name",
-      entry: "Entry date",
-      id: "ID",
-      quantity: "Quantity",
-      state: "State",
-    },
-  ];
+export const TableDetails = ({ inventory }: any) => {
   return (
     <>
       <TableContainer component={Paper}>
@@ -73,8 +50,8 @@ export const TableDetails = () => {
               </TableCell>
             </TableRow>
           </TableHead>
-          {row.map((row: any) => {
-            return <RowData data={row} />;
+          {inventory?.map((row: any, index: any) => {
+            return <RowData key={index} data={row} />;
           })}
         </Table>
       </TableContainer>

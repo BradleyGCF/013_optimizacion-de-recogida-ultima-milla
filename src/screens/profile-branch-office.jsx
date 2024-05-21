@@ -14,7 +14,7 @@ export default function ProfileBranchOffice() {
   const { getBranchId } = useContext(BranchContext)
   useEffect(() => {
     getBranchId(id);
-  }, []);
+  }, [Branch]);
   return (
     <Box
       sx={{
