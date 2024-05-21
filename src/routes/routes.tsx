@@ -28,7 +28,7 @@ const Chat = React.lazy(() => import("@/screens/chat"));
 export default function Navigator() {
   const location = useLocation();
   const isSignInOrRecoverPassword =
-    location.pathname === "/sign-in" ||
+    location.pathname === "/" ||
     location.pathname === "/sign-in-admin" ||
     location.pathname === "/recover-password";
 
@@ -69,7 +69,7 @@ export default function Navigator() {
             display: { xs: "none", lg: "block" },
           }}
         >
-          {location.pathname !== "/sign-in" &&
+          {location.pathname !== "/" &&
             location.pathname !== "/sign-in-admin" &&
             location.pathname !== "/recover-password" && <Sidebar />}
         </Box>
@@ -107,7 +107,7 @@ export default function Navigator() {
               <Route path="inventory" element={<Inventory />} />
             </Route>
 
-            <Route path="/sign-in" element={<SignIn />} />
+            <Route path="/" element={<SignIn />} />
             <Route path="/recover-password" element={<RecoverPassword />} />
 
             <Route

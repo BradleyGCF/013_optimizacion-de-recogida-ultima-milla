@@ -23,8 +23,9 @@ const styleCardContent = {
   },
 };
 
-export default function CardVehicles({id}) {
-  let navigate = useNavigate();
+export default function CardVehicles({DataPerfilVehicles}) {
+ 
+  const navigate = useNavigate();
 
   return (
     <Card sx={styleCard}>
@@ -46,7 +47,7 @@ export default function CardVehicles({id}) {
               height: { xs: "76px", md: "100%" },
               width: "140px",
             }}
-            onClick={() => navigate(`/dashboard/profile-vehicle/${id}`)}
+            onClick={() => navigate(`/dashboard/profile-vehicle/${DataPerfilVehicles.id}`)}
           />
         </Box>
         <Box

@@ -38,6 +38,7 @@ export default function RegisterVehicles(props) {
     <form onSubmit={formik.handleSubmit}>
       <Box>
         <Typography variant="subtitle1" color="text.fourth">
+          {/* biome-ignore lint/style/noUnusedTemplateLiteral: <explanation> */}
           {props.tilte ? `Vehicle` : ` Register Vehicles`}
         </Typography>
         <Box sx={styleForm}>

@@ -1,13 +1,18 @@
 import React, { createContext } from "react";
 import { useMoralis } from "react-moralis";
 import { Moralis } from "moralis-v1";
-
 import { useBoundStore } from "@/stores/index";
 
 type VehiclesContextType = {
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   RegisterVehicles: (values: any) => void;
   getAllVehicles: () => Promise<void>;
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+  UpdateVehicle: (objectId: string, objectData: any) => Promise<void>;
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+  IdGetVehicle: (objectId: string) => Promise<void>;
+  // DataGetVehicle: (objectData: string) => Promise<void>;
+  LoginVehicles: (values: any) => void;
 } | null;
 
 export const VehiclesContext = createContext<VehiclesContextType>(null);
@@ -37,7 +42,7 @@ async function checkUserRole(roleName: string, ethAddress: string) {
     if (result && result.hasRole) {
       console.log(`El usuario actual tiene el rol '${roleName}'.`);
       return result.hasRole;
-    // biome-ignore lint/style/noUselessElse: <explanation>
+      // biome-ignore lint/style/noUselessElse: <explanation>
     } else {
       console.log(`El usuario actual NO tiene el rol '${roleName}'.`);
       return result.hasRole;
@@ -49,7 +54,28 @@ async function checkUserRole(roleName: string, ethAddress: string) {
 
 // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 const VehicleState = (props: { children: any }) => {
-  const { setDataPerfilVehicles, Vehicles, setVehicles } = useBoundStore();
+  const {
+    setDataPerfilVehicles,
+    setGetDataVehicle,
+    setUploadVehicle,
+    setGetData,
+    setVehicles,
+  } = useBoundStore();
+
+  const LoginVehicles = async (values: any) => {
+    console.log(values, "REGISTER VEHICLES");
+    try {
+      const res = await Moralis.Cloud.run("createVehicles", {
+        objetData: values,
+      });
+      console.log(res, "Vehicles LOGIN");
+      return { ok: true, admin: false };
+    } catch (error) {
+      const errorMessage = JSON.stringify(error);
+      const errorObjeto = JSON.parse(errorMessage);
+      console.error("🚀 error de login", errorMessage);
+    }
+  };
 
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const RegisterVehicles = async (values: any) => {
@@ -77,23 +103,46 @@ const VehicleState = (props: { children: any }) => {
       setDataPerfilVehicles(res.data);
       // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     } catch (error: any) {
-      console.error("🚀 error de SettingsUser", error);
+      console.error("🚀 error al obtener todos los vehiculos", error);
     }
   };
 
-  // const LogoutFunc = async () => {
-  //   const Authenticated = true;
-  //   await logout();
-  //   setAuthenticated(false);
-  //   setVehicles([]);
-  //   location.reload();
-  // };
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+  const UpdateVehicle = async (objectId: string, objectData: any) => {
+    try {
+      const res = await Moralis.Cloud.run("updateVehicle", {
+        objectId,
+        objectData,
+      });
+      console.log(res.data, "Vehicle updated successfully");
+    } catch (error) {
+      console.error("Error updating vehicle:", error);
+    }
+  };
+
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+  const IdGetVehicle = async (objectId: string) => {
+    try {
+      const res = await Moralis.Cloud.run("getVehicleByIdOrName", {
+        objectId,
+      });
+      console.log(res.data, "datos del vehiculo obtenidos correctamente");
+      setGetDataVehicle(res.data);
+    } catch (error) {
+      console.error("Error updating data:", error);
+      throw error;
+    }
+  };
 
   return (
     <VehiclesContext.Provider
       value={{
         RegisterVehicles,
         getAllVehicles,
+        UpdateVehicle,
+        IdGetVehicle,
+        LoginVehicles,
+        // DataGetVehicle,
         // LogoutFunc,
       }}
     >

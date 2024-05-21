@@ -18,6 +18,7 @@ import { useBoundStore } from "@/stores/index";
 import { BranchContext } from "@/context/Branch/BranchContext";
 import { getImageUrl } from "../../config/getImageUrl";
 
+
 const CustomStyledInput = styled(InputBase)({
   borderRadius: "10px",
   background: "#FFF",
@@ -133,6 +134,7 @@ function ImageInputBanner(props) {
     </Box>
   );
 }
+
 
 export default function RegisterBranchOfficeProfile({ branch, id }) {
   const { upDataBranch } = useContext(BranchContext)

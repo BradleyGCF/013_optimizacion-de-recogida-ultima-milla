@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, useParams } from "react";
 import {
   Box,
   Typography,
@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 
 import { useFormik } from "formik";
-import { CreateVehicles } from "@/schemas/index";
+import { EditVehicle } from "@/schemas/index";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import { VehiclesContext } from "@/context/Vehicles/VehiclesContext";
 import VehiclesImgCreate from "@/assets/Img/png/vehiclesImgCreate.png";
@@ -143,43 +143,100 @@ function ImageInputBanner(props) {
   );
 }
 
-function RegisterVehicles(props) {
-  const { RegisterVehicles } = useContext(VehiclesContext);
-  const [branchOffices, setBranchOffices] = useState([""]); // Estado para los inputs de las sucursales
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+function UpdateVehicle(props) {
+  const [branchOffices, setBranchOffices] = useState([""]); 
+  const { UpdateVehicle } = useContext(VehiclesContext);
+  const [initialState, setInitialState] = useState(null);
 
-  const handleBranchOfficeChange = (index, value) => {
-    const newBranchOffices = [...branchOffices];
-    newBranchOffices[index] = value;
-    setBranchOffices(newBranchOffices);
-  };
 
-  const handleAddBranchOffice = () => {
-    if (branchOffices.length < 3) {
-      setBranchOffices([...branchOffices, ""]);
-    }
-  };
+  useEffect(() => {
+   setInitialState({model: "fiat"});
+    
+  }, []);
 
+
+if (!initialState) {
+    return <div>Loading...</div>;
+  }
 
   const formik = useFormik({
-    initialValues: {
-      fileigmvehicles: "",
-      model: "",
-      ability: "",
-      vehicleregistration: "",
-      mileage: "",
-      drivers: "",
-      vehiclegps: "",
-      branchofficesone: "",
-      branchofficestwo: "",
-      branchofficestree: "",
-    },
-    // validationSchema: CreateVehicles,
-    onSubmit: (values, { resetForm }) => {
-      console.log(JSON.stringify(values));
-      RegisterVehicles(values);
-      resetForm();
-    },
+    initialValues: initialState,
+    onSubmit: values => {
+      console.log('Form data', values);
+    }
   });
+
+  // const formik = useFormik({
+  //   initialValues: {
+  //     objectId: "",
+  //     model: "",
+  //     fileigmvehicles: "",
+  //     ability: "",
+  //     vehicleregistration: "",
+  //     mileage: "",
+  //     drivers: "",
+  //     vehiclegps: [""],
+  //     branches: [""],
+  //   },
+  //   validationSchema: EditVehicle,
+  //   onSubmit: async (values, { setSubmitting, resetForm }) => {
+  //     const objectId = values.objectId;
+  //     await UpdateVehicle(objectId, values);
+  //     console.log(JSON.stringify(values));
+  //     resetForm();
+  //     setSubmitting(false);
+  //   },
+  // });
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  // useEffect(() => {
+  //   if (props.GetDataVehicle) {
+  //     const {
+  //       objectId,
+  //       model,
+  //       fileigmvehicles,
+  //       ability,
+  //       vehicleregistration,
+  //       mileage,
+  //       drivers,
+  //       vehiclegps,
+  //       branches,
+  //     } = props.GetDataVehicle;
+
+  //     formik.setValues({
+  //       objectId: objectId || "",
+  //       model: model || "",
+  //       fileigmvehicles: fileigmvehicles || "",
+  //       ability: ability || "",
+  //       vehicleregistration: vehicleregistration || "",
+  //       mileage: mileage || "",
+  //       drivers: drivers || "",
+  //       vehiclegps: vehiclegps || [""],
+  //       branches: branches || [""],
+  //     });
+
+  //     setBranchOffices(branches || [""]);
+  //   }
+  // }, [props.GetDataVehicle]);
+
+  // console.log({ "data props": props.GetDataVehicle });
+
+  // const handleAddBranchOffice = () => {
+  //   if (branchOffices.length < 3) {
+  //     const newBranchOffices = [...branchOffices, ""];
+  //     setBranchOffices(newBranchOffices);
+  //     // biome-ignore lint/style/noUnusedTemplateLiteral: <explanation>
+  //     formik.setFieldValue(`branches`, newBranchOffices);
+  //   }
+  // };
+
+  // const handleBranchOfficeChange = (index, value) => {
+  //   const newBranchOffices = [...branchOffices];
+  //   newBranchOffices[index] = value;
+  //   setBranchOffices(newBranchOffices);
+  //   formik.setFieldValue(`branches[${index}]`, value);
+  // };
 
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -218,6 +275,7 @@ function RegisterVehicles(props) {
                 id="model"
                 name="model"
                 autoComplete="model"
+                defaultValue={formik.values.model || ""}
               />
               {formik.touched.model && (
                 <FormHelperText
@@ -243,6 +301,7 @@ function RegisterVehicles(props) {
                 id="ability"
                 name="ability"
                 autoComplete="ability"
+                placeholder={formik.values.ability || "Ability"}
               />
               {formik.touched.ability && (
                 <FormHelperText
@@ -280,6 +339,9 @@ function RegisterVehicles(props) {
                   id="vehicleregistration"
                   name="vehicleregistration"
                   autoComplete="vehicleregistration"
+                  placeholder={
+                    formik.values.vehicleregistration || "Vehicle Registration"
+                  }
                 />
                 {formik.touched.vehicleregistration && (
                   <FormHelperText
@@ -307,6 +369,7 @@ function RegisterVehicles(props) {
                   id="mileage"
                   name="mileage"
                   autoComplete="mileage"
+                  placeholder={formik.values.mileage || "Mileage"}
                 />
                 {formik.touched.mileage && (
                   <FormHelperText
@@ -333,6 +396,7 @@ function RegisterVehicles(props) {
                 id="drivers"
                 name="drivers"
                 autoComplete="drivers"
+                placeholder={formik.values.drivers || "Driver or Drivers"}
               />
               {formik.touched.drivers && (
                 <FormHelperText
@@ -360,6 +424,7 @@ function RegisterVehicles(props) {
                 id="vehiclegps"
                 name="vehiclegps"
                 autoComplete="vehiclegps"
+                placeholder={formik.values.vehiclegps || "Vehicle GPS"}
               />
               {formik.touched.vehiclegps && (
                 <FormHelperText
@@ -374,59 +439,53 @@ function RegisterVehicles(props) {
               )}
             </FormControl>
             <Box sx={StyledFormControl}>
-              {branchOffices.map((branchOffice, index) => (
-                // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-                <FormControl key={index} sx={StyledFormControl}>
-                  <Typography variant="h4" color="text.fourth">
-                    {`Branch Offices ${index + 1}`}
-                  </Typography>
-                  <CustomStyledInput
-                    onBlur={formik.handleBlur}
-                    error={
-                      formik.touched[`branchofficesone${index + 1}`] &&
-                      Boolean(formik.errors[`branchofficesone${index + 1}`])
-                    }
-                    onChange={(e) =>
-                      handleBranchOfficeChange(index, e.target.value)
-                    }
-                    value={branchOffice}
-                    id={`branchofficesone${index + 1}`}
-                    name={`branchofficesone${index + 1}`}
-                    autoComplete={`branchofficesone${index + 1}`}
-                    placeholder={`Branch Offices ${index + 1}`}
-                  />
-                  {formik.touched[`branchofficesone${index + 1}`] && (
-                    <FormHelperText
-                      error
-                      id={`branchofficesone${index + 1}-error`}
-                      sx={{
-                        textAlign: "center",
-                      }}
-                    >
-                      {formik.errors[`branchofficesone${index + 1}`]}
-                    </FormHelperText>
-                  )}
-                </FormControl>
+              {branchOffices.map((branch, index) => (
+                <CustomStyledInput
+                  // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                  key={index}
+                  onBlur={formik.handleBlur}
+                  error={
+                    formik.touched.branches && Boolean(formik.errors.branches)
+                  }
+                  onChange={(event) =>
+                    handleBranchOfficeChange(index, event.target.value)
+                  }
+                  value={branch}
+                  id={`branches[${index}]`}
+                  name={`branches[${index}]`}
+                  autoComplete={`branches[${index}]`}
+                />
               ))}
               {branchOffices.length < 3 && (
                 <Box sx={{ display: "flex", justifyContent: "end" }}>
                   <ButtonPrimary
+                    onClick={handleAddBranchOffice}
                     type="button"
                     variant="contained"
-                    onClick={handleAddBranchOffice}
-                    color="white"
+                    disabled={branchOffices.length >= 3}
                   >
-                    <FaPlus />
+                    Add branch office
                   </ButtonPrimary>
                 </Box>
               )}
             </Box>
+            {formik.touched.branches && (
+              <FormHelperText
+                error
+                id="branches-error"
+                sx={{ textAlign: "center" }}
+              >
+                {formik.errors.branches}
+              </FormHelperText>
+            )}
+
             <Box sx={{ display: "flex", justifyContent: "center" }}>
               <ButtonPrimary
-                // disabled={!(formik.dirty && formik.isValid)}
+                variant="contained"
                 type="submit"
+                disabled={formik.isSubmitting}
               >
-                To register
+                {formik.isSubmitting ? "Updating..." : "Update vehicle"}
               </ButtonPrimary>
             </Box>
           </Box>
@@ -436,4 +495,4 @@ function RegisterVehicles(props) {
   );
 }
 
-export default RegisterVehicles;
+export default UpdateVehicle;
