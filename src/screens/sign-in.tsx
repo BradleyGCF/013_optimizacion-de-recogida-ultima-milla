@@ -1,7 +1,8 @@
 import * as React from "react";
 import { useFormik } from "formik";
 import { styled } from "@mui/material/styles";
-import { LoginScheme } from "@/schemas/index";
+import { toast } from "react-hot-toast";
+import { LoginScheme } from "@/schemas/LoginScheme";
 import {
   Box,
   FormControl,
@@ -17,12 +18,14 @@ import {
 import ButtonPrimary from "@/components/buttons/button-primary";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import PersonIcon from '@mui/icons-material/Person';
-
-import AuthImg from '@/assets/Img/png/authbg.png'
+import PersonIcon from "@mui/icons-material/Person";
+import { useBoundStore } from "@/stores/index";
+import { shallow } from "zustand/shallow";
+import AuthImg from "@/assets/Img/png/authbg.png";
 import { useNavigate } from "react-router-dom";
 
-import CarouselPreference from "@/components/carousel/carousel-preference"
+import CarouselPreference from "@/components/carousel/carousel-preference";
+import { UserContext } from "@/context/User/UserContext";
 
 const CustomStyledInput = styled(InputBase)({
   padding: "2px 12px",
@@ -49,7 +52,7 @@ function StyledContainer() {
     justifyContent: "center",
     alignItems: "center",
     minHeight: "100vh",
-    width: "100%"
+    width: "100%",
   };
 }
 
@@ -60,37 +63,62 @@ function StyledForm() {
     p: "30px",
     boxShadow: "-2px 11px 18px #0062bc38",
     backgroundColor: "#fff",
-    position: "relative"
+    position: "relative",
   };
 }
 
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 function FontStyle(size: any, weight: any) {
   return {
     fontFamily: "Jost",
     fontSize: `${size}px`,
-    fontWeight: `${weight}`
-  }
+    fontWeight: `${weight}`,
+  };
 }
 
-
-
 export default function SignIn() {
+  const navigate = useNavigate();
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+  const { Authenticated } = useBoundStore((state: any) => state, shallow);
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+  const { LoginMail }: any = React.useContext(UserContext);
   const [values, setValues] = React.useState({
     showPassword: false,
   });
 
-  const [authenticated, setAuthenticated] = React.useState(true)
-
   const formik = useFormik({
     initialValues: {
-      email: "",
+      username: "",
       password: "",
     },
     validationSchema: LoginScheme,
-    onSubmit: (values, { resetForm }) => {
-      console.log(JSON.stringify(values));
-      setAuthenticated(true)
-      resetForm();
+    onSubmit: async (values, { resetForm }) => {
+      try {
+        const res = await LoginMail(values);
+        if (res?.ok) {
+          if (res?.admin === "admin") {
+            navigate("/dashboard");
+          }
+          resetForm();
+          toast.success("¡Bienvenido!", {
+            duration: 2000,
+            position: "top-center",
+          });
+          resetForm();
+        } else {
+          toast.error("Username o contraseña incorrecto, vuleve a intentarlo", {
+            duration: 4000,
+            position: "top-center",
+          });
+        }
+      } catch (error) {
+        console.log(error);
+        toast.error("Algo salio mal, vuelve a intentarlo", {
+          duration: 3000,
+          position: "top-center",
+        });
+      }
+      return;
     },
   });
   const handleClickShowPassword = () => {
@@ -99,14 +127,14 @@ export default function SignIn() {
       showPassword: !values.showPassword,
     });
   };
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const handleMouseDownPassword = (event: any) => {
     event.preventDefault();
   };
 
-  const nav = useNavigate()
+  const nav = useNavigate();
 
   return (
-
     <Box sx={StyledContainer}>
       <Box
         sx={{
@@ -117,19 +145,20 @@ export default function SignIn() {
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
           zIndex: -1,
-        }}>
+        }}
+      >
         <Box
           sx={{
             height: "100%",
             width: "100%",
             background: "#0062BC",
             mixBlendMode: "multiply",
-            zIndex: -2
+            zIndex: -2,
           }}
         />
       </Box>
 
-      {authenticated == false ?
+      {Authenticated == false ? (
         <Box sx={StyledForm}>
           <form onSubmit={formik.handleSubmit}>
             <Box
@@ -141,37 +170,40 @@ export default function SignIn() {
             >
               <Stack direction="row" spacing={1}>
                 <PersonIcon sx={{ height: "16px" }} />
-                <Typography sx={{ "&.MuiTypography-root": { fontSize: "12px" } }}>
+                <Typography
+                  sx={{ "&.MuiTypography-root": { fontSize: "12px" } }}
+                >
                   Sign in
                 </Typography>
               </Stack>
 
               <FormControl sx={StyledBoxContainer}>
                 <Typography component="h4" sx={FontStyle(25, 400)}>
-                  Plate
+                  Username / Plate
                 </Typography>
                 <CustomStyledInput
                   onBlur={formik.handleBlur}
-                  error={formik.touched.email && Boolean(formik.errors.email)}
+                  error={
+                    formik.touched.username && Boolean(formik.errors.username)
+                  }
                   onChange={formik.handleChange}
-                  value={formik.values.email}
-                  id="email"
-                  name="email"
-                  autoComplete="email"
+                  value={formik.values.username}
+                  id="username"
+                  name="username"
+                  autoComplete="username"
                 />
-                {formik.touched.email && (
+                {formik.touched.username && (
                   <FormHelperText
                     error
-                    id="email-error"
+                    id="username-error"
                     sx={{
                       textAlign: "center",
                     }}
                   >
-                    {formik.errors.email}
+                    {formik.errors.username}
                   </FormHelperText>
                 )}
               </FormControl>
-
 
               <FormControl sx={StyledBoxContainer}>
                 <Typography component="h4" sx={FontStyle(25, 400)}>
@@ -198,7 +230,11 @@ export default function SignIn() {
                           color: "icon.secondary",
                         }}
                       >
-                        {values.showPassword ? <VisibilityOff /> : <Visibility />}
+                        {values.showPassword ? (
+                          <VisibilityOff />
+                        ) : (
+                          <Visibility />
+                        )}
                       </IconButton>
                     </InputAdornment>
                   }
@@ -221,12 +257,11 @@ export default function SignIn() {
                   sx={{
                     heigth: "15px",
                     color: "#0062BC",
-                    '&.Mui-checked': {
+                    "&.Mui-checked": {
                       color: "#0062BC",
                     },
-                    '& .MuiSvgIcon-root': { fontSize: 15 }
-                  }
-                  }
+                    "& .MuiSvgIcon-root": { fontSize: 15 },
+                  }}
                 />
                 <Typography sx={FontStyle(16, 500)}>Remember me</Typography>
               </Stack>
@@ -235,11 +270,11 @@ export default function SignIn() {
                 <Typography
                   sx={{
                     "&.MuiTypography-root": {
-                      fontSize: "10px",
+                      // fontSize: "10px !important",
                       fontWeight: 700,
                       fontFamily: "Jost",
-                      cursor: "pointer"
-                    }
+                      cursor: "pointer",
+                    },
                   }}
                   onClick={() => nav("/recover-password")}
                 >
@@ -257,12 +292,9 @@ export default function SignIn() {
             </Box>
           </form>
         </Box>
-        :
-        
-          <CarouselPreference/>
-
-      }
-
+      ) : (
+        <CarouselPreference />
+      )}
     </Box>
   );
 }

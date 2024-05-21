@@ -1,8 +1,30 @@
 import { Box, Typography } from "@mui/material";
 import CardBranchOffice from "@/components/cards/cards-branch-office";
-import RegisterVehicles from "@/components/forms/register-vehicles";
+import UpdateFormVehicle from "@/components/forms/updateFormVehicle"
+import { useState, useEffect, useContext } from "react";
+import { useBoundStore } from "@/stores/index";
+import { VehiclesContext } from "@/context/Vehicles/VehiclesContext";
+import { useParams } from "react-router-dom";
 
 export default function ProfileVehicle() {
+  // const [objectId, setObjectId] = useState("");
+  const { GetDataVehicle } = useBoundStore();
+  const { IdGetVehicle } = useContext(VehiclesContext);
+  const { id } = useParams();
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+    const fetchVehicleData = async () => {
+      try {
+        await IdGetVehicle(id);
+      } catch (error) {
+        console.error("Error fetching vehicle data:", error);
+      }
+    };
+
+    fetchVehicleData();
+  }, [id]);
+
   return (
     <Box
       sx={{
@@ -12,12 +34,25 @@ export default function ProfileVehicle() {
         gap: "20px",
       }}
     >
-      <RegisterVehicles tilte={true} />
+      <UpdateFormVehicle
+        tilte={true}
+        GetDataVehicle={GetDataVehicle}
+        id={id}
+      />
       <Box>
         <Typography variant="subtitle1" color="text.fourth">
           Branch Office
         </Typography>
-        <CardBranchOffice />
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "20px",
+          }}
+        >
+          <CardBranchOffice id={1} />
+          <CardBranchOffice id={2} />
+        </Box>
       </Box>
     </Box>
   );

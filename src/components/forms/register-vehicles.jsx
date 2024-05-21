@@ -12,9 +12,10 @@ import {
 import { useFormik } from "formik";
 import { CreateVehicles } from "@/schemas/index";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
-
+import { VehiclesContext } from "@/context/Vehicles/VehiclesContext";
 import VehiclesImgCreate from "@/assets/Img/png/vehiclesImgCreate.png";
 import ButtonPrimary from "@/components/buttons/button-primary";
+import { FaPlus } from "react-icons/fa";
 
 const CustomStyledInput = styled(InputBase)({
   borderRadius: "10px",
@@ -142,7 +143,23 @@ function ImageInputBanner(props) {
   );
 }
 
-export default function RegisterVehicles(props) {
+function RegisterVehicles(props) {
+  const { RegisterVehicles } = useContext(VehiclesContext);
+  const [branchOffices, setBranchOffices] = useState([""]); // Estado para los inputs de las sucursales
+
+  const handleBranchOfficeChange = (index, value) => {
+    const newBranchOffices = [...branchOffices];
+    newBranchOffices[index] = value;
+    setBranchOffices(newBranchOffices);
+  };
+
+  const handleAddBranchOffice = () => {
+    if (branchOffices.length < 3) {
+      setBranchOffices([...branchOffices, ""]);
+    }
+  };
+
+
   const formik = useFormik({
     initialValues: {
       fileigmvehicles: "",
@@ -156,9 +173,10 @@ export default function RegisterVehicles(props) {
       branchofficestwo: "",
       branchofficestree: "",
     },
-    validationSchema: CreateVehicles,
+    // validationSchema: CreateVehicles,
     onSubmit: (values, { resetForm }) => {
       console.log(JSON.stringify(values));
+      RegisterVehicles(values);
       resetForm();
     },
   });
@@ -167,6 +185,7 @@ export default function RegisterVehicles(props) {
     <form onSubmit={formik.handleSubmit}>
       <Box>
         <Typography variant="subtitle1" color="text.fourth">
+          {/* biome-ignore lint/style/noUnusedTemplateLiteral: <explanation> */}
           {props.tilte ? `Vehicle` : ` Register Vehicles`}
         </Typography>
         <Box sx={styleForm}>
@@ -354,92 +373,61 @@ export default function RegisterVehicles(props) {
                 </FormHelperText>
               )}
             </FormControl>
-            <FormControl sx={StyledFormControl}>
-              <Typography variant="h4" color="text.fourth">
-                Branch Offices
-              </Typography>
-              <CustomStyledInput
-                onBlur={formik.handleBlur}
-                error={
-                  formik.touched.branchofficesone &&
-                  Boolean(formik.errors.branchofficesone)
-                }
-                onChange={formik.handleChange}
-                value={formik.values.branchofficesone}
-                id="branchofficesone"
-                name="branchofficesone"
-                autoComplete="branchofficesone"
-                placeholder="Branch Offices 1"
-              />
-              {formik.touched.branchofficesone && (
-                <FormHelperText
-                  error
-                  id="branchofficesone-error"
-                  sx={{
-                    textAlign: "center",
-                  }}
-                >
-                  {formik.errors.branchofficesone}
-                </FormHelperText>
+            <Box sx={StyledFormControl}>
+              {branchOffices.map((branchOffice, index) => (
+                // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                <FormControl key={index} sx={StyledFormControl}>
+                  <Typography variant="h4" color="text.fourth">
+                    {`Branch Offices ${index + 1}`}
+                  </Typography>
+                  <CustomStyledInput
+                    onBlur={formik.handleBlur}
+                    error={
+                      formik.touched[`branchofficesone${index + 1}`] &&
+                      Boolean(formik.errors[`branchofficesone${index + 1}`])
+                    }
+                    onChange={(e) =>
+                      handleBranchOfficeChange(index, e.target.value)
+                    }
+                    value={branchOffice}
+                    id={`branchofficesone${index + 1}`}
+                    name={`branchofficesone${index + 1}`}
+                    autoComplete={`branchofficesone${index + 1}`}
+                    placeholder={`Branch Offices ${index + 1}`}
+                  />
+                  {formik.touched[`branchofficesone${index + 1}`] && (
+                    <FormHelperText
+                      error
+                      id={`branchofficesone${index + 1}-error`}
+                      sx={{
+                        textAlign: "center",
+                      }}
+                    >
+                      {formik.errors[`branchofficesone${index + 1}`]}
+                    </FormHelperText>
+                  )}
+                </FormControl>
+              ))}
+              {branchOffices.length < 3 && (
+                <Box sx={{ display: "flex", justifyContent: "end" }}>
+                  <ButtonPrimary
+                    type="button"
+                    variant="contained"
+                    onClick={handleAddBranchOffice}
+                    color="white"
+                  >
+                    <FaPlus />
+                  </ButtonPrimary>
+                </Box>
               )}
-            </FormControl>
-            <FormControl sx={StyledFormControl}>
-              <CustomStyledInput
-                onBlur={formik.handleBlur}
-                error={
-                  formik.touched.branchofficestwo &&
-                  Boolean(formik.errors.branchofficestwo)
-                }
-                onChange={formik.handleChange}
-                value={formik.values.branchofficestwo}
-                id="branchofficestwo"
-                name="branchofficestwo"
-                autoComplete="branchofficestwo"
-                placeholder="Branch Offices 2"
-              />
-              {formik.touched.branchofficestwo && (
-                <FormHelperText
-                  error
-                  id="branchofficestwo-error"
-                  sx={{
-                    textAlign: "center",
-                  }}
-                >
-                  {formik.errors.branchofficestwo}
-                </FormHelperText>
-              )}
-            </FormControl>
-            <FormControl sx={StyledFormControl}>
-              <CustomStyledInput
-                onBlur={formik.handleBlur}
-                error={
-                  formik.touched.branchofficestree &&
-                  Boolean(formik.errors.branchofficestree)
-                }
-                onChange={formik.handleChange}
-                value={formik.values.branchofficestree}
-                id="branchofficestree"
-                name="branchofficestree"
-                autoComplete="branchofficestree"
-                placeholder="Branch Offices 3"
-              />
-              {formik.touched.branchofficestree && (
-                <FormHelperText
-                  error
-                  id="branchofficestree-error"
-                  sx={{
-                    textAlign: "center",
-                  }}
-                >
-                  {formik.errors.branchofficestree}
-                </FormHelperText>
-              )}
-            </FormControl>
-            <Box
-              sx={{ display: "flex", justifyContent: "center" }}
-              type="submit"
-            >
-              <ButtonPrimary> To register</ButtonPrimary>
+            </Box>
+            <Box sx={{ display: "flex", justifyContent: "center" }}>
+              <ButtonPrimary
+                // disabled={!(formik.dirty && formik.isValid)}
+                type="submit"
+              >
+                To register
+              </ButtonPrimary>
             </Box>
           </Box>
         </Box>
@@ -447,3 +435,5 @@ export default function RegisterVehicles(props) {
     </form>
   );
 }
+
+export default RegisterVehicles;

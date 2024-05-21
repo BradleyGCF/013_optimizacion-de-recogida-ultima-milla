@@ -3,6 +3,8 @@ import { styled } from "@mui/material/styles";
 import { Autocomplete, Box, TextField } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import SearchIcon from "@mui/icons-material/Search";
+import { BranchContext } from "@/context/Branch/BranchContext";
+import { useBoundStore } from "@/stores/index";
 
 const TextFieldCustom = styled(TextField)({
   "& .MuiOutlinedInput-root": {
@@ -20,20 +22,29 @@ export default function InputSearchGlobal(props) {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState({ id: "", label: "" });
   const [stateCircularProgress, setStateCircularProgress] = useState(false);
+  const { getAllBranchSearch } = useContext(BranchContext);
+  const { DataBranchSearch } =
+    useBoundStore();
+
   let optionsParams = props.option;
-  let optionId = props.id;
-  let optionLabel = props.label;
+  // let optionId = props.id;
+  // let optionLabel = props.label;
 
   const loading = open && (optionsParams?.length ?? 0) !== 0;
 
   const option = optionsParams
     ? optionsParams.map((option) => ({
-        id: option.optionId,
-        label: option.optionLabel,
-      }))
+      id: option.id,
+      label: option.attributes.name,
+    }))
     : [];
-
   useEffect(() => {
+    // SetSearchNavbar([]);
+    const allThought = async (value) => {
+      await getAllBranchSearch();
+      // await getAllThoughtSearch(value);
+    };
+    allThought(inputValue);
     // const filterFunc = async (inputValue) => {
     //   const resultFilterQuery = await getSearchArtistsPag(0, inputValue, true);
     // };
@@ -47,23 +58,23 @@ export default function InputSearchGlobal(props) {
   }, [loading]);
 
   function FilterItemsToGo(value) {
-    // let coincidence = false;
-    // const filterFunc = async (value) => {
-    //   setSearchArtistsPag(value, "Search");
-    //   setTimeout(() => {
-    //     setStateUnstyledCircularProgress(false);
-    //   }, 4000);
-    // };
-    // StatePageArtistFilterOptionsAutocomplete.forEach((element) => {
-    //   if (element.username == value.label && element.ethAddress == value.id) {
-    //     coincidence = true;
-    //     filterFunc(value.label);
-    //   }
-    // });
-    // if (!coincidence) {
-    //   setValue({ id: "", label: "Not Found" });
-    //   setStateUnstyledCircularProgress(false);
-    // }
+    let coincidence = false;
+    const filterFunc = async (value) => {
+      setSearchArtistsPag(value, "Search");
+      setTimeout(() => {
+        setStateUnstyledCircularProgress(false);
+      }, 4000);
+    };
+    StatePageArtistFilterOptionsAutocomplete.forEach((element) => {
+      if (element.username == value.label && element.ethAddress == value.id) {
+        coincidence = true;
+        filterFunc(value.label);
+      }
+    });
+    if (!coincidence) {
+      setValue({ id: "", label: "Not Found" });
+      setStateUnstyledCircularProgress(false);
+    }
   }
 
   function sleep(delay = 0) {
@@ -78,10 +89,11 @@ export default function InputSearchGlobal(props) {
         value={value}
         loading={loading}
         inputValue={inputValue}
-        options={option}
+        options={option !== undefined && option}
         onInputChange={(_event, newValue) => {
           setInputValue(newValue);
-          setValue({ id: "", label: newValue });
+          setValue(newValue);
+          // setValue({ id: props?.option.id, label: props?.option.attributes.name });
         }}
         onChange={(event, value) => {
           value
@@ -95,8 +107,7 @@ export default function InputSearchGlobal(props) {
             {...props}
             key={state.index}
           >
-            User: {option.label} Wallet: {option.id.slice(0, 6)}...
-            {option.id.slice(-4)}
+            {option.name}
           </Box>
         )}
         open={open}
