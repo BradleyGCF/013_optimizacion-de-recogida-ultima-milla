@@ -8,6 +8,7 @@ type UserContextType = {
   LoginMail: (values: any) => void;
   SettingsUser: (userAddress: string) => Promise<void>;
   LogoutFunc: () => Promise<void>;
+  GetAllUser: () => Promise<void>;
 } | null;
 
 export const UserContext = createContext<UserContextType>(null);
@@ -51,7 +52,16 @@ const UserState = (props: { children: any }) => {
   const { user } = useMoralis();
   // const userAddress = user!.get("ethAddress");
 
-  const { setUser, setAuthenticated } = useBoundStore();
+  const {
+    DataPerfilUser,
+    User,
+    Authenticated,
+    setDataPerfilUser,
+    setUser,
+    setAuthenticated,
+    setGetAllUsers,
+  } = useBoundStore();
+
 
   const LoginMail = async (values: any) => {
     try {
@@ -72,6 +82,19 @@ const UserState = (props: { children: any }) => {
       const errorMessage = JSON.stringify(error);
       const errorObjeto = JSON.parse(errorMessage);
       console.error("🚀 error de login", errorMessage);
+    }
+  };
+
+  const GetAllUser = async () => {
+    try {
+      const res = await Moralis.Cloud.run("getAllUsers", {
+        page: "1",
+      });
+      console.log(res.data, "console de res setGetAllUsers");
+      setGetAllUsers(res.data);
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+    } catch (error: any) {
+      console.error("🚀 error de SettingsUser", error);
     }
   };
 
@@ -100,6 +123,7 @@ const UserState = (props: { children: any }) => {
         LoginMail,
         SettingsUser,
         LogoutFunc,
+        GetAllUser,
       }}
     >
       {props.children}

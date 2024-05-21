@@ -8,6 +8,7 @@ import { BranchContext } from "@/context/Branch/BranchContext";
 import { useContext, useEffect } from "react";
 
 export default function ProfileBranchOffice() {
+
   let navigate = useNavigate();
   const { id } = useParams();
   const { Branch } = useBoundStore();
@@ -15,6 +16,7 @@ export default function ProfileBranchOffice() {
   useEffect(() => {
     getBranchId(id);
   }, [Branch]);
+  
   return (
     <Box
       sx={{
@@ -26,7 +28,7 @@ export default function ProfileBranchOffice() {
     >
       <Box sx={{ display: "flex", alignItems: "center" }}>
         <ArrowLeftOutlinedIcon
-          onClick={() => navigate(`/`)}
+          onClick={() => navigate("/dashboard")}
           sx={{ color: "background.paper" }}
         />
         <Typography variant="subtitle1" color="text.fourth">

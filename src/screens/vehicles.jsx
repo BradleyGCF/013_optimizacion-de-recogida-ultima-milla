@@ -10,17 +10,20 @@ import CircularProgress from "@mui/material/CircularProgress";
 export default function Vehicles() {
   const [loading, setLoading] = useState(true);
   const { getAllVehicles } = useContext(VehiclesContext);
-  // const [vehicles, setVehicles] = useState([]);
 
   const { DataPerfilVehicles } = useBoundStore();
+  
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     const allVehicles = async () => await getAllVehicles();
     allVehicles();
     setTimeout(() => {
       setLoading(false);
-    }, 3000);
-  }, []);
+    }, 1000);
+  }, [getAllVehicles[0]]);
+
+
+
   return (
     <Box
       sx={{
@@ -74,11 +77,18 @@ export default function Vehicles() {
             </Typography>
           </Box>
         )}
-        {DataPerfilVehicles?.map((DataPerfilVehicles, index) => {
+        {DataPerfilVehicles?.map((DataPerfilVehicles) => {
           // biome-ignore lint/correctness/useJsxKeyInIterable: <explanation>
           return (
             // biome-ignore lint/correctness/useJsxKeyInIterable: <explanation>
-            <CardVehicles id={index} DataPerfilVehicles={DataPerfilVehicles} />
+            // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
+            // biome-ignore lint/complexity/useLiteralKeys: <explanation>
+            <div
+            key={DataPerfilVehicles.id}
+            onClick={() => handleVehicleClick(DataPerfilVehicles)}
+          >
+              <CardVehicles DataPerfilVehicles={DataPerfilVehicles} />
+            </div>
           );
         })}
       </Box>

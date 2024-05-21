@@ -4,7 +4,7 @@ import ButtonPrimary from "@/components/buttons/button-primary";
 import { useNavigate } from "react-router-dom";
 
 export default function RegisterNewRoute() {
-  let navigate = useNavigate();
+  const navigate = useNavigate();
 
   return (
     <Box
@@ -34,7 +34,7 @@ export default function RegisterNewRoute() {
       <Box sx={{ display: "flex", justifyContent: "center" }}>
         <ButtonPrimary
           width="80%"
-          onClick={() => navigate(`/profile-routes/4`)}
+          onClick={() => navigate("/profile-routes/4")}
         >
           to register
         </ButtonPrimary>
