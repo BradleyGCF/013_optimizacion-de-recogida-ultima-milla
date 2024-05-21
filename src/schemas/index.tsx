@@ -63,6 +63,48 @@ export const LoginScheme = yup.object().shape({
     ),
 });
 
+export const modalInventorySchema = yup.object().shape({
+  date: yup
+    .string()
+    .strict(true)
+    .required("Date is required"),
+
+  id: yup
+    .number()
+    .positive("Height must be a positive number")
+    .moreThan(0, "Height must be greater than 0")
+    .required("ID is required"),
+
+  height: yup
+    .number()
+    .positive("Height must be a positive number")
+    .moreThan(0, "Height must be greater than 0")
+    .required("Height is required"),
+
+  width: yup
+    .number()
+    .positive("Width must be a positive number")
+    .moreThan(0, "Width must be greater than 0")
+    .required("Width is required"),
+
+  length: yup
+    .number()
+    .positive("Length must be a positive number")
+    .moreThan(0, "Length must be greater than 0")
+    .required("Lenght is required"),
+
+    weight: yup
+    .number()
+    .positive("Weight must be a positive number")
+    .moreThan(0, "Weight must be greater than 0")
+    .required("Weight is required"),
+
+  branch: yup
+    .string()
+    .strict(true)
+    .required("Branch is required"),
+})
+
 export const CreateUserScheme = yup.object().shape({
   fullname: yup
     .string()
@@ -288,32 +330,32 @@ export const CreateVehicles = yup.object().shape({
 export type NewVehicle = yup.InferType<typeof CreateVehicles>
 
 export const CreateBranchOffice = yup.object().shape({
-  fileigmbranchoffice: yup.mixed().nullable().required(),
+  // fileigmbranchoffice: yup.mixed().nullable().required(),
   fullname: yup
     .string()
-    .min(5, "fullname must be at least 5 characters long")
+    .min(3, "fullname must be at least 3 characters long")
     .max(65, "fullname must contain a maximum of 65 characters")
     .required("Require"),
 
   address: yup
     .string()
-    .min(5, "address must be at least 5 characters long")
+    .min(3, "address must be at least 3 characters long")
     .max(65, "address must contain a maximum of 65 characters")
     .required("Require"),
 
   country: yup
     .string()
-    .min(5, "country must be at least 5 characters long")
+    .min(3, "country must be at least 3 characters long")
     .max(65, "country must contain a maximum of 65 characters")
     .required("Require"),
   city: yup
     .string()
-    .min(5, "city must be at least 5 characters long")
+    .min(3, "city must be at least 3 characters long")
     .max(65, "city must contain a maximum of 65 characters")
     .required("Require"),
   manager: yup
     .string()
-    .min(5, "manager must be at least 5 characters long")
+    .min(3, "manager must be at least 3 characters long")
     .max(65, "manager must contain a maximum of 65 characters")
     .required("Require"),
 });

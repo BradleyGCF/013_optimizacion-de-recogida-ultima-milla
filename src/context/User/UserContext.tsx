@@ -62,15 +62,14 @@ const UserState = (props: { children: any }) => {
     setGetAllUsers,
   } = useBoundStore();
 
+
   const LoginMail = async (values: any) => {
     try {
       const res = await Moralis.User.logIn(values.username, values.password);
-      console.log(res, "USER LOGIN");
       if (res.id) {
         const userId = await Moralis.Cloud.run("getUserById", {
           userId: res.id,
         });
-        console.log(userId.user.attributes.type_user, "USER ID");
         setAuthenticated(true);
         setUser(userId);
         return {
@@ -110,7 +109,8 @@ const UserState = (props: { children: any }) => {
   };
 
   const LogoutFunc = async () => {
-    const Authenticated = true;
+    console.log("ENTRE");
+    localStorage.removeItem("Parse/023/currentUser");
     await logout();
     setAuthenticated(false);
     setUser([]);

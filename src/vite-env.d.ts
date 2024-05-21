@@ -13,12 +13,15 @@ declare module '@/components/select/table-details';
 declare module '@/components/select/row-data/row-data-package';
 declare module '@/components/chart/AreaChart';
 declare module '@/components/sections/ChatSection';
+declare module '@/components/modal/inventoryModal';
 
 declare module '@/components/buttons/button-primary';
 declare module '@/components/inputs/input-search-navbar';
 declare module '@/stores/container/container';
 declare module '@/stores/theme/theme';
 declare module '@/stores/vehicles/storeVehicles';
+declare module '@/stores/branch/storeBranch';
+declare module '@/stores/inventory/storeInventory';
 declare module '@/stores/tracking/storeTracking';
 declare module '@/stores/useGetNativeBalance/useGetNativeBalance';
 declare module '@/stores/useGetWalletTokenBalances/useGetWalletTokenBalances';
@@ -46,6 +49,11 @@ declare module '@/screens/chat'
 declare module '@/components/forms/update-vehicle'
 
 declare module '@/stores/index';
+
+declare module '@/hooks/getLocalStorage';
+declare module '@/hooks/getWeight';
+
+declare module '@/config/getWeight';
 
 declare module '@/theme/Theme';
 
