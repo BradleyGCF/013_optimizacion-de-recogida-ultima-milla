@@ -43,6 +43,7 @@ declare module '@/screens/recover-password';
 declare module '@/screens/tracking-current';
 declare module '@/screens/inventory';
 declare module '@/screens/chat'
+declare module '@/components/forms/update-vehicle'
 
 declare module '@/stores/index';
 

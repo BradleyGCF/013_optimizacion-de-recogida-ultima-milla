@@ -5,7 +5,7 @@ import ArrowLeftOutlinedIcon from "@mui/icons-material/ArrowLeftOutlined";
 import CardVehicles from "@/components/cards/cards-vehicles";
 
 export default function ProfileBranchOffice() {
-  let navigate = useNavigate();
+  const navigate = useNavigate();
 
   return (
     <Box
@@ -18,7 +18,7 @@ export default function ProfileBranchOffice() {
     >
       <Box sx={{ display: "flex", alignItems: "center" }}>
         <ArrowLeftOutlinedIcon
-          onClick={() => navigate(`/`)}
+          onClick={() => navigate("/dashboard")}
           sx={{ color: "background.paper" }}
         />
         <Typography variant="subtitle1" color="text.fourth">

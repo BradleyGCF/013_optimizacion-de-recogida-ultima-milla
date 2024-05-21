@@ -14,6 +14,9 @@ import { useFormik } from "formik";
 import { EditBranchOffice } from "@/schemas/index";
 import ButtonPrimary from "@/components/buttons/button-primary";
 import AddPhotoAlternateOutlinedIcon from "@mui/icons-material/AddPhotoAlternateOutlined";
+import { VehiclesContext } from "../../context/Vehicles/VehiclesContext";
+
+
 const CustomStyledInput = styled(InputBase)({
   borderRadius: "10px",
   background: "#FFF",
@@ -119,7 +122,10 @@ function ImageInputBanner(props) {
   );
 }
 
+
+
 export default function RegisterBranchOfficeProfile(props) {
+
   const formik = useFormik({
     initialValues: {
       fileigmbranchoffice: "",
@@ -130,7 +136,7 @@ export default function RegisterBranchOfficeProfile(props) {
       manager: "",
     },
     validationSchema: EditBranchOffice,
-    onSubmit: (values, { resetForm }) => {
+    onSubmit: async (values, { resetForm }) => {
       console.log(JSON.stringify(values));
       resetForm();
     },
