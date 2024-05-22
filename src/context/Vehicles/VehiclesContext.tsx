@@ -12,6 +12,7 @@ type VehiclesContextType = {
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   IdGetVehicle: (objectId: string) => Promise<void>;
   // DataGetVehicle: (objectData: string) => Promise<void>;
+  LoginVehicles: (values: any) => void;
 } | null;
 
 export const VehiclesContext = createContext<VehiclesContextType>(null);
@@ -61,6 +62,21 @@ const VehicleState = (props: { children: any }) => {
     setVehicles,
   } = useBoundStore();
 
+  const LoginVehicles = async (values: any) => {
+    console.log(values, "REGISTER VEHICLES");
+    try {
+      const res = await Moralis.Cloud.run("createVehicles", {
+        objetData: values,
+      });
+      console.log(res, "Vehicles LOGIN");
+      return { ok: true, admin: false };
+    } catch (error) {
+      const errorMessage = JSON.stringify(error);
+      const errorObjeto = JSON.parse(errorMessage);
+      console.error("🚀 error de login", errorMessage);
+    }
+  };
+
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const RegisterVehicles = async (values: any) => {
     console.log(values, "REGISTER VEHICLES");
@@ -80,7 +96,7 @@ const VehicleState = (props: { children: any }) => {
 
   const getAllVehicles = async () => {
     try {
-      const res = await Moralis.Cloud.run("getAllVehicle", {        
+      const res = await Moralis.Cloud.run("getAllVehicle", {
         page: "1",
       });
       console.log(res.data, "console de res getallvehicles");
@@ -125,6 +141,7 @@ const VehicleState = (props: { children: any }) => {
         getAllVehicles,
         UpdateVehicle,
         IdGetVehicle,
+        LoginVehicles,
         // DataGetVehicle,
         // LogoutFunc,
       }}
