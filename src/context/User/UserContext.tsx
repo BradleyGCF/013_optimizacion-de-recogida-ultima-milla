@@ -62,7 +62,6 @@ const UserState = (props: { children: any }) => {
     setGetAllUsers,
   } = useBoundStore();
 
-
   const LoginMail = async (values: any) => {
     try {
       const res = await Moralis.User.logIn(values.username, values.password);
@@ -87,14 +86,12 @@ const UserState = (props: { children: any }) => {
 
   const GetAllUser = async () => {
     try {
-      const res = await Moralis.Cloud.run("getAllUsers", {
-        page: "1",
-      });
-      console.log(res.data, "console de res setGetAllUsers");
-      setGetAllUsers(res.data);
+      const res = await Moralis.Cloud.run("getAllUsers");
+      console.log(res.users, "console de res setGetAllUsers");
+      setGetAllUsers(res.users);
       // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     } catch (error: any) {
-      console.error("🚀 error de SettingsUser", error);
+      console.error("🚀 error al traer todos los usuarios", error);
     }
   };
 

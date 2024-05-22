@@ -1,6 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import CardBranchOffice from "@/components/cards/cards-branch-office";
-import UpdateFormVehicle from "@/components/forms/updateFormVehicle"
+import UpdateFormVehicle from "../components/forms/update-Form-Vehicle"
 import { useState, useEffect, useContext } from "react";
 import { useBoundStore } from "@/stores/index";
 import { VehiclesContext } from "@/context/Vehicles/VehiclesContext";
