@@ -11,12 +11,13 @@ type BranchContextType = {
   getAllBranchSearch: () => Promise<void>;
   getBranchId: (value: string) => Promise<void>;
   upDataBranch: (id: string, values: any) => Promise<void>;
+  getAllBranchToVehicleUpdate: () => Promise<void>;
 } | null;
 
 export const BranchContext = createContext<BranchContextType>(null);
 
 const BranchState = (props: { children: any }) => {
-  const { setDataPerfilBranch, setBranch, setDataBranchSearch } =
+  const { setDataPerfilBranch, setDataBranchSearch, setBranch } =
     useBoundStore();
 
   const RegisterBranch = async (values: any) => {
@@ -96,6 +97,15 @@ const BranchState = (props: { children: any }) => {
     }
   };
 
+  const getAllBranchToVehicleUpdate = async () => {
+    try {
+      const res = await Moralis.Cloud.run("getAllBranch", {});
+      setBranch(res.data);
+    } catch (error: any) {
+      console.error("🚀 error de SettingsUser", error);
+    }
+  };
+
   const getAllBranchSearch = async () => {
     try {
       const res = await Moralis.Cloud.run("getAllBranch", {
@@ -107,6 +117,15 @@ const BranchState = (props: { children: any }) => {
     }
   };
 
+  // const getAllBranch = async () => {
+  //   try {
+  //     const res = await Moralis.Cloud.run("getAllBranch", {});
+  //     setDataBranch(res.data);
+  //   } catch (error: any) {
+  //     console.error("🚀 error de SettingsUser", error);
+  //   }
+  // };
+
   return (
     <BranchContext.Provider
       value={{
@@ -115,6 +134,7 @@ const BranchState = (props: { children: any }) => {
         getAllBranchSearch,
         getBranchId,
         upDataBranch,
+        getAllBranchToVehicleUpdate,
       }}
     >
       {props.children}
