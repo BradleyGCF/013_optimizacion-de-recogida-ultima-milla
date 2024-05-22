@@ -13,40 +13,6 @@ type UserContextType = {
 
 export const UserContext = createContext<UserContextType>(null);
 
-async function assignRoleToUser(userId: string, roleName: string) {
-  try {
-    // Llamar a la función de nube en Moralis
-    const result = await Moralis.Cloud.run("assignRoleToUser", {
-      userId,
-      roleName,
-    });
-
-    console.log(result);
-  } catch (error) {
-    console.error("Error al asignar el rol:", error);
-  }
-}
-
-async function checkUserRole(roleName: string, ethAddress: string) {
-  try {
-    // Llamar a la función de nube en Parse Server
-    const result = await Moralis.Cloud.run("checkUserRoleFront", {
-      roleName,
-      ethAddress,
-    });
-
-    if (result && result.hasRole) {
-      console.log(`El usuario actual tiene el rol '${roleName}'.`);
-      return result.hasRole;
-    } else {
-      console.log(`El usuario actual NO tiene el rol '${roleName}'.`);
-      return result.hasRole;
-    }
-  } catch (error) {
-    console.error("Error al verificar el rol:", error);
-  }
-}
-
 const UserState = (props: { children: any }) => {
   const { logout, enableWeb3, authenticate } = useMoralis();
   const { user } = useMoralis();

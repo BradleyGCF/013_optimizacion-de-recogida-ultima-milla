@@ -123,7 +123,7 @@ const VehicleState = (props: { children: any }) => {
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const IdGetVehicle = async (objectId: string) => {
     try {
-      const res = await Moralis.Cloud.run("getVehicleByIdOrName", {
+      const res = await Moralis.Cloud.run("getVehicleByIdOrPlate", {
         objectId,
       });
       console.log(res.data, "datos del vehiculo obtenidos correctamente");
