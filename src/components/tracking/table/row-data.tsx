@@ -5,6 +5,7 @@ import {
   Typography,
   styled,
 } from "@mui/material";
+import { useLocation } from "react-router-dom";
 
 const DataTypography = styled(Typography)({
   color: "var(--Color-primario, #00294F)",
@@ -16,13 +17,17 @@ const DataTypography = styled(Typography)({
 });
 
 export const RowData = ({ data }: any) => {
+  const location = useLocation().pathname;
   return (
     <>
       <TableBody sx={{ backgroundColor: "white" }}>
         <TableRow>
-          <TableCell align="center">
-            <DataTypography>{data?.attributes?.name}</DataTypography>
-          </TableCell>
+          {location === "/dashboard/inventory" ||
+          location === "/dashboard/driver" ? null : (
+            <TableCell align="center">
+              <DataTypography>{data?.attributes?.name}</DataTypography>
+            </TableCell>
+          )}
           <TableCell align="center">
             <DataTypography>
               {data?.attributes?.entryDate
@@ -33,13 +38,16 @@ export const RowData = ({ data }: any) => {
           <TableCell align="center">
             <DataTypography>{data?.id ? data.id : "ID"}</DataTypography>
           </TableCell>
-          <TableCell align="center">
-            <DataTypography>
-              {data?.attributes?.productLength
-                ? data?.attributes.productLength
-                : "Quantity"}
-            </DataTypography>
-          </TableCell>
+          {location === "/dashboard/inventory" ||
+          location === "/dashboard/driver" ? null : (
+            <TableCell align="center">
+              <DataTypography>
+                {data?.attributes?.productLength
+                  ? data?.attributes.productLength
+                  : "Quantity"}
+              </DataTypography>
+            </TableCell>
+          )}
           <TableCell align="center">
             <DataTypography>
               {data?.attributes?.status ? data?.attributes.status : "State"}

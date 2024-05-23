@@ -12,7 +12,7 @@ export default function Vehicles() {
   const { getAllVehicles } = useContext(VehiclesContext);
 
   const { DataPerfilVehicles } = useBoundStore();
-  
+
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     const allVehicles = async () => await getAllVehicles();
@@ -84,9 +84,9 @@ export default function Vehicles() {
             // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
             // biome-ignore lint/complexity/useLiteralKeys: <explanation>
             <div
-            key={DataPerfilVehicles.id}
-            onClick={() => handleVehicleClick(DataPerfilVehicles)}
-          >
+              key={DataPerfilVehicles.id}
+              onClick={() => handleVehicleClick(DataPerfilVehicles)}
+            >
               <CardVehicles DataPerfilVehicles={DataPerfilVehicles} />
             </div>
           );

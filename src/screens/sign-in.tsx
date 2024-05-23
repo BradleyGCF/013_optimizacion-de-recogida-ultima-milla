@@ -80,6 +80,7 @@ function FontStyle(size: any, weight: any) {
 
 export default function SignIn() {
   const navigate = useNavigate();
+  const [response, setResponse] = React.useState(false);
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const { Authenticated, Admin, setAdmin } = useBoundStore(
     (state: any) => state,
@@ -101,13 +102,10 @@ export default function SignIn() {
     validationSchema: LoginScheme,
     onSubmit: async (values, { resetForm }) => {
       try {
-        let res;
+        var res;
         if (Admin) {
-          console.log("ADMIN");
-
           res = await LoginMail(values);
         } else if (!Admin) {
-          console.log("DRIVER");
           res = await LoginVehicles(values);
         }
         if (res?.ok) {
@@ -173,7 +171,7 @@ export default function SignIn() {
         />
       </Box>
 
-      {Authenticated == false ? (
+      {Authenticated !== false && response ? (
         <Box
           sx={{
             display: "flex",

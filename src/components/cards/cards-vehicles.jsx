@@ -23,8 +23,8 @@ const styleCardContent = {
   },
 };
 
-export default function CardVehicles({DataPerfilVehicles}) {
- 
+export default function CardVehicles({ DataPerfilVehicles }) {
+
   const navigate = useNavigate();
 
   return (

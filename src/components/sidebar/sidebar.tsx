@@ -180,7 +180,7 @@ export default function SideBar() {
           ) : (
             <Typography
               sx={{ color: "#fff", fontWeight: 600 }}
-              onClick={() => navigate("/sign-in")}
+              onClick={() => navigate("/")}
             >
               LogIn
             </Typography>

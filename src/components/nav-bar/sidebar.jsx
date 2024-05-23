@@ -173,7 +173,7 @@ export default function SideBar() {
                       Logout
                     </Button>
                   ) : (
-                    <Button sx={{ color: 'text.secondary', fontWeight: 600 }} onClick={() => navigate('/sign-in')}>
+                    <Button sx={{ color: 'text.secondary', fontWeight: 600 }} onClick={() => navigate('/')}>
                       LogIn
                     </Button>
                   )}
