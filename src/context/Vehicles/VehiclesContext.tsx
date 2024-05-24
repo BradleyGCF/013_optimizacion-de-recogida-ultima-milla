@@ -73,11 +73,11 @@ const VehicleState = (props: { children: any }) => {
         plate: values.username,
         code: values.password,
       });
-      console.log(res, "AUTO LOGIN");
+      console.log(res?.data.attributes.drivers, "AUTO LOGIN");
       if (res?.data?.attributes?.plate) {
         console.log("HOLA SOY AUTO");
         setAuthenticated(true);
-        setDataPerfilVehicles(res.data);
+        setDataPerfilVehicles(res.data.attributes.drivers);
         return { ok: true, admin: false, id: res.data.id };
       }
       return { ok: true, admin: false, id: "" };

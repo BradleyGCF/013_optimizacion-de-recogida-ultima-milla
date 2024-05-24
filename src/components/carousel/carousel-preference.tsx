@@ -184,10 +184,11 @@ export default function CarouselPreference({}) {
                     borderRadius: "0.625rem",
                     border: `${check === index ? "4px solid #0062BC" : ""}`,
                     boxShadow: "-2px 11px 18px #0062bc38",
+                    cursor: "pointer",
                   }}
                   onClick={() => handleClick(index)}
                 >
-                  {check === "value" ? (
+                  {check === index ? (
                     <RadioButtonCheckedOutlinedIcon
                       fontSize="small"
                       sx={{ color: "#0062BC" }}
@@ -209,13 +210,25 @@ export default function CarouselPreference({}) {
                       lineHeight: "normal",
                     }}
                   >
-                    {data?.name}
+                    {data?.attributes?.name
+                      ? data?.attributes?.name
+                      : "Nombre del conductor"}
                   </Typography>
                 </Box>
               );
             })}
         </Box>
-        {/* <Carousel
+        {/* CAROUSEL */}
+      </Box>
+      <ButtonPrimary width="300px" disabled={check == null}>
+        Select
+      </ButtonPrimary>
+    </Box>
+  );
+}
+
+{
+  /* <Carousel
           renderButtonGroupOutside={true}
           arrows={false}
           responsive={responsive}
@@ -250,11 +263,5 @@ export default function CarouselPreference({}) {
               </Box>
             );
           })}
-        </Carousel>  */}
-      </Box>
-      <ButtonPrimary width="300px" disabled={driver == null}>
-        Select
-      </ButtonPrimary>
-    </Box>
-  );
+        </Carousel>  */
 }

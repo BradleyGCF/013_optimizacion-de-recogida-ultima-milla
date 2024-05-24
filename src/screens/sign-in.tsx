@@ -346,7 +346,7 @@ export default function SignIn() {
           </Box>
         </Box>
       ) : (
-        <CarouselPreference />
+        <CarouselPreference key={"1"} />
       )}
     </Box>
   );
