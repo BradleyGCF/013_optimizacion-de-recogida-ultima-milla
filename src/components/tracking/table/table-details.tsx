@@ -23,7 +23,7 @@ const HeadTypography = styled(Typography)({
   transform: "rotate(-0.014deg)",
 });
 
-export const TableDetails = ({ inventory }: any) => {
+export const TableDetails = ({ inventory, handleOnClick }: any) => {
   const location = useLocation().pathname;
   return (
     <>
@@ -59,7 +59,13 @@ export const TableDetails = ({ inventory }: any) => {
             </TableRow>
           </TableHead>
           {inventory?.map((row: any, index: any) => {
-            return <RowData key={index} data={row} />;
+            return (
+              <RowData
+                key={index}
+                data={row}
+                handleOnClick={handleOnClick || null}
+              />
+            );
           })}
         </Table>
       </TableContainer>

@@ -34,10 +34,11 @@ export default function InputSearchGlobal({
   const loading = open && options.length === 0;
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
-    if (!options.length) {
+    if (type) {
+      console.log({ type });
       GetAllSearchBarOption(type);
     }
-  }, [options]);
+  }, [type]);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
@@ -76,7 +77,9 @@ export default function InputSearchGlobal({
             key={option.id}
             onClick={() => handleClick(option?.data)}
           >
-            <div style={{ color: "white" }}> {option.label} </div>
+
+            <div style={{ color: "white" }}> {option.label}</div>
+
           </Box>
         )}
         open={open}
