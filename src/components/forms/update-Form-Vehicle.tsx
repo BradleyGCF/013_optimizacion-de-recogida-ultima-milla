@@ -263,7 +263,6 @@ const ArrayFormElement = ({
       setOptions(UserOptions);
     }
     if (data && Branch && type === "branches") {
-      console.log({ data, Branch });
       const branchesIds = data.map((branch) => branch?.id);
       const Branches = Branch?.filter((branch) =>
         branchesIds.includes(branch?.id)
@@ -283,8 +282,6 @@ const ArrayFormElement = ({
           id: branch?.id,
         };
       });
-      console.log(Branches, BrachesOptions);
-
       setOptions(BrachesOptions);
     }
   }, [data, AllUser, Branch]);
@@ -340,16 +337,6 @@ const ArrayFormElement = ({
       })}
       <Grid container spacing={2}>
         <Grid item xs={11}>
-          {/* <FormControl sx={StyledFormControl}>
-            <CustomStyledInput
-              onChange={(e) => setNewElement(e.target.value)}
-              value={newElement}
-              id="mileage"
-              name="mileage"
-              autoComplete="mileage"
-              placeholder={`Insertar nuevo ${type}`}
-            />
-          </FormControl> */}
           <FormControl sx={StyledFormControl}>
             <InputLabel id="select-label">{`Insertar nuevo ${type}`}</InputLabel>
             <CustomStyledSelect
