@@ -42,7 +42,7 @@ export const TableDetails = ({ inventory }: any) => {
                 </TableCell>
               )}
               <TableCell align="center">
-                <HeadTypography>Entry date</HeadTypography>
+                <HeadTypography>Entry date3</HeadTypography>
               </TableCell>
               <TableCell align="center">
                 <HeadTypography>ID</HeadTypography>
