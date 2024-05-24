@@ -1,5 +1,5 @@
 import AreaChart from "@/components/chart/AreaChart";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Pagination, Typography } from "@mui/material";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import { useNavigate } from "react-router-dom";
 import { TableDetails } from "@/components/tracking/table/table-details";
@@ -26,7 +26,7 @@ export default function Inventory() {
   );
   const { getAllInventory }: any = useContext(InventoryContext);
   useEffect(() => {
-    getAllInventory();
+    getAllInventory(1);
   }, [DataPerfilInventory]);
   return (
     <Box
@@ -61,6 +61,9 @@ export default function Inventory() {
       </Box>
 
       <TableDetails inventory={DataPerfilInventory} />
+      <Box display="flex" justifyContent="center" alignItems="center">
+        <Pagination count={12} size="small" />
+      </Box>
 
       <Box display="flex" justifyContent="center" alignItems="center">
         <Button
