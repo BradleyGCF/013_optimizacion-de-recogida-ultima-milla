@@ -5,7 +5,6 @@ import RegisterVehicles from "../components/forms/register-vehicles";
 import { useContext, useEffect, useState } from "react";
 import { VehiclesContext } from "@/context/Vehicles/VehiclesContext";
 import { useBoundStore } from "@/stores/index";
-import CircularProgress from "@mui/material/CircularProgress";
 
 export default function Vehicles() {
   const [loading, setLoading] = useState(true);
@@ -18,9 +17,6 @@ export default function Vehicles() {
   useEffect(() => {
     const allVehicles = async () => await getAllVehicles(1);
     allVehicles();
-    setTimeout(() => {
-      setLoading(false);
-    }, 1000);
   }, []);
 
   const selectPlate = (data) => {
@@ -62,7 +58,6 @@ export default function Vehicles() {
               width: "100%",
             }}
           >
-            <CircularProgress size="100px" color="secondary" />
           </Box>
         )}
         {DataPerfilVehicles?.length === 0 &&

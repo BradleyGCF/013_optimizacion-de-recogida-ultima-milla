@@ -17,7 +17,11 @@ const TextFieldCustom = styled(TextField)({
   },
 });
 
-export default function InputSearchGlobal({type, handleClick, placeHolder=""}) {
+export default function InputSearchGlobal({
+  type,
+  handleClick,
+  placeHolder = "",
+}) {
   const [inputValue, setInputValue] = useState("");
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState({ id: "", label: "" });
@@ -30,10 +34,11 @@ export default function InputSearchGlobal({type, handleClick, placeHolder=""}) {
   const loading = open && options.length === 0;
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
-    if (!options.length) {
+    if (type) {
+      console.log({ type });
       GetAllSearchBarOption(type);
     }
-  }, [options]);
+  }, [type]);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
@@ -72,7 +77,9 @@ export default function InputSearchGlobal({type, handleClick, placeHolder=""}) {
             key={option.id}
             onClick={() => handleClick(option?.data)}
           >
-            {option.label}
+
+            <div style={{ color: "white" }}> {option.label}</div>
+
           </Box>
         )}
         open={open}

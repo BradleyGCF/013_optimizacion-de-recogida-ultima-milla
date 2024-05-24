@@ -90,10 +90,29 @@ const UserState = (props: { children: any }) => {
         const res = await Moralis.Cloud.run("getAllVehicle", {});
         // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         const newOptions = res.data?.map((PerfilVehicles: any) => {
+          console.log(PerfilVehicles);
+          
           const vehicle = {
             id: PerfilVehicles?.id,
             label: PerfilVehicles?.attributes?.plate,
             data: PerfilVehicles,
+          };
+          return vehicle;
+        });
+        setSearchBarOption(newOptions);
+      }
+
+      if (value === "product") {
+        const res = await Moralis.Cloud.run("getAllProduct");
+        console.log(res);
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+        const newOptions = res.product?.map((products: any) => {
+          console.log(products);
+
+          const vehicle = {
+            id: products?.id,
+            label: products?.attributes?.name,
+            data: products,
           };
           return vehicle;
         });

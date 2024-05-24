@@ -108,7 +108,6 @@ export default function SignIn() {
           res = await LoginVehicles(values);
         }
         if (res?.ok) {
-          console.log(res, "RESPONSE");
           if (res?.admin === "admin") {
             navigate("/dashboard");
           }
@@ -345,7 +344,7 @@ export default function SignIn() {
           </Box>
         </Box>
       ) : (
-        <CarouselPreference key={"1"} />
+        <CarouselPreference key={1} />
       )}
     </Box>
   );

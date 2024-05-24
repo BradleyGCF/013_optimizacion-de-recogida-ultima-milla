@@ -23,8 +23,7 @@ const styleCardContent = {
   },
 };
 
-export default function CardVehicles({ DataPerfilVehicles }) {
-
+export default function CardVehicles({ DataPerfilVehicles, handleOnClick }) {
   const navigate = useNavigate();
 
   return (
@@ -47,9 +46,13 @@ export default function CardVehicles({ DataPerfilVehicles }) {
               height: { xs: "76px", md: "100%" },
               width: "140px",
             }}
-            onClick={() =>
-              navigate(`/dashboard/profile-vehicle/${DataPerfilVehicles.id}`)
-            }
+            onClick={() => {
+              if (handleOnClick) {
+                handleOnClick(DataPerfilVehicles);
+              } else {
+                navigate(`/dashboard/profile-vehicle/${DataPerfilVehicles.id}`);
+              }
+            }}
           />
         </Box>
         <Box

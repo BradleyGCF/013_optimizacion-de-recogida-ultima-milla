@@ -76,6 +76,7 @@ export const DetailsTable = ({ card }: any) => {
         </Table>
       </TableContainer>
       <TableDate card={card} />
+
       <TableDetails />
     </>
   );
