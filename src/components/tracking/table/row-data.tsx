@@ -16,12 +16,18 @@ const DataTypography = styled(Typography)({
   lineHeight: "normal",
 });
 
-export const RowData = ({ data }: any) => {
+export const RowData = ({ data, handleOnClick }: any) => {
   const location = useLocation().pathname;
   return (
     <>
       <TableBody sx={{ backgroundColor: "white" }}>
-        <TableRow>
+        <TableRow
+          onClick={() => {
+            if (handleOnClick) {
+              handleOnClick(data);
+            }
+          }}
+        >
           {location === "/dashboard/inventory" ||
           location === "/dashboard/driver" ? null : (
             <TableCell align="center">

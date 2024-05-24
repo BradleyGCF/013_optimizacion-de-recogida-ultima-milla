@@ -6,7 +6,7 @@ import { useBoundStore } from "@/stores/index";
 
 type InventoryContextType = {
   RegisterInventory: (values: any, index: number) => void;
-  getAllInventory: () => Promise<void>;
+  getAllInventory: (page: number) => Promise<void>;
   getAllInventorySearch: () => Promise<void>;
   getInventoryId: (value: string) => Promise<void>;
   upDataInventory: (id: string, values: any) => Promise<void>;
@@ -92,10 +92,10 @@ const InventoryState = (props: { children: any }) => {
     }
   };
 
-  const getAllInventory = async () => {
+  const getAllInventory = async (page: number) => {
     try {
       const res = await Moralis.Cloud.run("getAllProduct", {
-        page: "9",
+        page,
       });
       setDataPerfilInventory(res.product);
     } catch (error: any) {

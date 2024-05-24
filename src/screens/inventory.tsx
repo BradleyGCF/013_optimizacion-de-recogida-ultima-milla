@@ -26,7 +26,7 @@ export default function Inventory() {
   );
   const { getAllInventory }: any = useContext(InventoryContext);
   useEffect(() => {
-    getAllInventory();
+    getAllInventory(1);
   }, [DataPerfilInventory]);
   return (
     <Box

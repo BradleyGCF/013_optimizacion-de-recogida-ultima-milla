@@ -14,6 +14,7 @@ const Package = React.lazy(() => import("@/screens/package"));
 const TrackingCurrent = React.lazy(() => import("@/screens/tracking-current"));
 const Tracking = React.lazy(() => import("@/screens/tracking"));
 const Vehicles = React.lazy(() => import("@/screens/vehicles"));
+const Shipping = React.lazy(() => import("@/screens/shipping"));
 const Settings = React.lazy(() => import("@/screens/settings"));
 const SignIn = React.lazy(() => import("@/screens/sign-in"));
 const BranchOffice = React.lazy(() => import("@/screens/branch-office"));
@@ -98,6 +99,7 @@ export default function Navigator() {
               <Route index element={<Dashboard />} />
               <Route path="driver" element={<DashboardDriver />} />
               <Route path="vehicles" element={<Vehicles />} />
+              <Route path="shipping" element={<Shipping />} />
               <Route path="tracking" element={<Tracking />} />
               <Route path="branch-office" element={<BranchOffice />} />
               <Route path="profile-vehicle/:id" element={<ProfileVehicle />} />

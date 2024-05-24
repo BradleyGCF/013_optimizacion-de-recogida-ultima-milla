@@ -171,7 +171,7 @@ export default function SignIn() {
         />
       </Box>
 
-      {Authenticated !== false && response ? (
+      {Authenticated === false && !response ? (
         <Box
           sx={{
             display: "flex",
