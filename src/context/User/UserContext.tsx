@@ -9,6 +9,9 @@ type UserContextType = {
   SettingsUser: (userAddress: string) => Promise<void>;
   LogoutFunc: () => Promise<void>;
   GetAllUser: () => Promise<void>;
+  GetAllSearchBarOption: (
+    value: "vehicle" | "branch" | "product"
+  ) => Promise<void>;
 } | null;
 
 export const UserContext = createContext<UserContextType>(null);
@@ -60,6 +63,7 @@ const UserState = (props: { children: any }) => {
     setUser,
     setAuthenticated,
     setGetAllUsers,
+    setSearchBarOption,
   } = useBoundStore();
 
   const LoginMail = async (values: any) => {
@@ -87,7 +91,6 @@ const UserState = (props: { children: any }) => {
   const GetAllUser = async () => {
     try {
       const res = await Moralis.Cloud.run("getAllUsers");
-      console.log(res.users, "console de res setGetAllUsers");
       setGetAllUsers(res.users);
       // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     } catch (error: any) {
@@ -106,12 +109,34 @@ const UserState = (props: { children: any }) => {
   };
 
   const LogoutFunc = async () => {
-    console.log("ENTRE");
     localStorage.removeItem("Parse/023/currentUser");
     await logout();
     setAuthenticated(false);
     setUser([]);
     location.reload();
+  };
+
+  const GetAllSearchBarOption = async (
+    value: "vehicle" | "branch" | "product"
+  ) => {
+    try {
+      if (value === "vehicle") {
+        const res = await Moralis.Cloud.run("getAllVehicle", {});
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+        const newOptions = res.data?.map((PerfilVehicles: any) => {
+          const vehicle = {
+            id: PerfilVehicles?.id,
+            label: PerfilVehicles?.attributes?.plate,
+            data: PerfilVehicles,
+          };
+          return vehicle;
+        });
+        setSearchBarOption(newOptions);
+      }
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+    } catch (error: any) {
+      console.error("🚀 error al obtener todos los vehiculos", error);
+    }
   };
 
   return (
@@ -121,6 +146,7 @@ const UserState = (props: { children: any }) => {
         SettingsUser,
         LogoutFunc,
         GetAllUser,
+        GetAllSearchBarOption,
       }}
     >
       {props.children}

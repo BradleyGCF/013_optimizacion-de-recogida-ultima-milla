@@ -2,17 +2,19 @@ import React, { createContext } from "react";
 import { useMoralis } from "react-moralis";
 import { Moralis } from "moralis-v1";
 import { useBoundStore } from "@/stores/index";
+import { object } from "yup";
 
 type VehiclesContextType = {
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   RegisterVehicles: (values: any) => void;
-  getAllVehicles: () => Promise<void>;
+  getAllVehicles: (page: number) => Promise<void>;
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   UpdateVehicle: (objectId: string, objectData: any) => Promise<void>;
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   IdGetVehicle: (objectId: string) => Promise<void>;
-  // DataGetVehicle: (objectData: string) => Promise<void>;
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   LoginVehicles: (values: any) => void;
+  GetAllPlateVehicle: (VehicleId: string, plate: string) => Promise<void>;
 } | null;
 
 export const VehiclesContext = createContext<VehiclesContextType>(null);
@@ -60,8 +62,10 @@ const VehicleState = (props: { children: any }) => {
     setUploadVehicle,
     setGetData,
     setVehicles,
+    setGetAllPlateByIdVehicle,
   } = useBoundStore();
 
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const LoginVehicles = async (values: any) => {
     console.log(values, "REGISTER VEHICLES");
     try {
@@ -94,10 +98,10 @@ const VehicleState = (props: { children: any }) => {
     }
   };
 
-  const getAllVehicles = async () => {
+  const getAllVehicles = async (page?: number) => {
     try {
       const res = await Moralis.Cloud.run("getAllVehicle", {
-        page: "1",
+        page,
       });
       console.log(res.data, "console de res getallvehicles");
       setDataPerfilVehicles(res.data);
@@ -134,6 +138,24 @@ const VehicleState = (props: { children: any }) => {
     }
   };
 
+  const GetAllPlateVehicle = async (VehicleId: string, plate: string) => {
+    try {
+      console.log("datos de GetAllPlateVehicle", GetAllPlateVehicle);
+      const res = await Moralis.Cloud.run("getVehicleByIdOrPlate", {
+        VehicleId,
+        plate,
+      });
+      console.log(
+        res.data,
+        "datos de la placa del vehiculo obtenidos correctamente"
+      );
+      setGetAllPlateByIdVehicle(res.data);
+    } catch (error) {
+      console.error("Error updating data:", error);
+      throw error;
+    }
+  };
+
   return (
     <VehiclesContext.Provider
       value={{
@@ -142,8 +164,7 @@ const VehicleState = (props: { children: any }) => {
         UpdateVehicle,
         IdGetVehicle,
         LoginVehicles,
-        // DataGetVehicle,
-        // LogoutFunc,
+        GetAllPlateVehicle,
       }}
     >
       {props.children}

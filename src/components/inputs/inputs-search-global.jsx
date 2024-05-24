@@ -3,7 +3,7 @@ import { styled } from "@mui/material/styles";
 import { Autocomplete, Box, TextField } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import SearchIcon from "@mui/icons-material/Search";
-import { BranchContext } from "@/context/Branch/BranchContext";
+import { UserContext } from "@/context/User/UserContext";
 import { useBoundStore } from "@/stores/index";
 
 const TextFieldCustom = styled(TextField)({
@@ -17,71 +17,43 @@ const TextFieldCustom = styled(TextField)({
   },
 });
 
-export default function InputSearchGlobal(props) {
+export default function InputSearchGlobal({type, handleClick, placeHolder=""}) {
   const [inputValue, setInputValue] = useState("");
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState({ id: "", label: "" });
   const [stateCircularProgress, setStateCircularProgress] = useState(false);
-  const { getAllBranchSearch } = useContext(BranchContext);
-  const { DataBranchSearch } =
-    useBoundStore();
+  const { GetAllSearchBarOption } = useContext(UserContext);
+  const { SearchBarOption } = useBoundStore();
 
-  let optionsParams = props.option;
-  // let optionId = props.id;
-  // let optionLabel = props.label;
+  const [options, setOptions] = useState([]);
 
-  const loading = open && (optionsParams?.length ?? 0) !== 0;
-
-  const option = optionsParams
-    ? optionsParams.map((option) => ({
-      id: option.id,
-      label: option.attributes.name,
-    }))
-    : [];
+  const loading = open && options.length === 0;
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
-    // SetSearchNavbar([]);
-    const allThought = async (value) => {
-      await getAllBranchSearch();
-      // await getAllThoughtSearch(value);
-    };
-    allThought(inputValue);
-    // const filterFunc = async (inputValue) => {
-    //   const resultFilterQuery = await getSearchArtistsPag(0, inputValue, true);
-    // };
-    // filterFunc(inputValue);
-  }, [inputValue]);
-
-  useEffect(() => {
-    (async () => {
-      await sleep(1e3);
-    })();
-  }, [loading]);
-
-  function FilterItemsToGo(value) {
-    let coincidence = false;
-    const filterFunc = async (value) => {
-      setSearchArtistsPag(value, "Search");
-      setTimeout(() => {
-        setStateUnstyledCircularProgress(false);
-      }, 4000);
-    };
-    StatePageArtistFilterOptionsAutocomplete.forEach((element) => {
-      if (element.username == value.label && element.ethAddress == value.id) {
-        coincidence = true;
-        filterFunc(value.label);
-      }
-    });
-    if (!coincidence) {
-      setValue({ id: "", label: "Not Found" });
-      setStateUnstyledCircularProgress(false);
+    if (!options.length) {
+      GetAllSearchBarOption(type);
     }
-  }
+  }, [options]);
 
-  function sleep(delay = 0) {
-    return new Promise((resolve) => {
-      setTimeout(resolve, delay);
-    });
-  }
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+    if (SearchBarOption?.length) {
+      setOptions(SearchBarOption);
+    }
+  }, [SearchBarOption]);
+
+  const handleInputChange = (_event, newValue) => {
+    setInputValue(newValue);
+    setValue({ id: "", label: newValue });
+  };
+
+  const handleChange = (event, newValue) => {
+    if (newValue) {
+      setStateCircularProgress(true);
+      setValue(newValue);
+      setStateCircularProgress(false);
+    }
+  };
 
   return (
     <Box justifyContent="flex-start" width="100%">
@@ -89,25 +61,18 @@ export default function InputSearchGlobal(props) {
         value={value}
         loading={loading}
         inputValue={inputValue}
-        options={option !== undefined && option}
-        onInputChange={(_event, newValue) => {
-          setInputValue(newValue);
-          setValue(newValue);
-          // setValue({ id: props?.option.id, label: props?.option.attributes.name });
-        }}
-        onChange={(event, value) => {
-          value
-            ? (setStateCircularProgress(true), FilterItemsToGo(value))
-            : null;
-        }}
-        renderOption={(props, option, state) => (
+        options={options}
+        onInputChange={handleInputChange}
+        onChange={handleChange}
+        renderOption={(props, option) => (
           <Box
             component="li"
             sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
             {...props}
-            key={state.index}
+            key={option.id}
+            onClick={() => handleClick(option?.data)}
           >
-            {option.name}
+            {option.label}
           </Box>
         )}
         open={open}
@@ -136,12 +101,12 @@ export default function InputSearchGlobal(props) {
             <SearchIcon sx={{ color: "icon.third", fontSize: "30px" }} />
             <TextFieldCustom
               hiddenLabel
-              placeholder={props.placeHolder}
+              placeholder={placeHolder || ""}
               sx={{ padding: 0 }}
-              onKeyPress={(event) => {
-                if (event.code == "Enter") {
+              onKey={(event) => {
+                if (event.code === "Enter") {
                   setStateCircularProgress(true);
-                  FilterItemsToGo(value);
+                  handleChange(event, value);
                 }
               }}
               {...params}

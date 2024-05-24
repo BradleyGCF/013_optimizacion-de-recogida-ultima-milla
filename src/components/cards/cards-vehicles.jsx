@@ -23,8 +23,7 @@ const styleCardContent = {
   },
 };
 
-export default function CardVehicles({DataPerfilVehicles}) {
- 
+export default function CardVehicles({ DataPerfilVehicles }) {
   const navigate = useNavigate();
 
   return (
@@ -47,67 +46,93 @@ export default function CardVehicles({DataPerfilVehicles}) {
               height: { xs: "76px", md: "100%" },
               width: "140px",
             }}
-            onClick={() => navigate(`/dashboard/profile-vehicle/${DataPerfilVehicles.id}`)}
+            onClick={() =>
+              navigate(`/dashboard/profile-vehicle/${DataPerfilVehicles.id}`)
+            }
           />
         </Box>
         <Box
           sx={{
             flex: 1,
-            display: "flex",
             alignItems: "center",
             justifyContent: "center",
           }}
         >
           <Typography
             variant="h4"
-            sx={{ color: "text.fourth", textAlign: "center" }}
+            sx={{
+              color: "text.fourth",
+              textAlign: "center",
+              paddingTop: "2rem",
+            }}
           >
             Model
           </Typography>
-        </Box>
-        <Box
-          sx={{
-            flex: 1,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Typography
-            variant="h4"
-            sx={{ color: "text.fourth", textAlign: "center" }}
-          >
-            Ability
+          <Typography variant="h6" sx={{ textAlign: "center" }}>
+            {DataPerfilVehicles?.attributes?.model}
           </Typography>
         </Box>
         <Box
           sx={{
             flex: 1,
-            display: "flex",
             alignItems: "center",
             justifyContent: "center",
           }}
         >
           <Typography
             variant="h4"
-            sx={{ color: "text.fourth", textAlign: "center" }}
+            sx={{
+              color: "text.fourth",
+              textAlign: "center",
+              paddingTop: "2rem",
+            }}
           >
-            Vehicle Registration
+            Capacity
+          </Typography>
+          <Typography variant="h6" sx={{ textAlign: "center" }}>
+            {DataPerfilVehicles?.attributes?.capacity}
           </Typography>
         </Box>
         <Box
           sx={{
             flex: 1,
-            display: "flex",
             alignItems: "center",
             justifyContent: "center",
           }}
         >
           <Typography
             variant="h4"
-            sx={{ color: "text.fourth", textAlign: "center" }}
+            sx={{
+              color: "text.fourth",
+              textAlign: "center",
+              paddingTop: "2rem",
+            }}
+          >
+            Plate
+          </Typography>
+          <Typography variant="h6" sx={{ textAlign: "center" }}>
+            {DataPerfilVehicles?.attributes?.plate}
+          </Typography>
+        </Box>
+        <Box
+          sx={{
+            flex: 1,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Typography
+            variant="h4"
+            sx={{
+              color: "text.fourth",
+              textAlign: "center",
+              paddingTop: "2rem",
+            }}
           >
             Brach Office
+          </Typography>
+          <Typography variant="h6" sx={{ textAlign: "center" }}>
+            {DataPerfilVehicles?.attributes?.branches?.[0]?.attributes?.name}
           </Typography>
         </Box>
       </CardContent>
