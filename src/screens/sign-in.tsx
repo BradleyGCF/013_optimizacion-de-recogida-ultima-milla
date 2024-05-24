@@ -103,7 +103,6 @@ export default function SignIn() {
       try {
         var res;
         if (Admin) {
-          console.log(Admin, "ENTRE");
           res = await LoginMail(values);
         } else if (!Admin) {
           res = await LoginVehicles(values);
