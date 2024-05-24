@@ -60,6 +60,7 @@ const VehicleState = (props: { children: any }) => {
     setDataPerfilVehicles,
     setGetDataVehicle,
     setUploadVehicle,
+    setAuthenticated,
     setGetData,
     setVehicles,
     setGetAllPlateByIdVehicle,
@@ -69,11 +70,17 @@ const VehicleState = (props: { children: any }) => {
   const LoginVehicles = async (values: any) => {
     console.log(values, "REGISTER VEHICLES");
     try {
-      const res = await Moralis.Cloud.run("createVehicles", {
-        objetData: values,
+      const res = await Moralis.Cloud.run("getVehicleByPlateAndCode", {
+        plate: values.username,
+        code: values.password,
       });
       console.log(res, "Vehicles LOGIN");
-      return { ok: true, admin: false };
+      if (res.status !== "error") {
+        setAuthenticated(true);
+        setDataPerfilVehicles(res.data);
+        return { ok: true, admin: false, id: res.data[0].id };
+      }
+      return { ok: false, admin: false };
     } catch (error) {
       const errorMessage = JSON.stringify(error);
       const errorObjeto = JSON.parse(errorMessage);

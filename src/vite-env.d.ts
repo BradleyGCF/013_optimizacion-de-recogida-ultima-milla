@@ -14,6 +14,9 @@ declare module '@/components/select/row-data/row-data-package';
 declare module '@/components/chart/AreaChart';
 declare module '@/components/sections/ChatSection';
 declare module '@/components/modal/inventoryModal';
+declare module '@/components/cards/cards-vehicles';
+declare module '@/components/cards/card-profile-routes';
+declare module '@/components/cards/cards-branch-office';
 
 declare module '@/components/buttons/button-primary';
 declare module '@/components/inputs/input-search-navbar';
@@ -42,6 +45,7 @@ declare module '@/screens/profile-branch-office';
 declare module '@/screens/route-systems';
 declare module '@/screens/profile-routes';
 declare module '@/screens/dashboard';
+declare module '@/screens/dashboard-driver';
 declare module '@/screens/recover-password';
 declare module '@/screens/tracking-current';
 declare module '@/screens/inventory';

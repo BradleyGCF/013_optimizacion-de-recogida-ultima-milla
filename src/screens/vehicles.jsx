@@ -13,6 +13,7 @@ export default function Vehicles() {
   const { DataPerfilVehicles } = useBoundStore();
   const [vehicleSelect, setVehicleSelect] = useState([]);
 
+
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     const allVehicles = async () => await getAllVehicles(1);

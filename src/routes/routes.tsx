@@ -8,6 +8,7 @@ import Navbar from "@/components/nav-bar/nav-bar";
 import Maps from "@/screens/maps";
 
 const Dashboard = React.lazy(() => import("@/screens/dashboard"));
+const DashboardDriver = React.lazy(() => import("@/screens/dashboard-driver"));
 const ProfileVehicle = React.lazy(() => import("@/screens/profile-vehicle"));
 const Package = React.lazy(() => import("@/screens/package"));
 const TrackingCurrent = React.lazy(() => import("@/screens/tracking-current"));
@@ -95,6 +96,7 @@ export default function Navigator() {
             {/* <Route path="/" element={<Home />} /> */}
             <Route path="/dashboard">
               <Route index element={<Dashboard />} />
+              <Route path="driver" element={<DashboardDriver />} />
               <Route path="vehicles" element={<Vehicles />} />
               <Route path="tracking" element={<Tracking />} />
               <Route path="branch-office" element={<BranchOffice />} />
