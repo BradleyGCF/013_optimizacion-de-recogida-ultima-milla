@@ -54,6 +54,7 @@
     "recharts": "^2.12.5",
     "sharp-cli": "^2.1.1",
     "socket.io-client": "^4.7.5",
+    "sonner": "^1.4.41",
     "vite-plugin-env": "^1.0.1",
     "web3": "^1.7.4",
     "yup": "^0.32.11",

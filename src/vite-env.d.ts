@@ -14,6 +14,7 @@ declare module '@/components/select/row-data/row-data-package';
 declare module '@/components/chart/AreaChart';
 declare module '@/components/sections/ChatSection';
 declare module '@/components/modal/inventoryModal';
+declare module '@/components/cards/cards-vehicles'
 
 declare module '@/components/buttons/button-primary';
 declare module '@/components/inputs/input-search-navbar';

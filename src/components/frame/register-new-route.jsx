@@ -2,15 +2,17 @@ import { Box, Typography, Select, MenuItem, FormControl, FormHelperText } from "
 import ButtonPrimary from "@/components/buttons/button-primary";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from '@mui/material/styles';
-import { useState } from 'react'
-
 import { useFormik } from 'formik'
 import { createNewRouteScheme } from '@/schemas/index'
+import { useContext } from "react";
+
+import { RouteContext } from '@/context/Route/RouteContext'
 
 
 export default function RegisterNewRoute() {
-  let navigate = useNavigate();
   const theme = useTheme();
+
+  const { createNewRoute } = useContext(RouteContext)
 
 
   const formik = useFormik({
@@ -20,10 +22,11 @@ export default function RegisterNewRoute() {
       branches: []
     },
     validationSchema: createNewRouteScheme,
-    onSubmit: (values) => {
-      console.log(JSON.stringify(values));
-      //enviar form al back
-    }
+    onSubmit: async (values, { resetForm }) => {
+			const response = await createNewRoute(values);
+			resetForm();
+			
+		},
   })
 
 
@@ -54,7 +57,7 @@ export default function RegisterNewRoute() {
       fontWeight:
         branches.indexOf(branch) === -1
           ? theme.typography.fontWeightRegular
-          : theme.typography.fontWeightMedium,
+          : theme.typography.fontWeightBold,
     };
   }
 
