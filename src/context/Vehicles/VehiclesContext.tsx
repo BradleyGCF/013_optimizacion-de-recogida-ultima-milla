@@ -64,19 +64,18 @@ const VehicleState = (props: { children: any }) => {
   } = useBoundStore();
 
   const LoginVehicles = async (values: any) => {
-    console.log(values, "REGISTER VEHICLES");
     try {
       const res = await Moralis.Cloud.run("getVehicleByPlateAndCode", {
         plate: values.username,
         code: values.password,
       });
-      console.log(res, "Vehicles LOGIN");
-      if (res.status !== "error") {
+      console.log(res, "AUTO LOGIN");
+      if (res?.data?.attributes?.plate) {
+        console.log("HOLA SOY AUTO");
         setAuthenticated(true);
         setDataPerfilVehicles(res.data);
-        return { ok: true, admin: false, id: res.data[0].id };
+        return { ok: true, admin: false, id: res.data.id };
       }
-      return { ok: false, admin: false };
     } catch (error) {
       const errorMessage = JSON.stringify(error);
       const errorObjeto = JSON.parse(errorMessage);
