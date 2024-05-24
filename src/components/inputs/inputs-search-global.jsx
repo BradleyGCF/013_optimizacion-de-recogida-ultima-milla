@@ -77,7 +77,9 @@ export default function InputSearchGlobal({
             key={option.id}
             onClick={() => handleClick(option?.data)}
           >
+
             <div style={{ color: "white" }}> {option.label}</div>
+
           </Box>
         )}
         open={open}
