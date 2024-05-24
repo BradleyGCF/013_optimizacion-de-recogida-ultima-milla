@@ -4,6 +4,7 @@ export const storeUser = (set) => ({
   Admin: false,
   Authenticated: false, // USER_AUTHENTICATED
   AllUser: [],
+  SearchBarOption: [],
 
   setDataPerfilUser: (value) => set({ DataPerfilUser: value }),
   setUser: (value) => set({ User: value }),
@@ -12,4 +13,5 @@ export const storeUser = (set) => ({
   setGetAllUsers: (value) => {
     set({ AllUser: value });
   },
+  setSearchBarOption: (value) => set({ SearchBarOption: value }),
 });
