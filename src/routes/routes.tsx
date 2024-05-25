@@ -97,7 +97,7 @@ export default function Navigator() {
             {/* <Route path="/" element={<Home />} /> */}
             <Route path="/dashboard">
               <Route index element={<Dashboard />} />
-              <Route path="driver" element={<DashboardDriver />} />
+              <Route path="driver/:id" element={<DashboardDriver />} />
               <Route path="vehicles" element={<Vehicles />} />
               <Route path="shipping" element={<Shipping />} />
               <Route path="tracking" element={<Tracking />} />

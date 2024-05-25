@@ -103,13 +103,11 @@ export default function SignIn() {
       try {
         var res;
         if (Admin) {
-          console.log(Admin, "ENTRE");
           res = await LoginMail(values);
         } else if (!Admin) {
           res = await LoginVehicles(values);
         }
         if (res?.ok) {
-          console.log(res, "RESPONSE");
           if (res?.admin === "admin") {
             navigate("/dashboard");
           }
@@ -346,7 +344,7 @@ export default function SignIn() {
           </Box>
         </Box>
       ) : (
-        <CarouselPreference />
+        <CarouselPreference key={1} />
       )}
     </Box>
   );

@@ -21,6 +21,7 @@ export default function Vehicles() {
 
   const selectPlate = (data) => {
     if (data) {
+      console.log(data, 'DATA');
       setVehicleSelect([data]);
     }
   };
