@@ -24,7 +24,7 @@ const styleCardContent = {
 };
 
 export default function CardBranchOffice({ branch }) {
-  let navigate = useNavigate();
+  const navigate = useNavigate();
   return (
     <Card sx={styleCard} onClick={() => navigate(`/profile-branch-office/${branch.id}`)}>
       <CardContent sx={styleCardContent}>

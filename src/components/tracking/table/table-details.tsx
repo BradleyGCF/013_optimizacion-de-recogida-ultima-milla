@@ -13,6 +13,7 @@ import Paper from "@mui/material/Paper";
 import { RowData } from "./row-data";
 import { useLocation } from "react-router-dom";
 
+
 const HeadTypography = styled(Typography)({
   color: "#FFF",
   fontFamily: "Jost",
@@ -26,7 +27,7 @@ const HeadTypography = styled(Typography)({
 export const TableDetails = ({ inventory, handleOnClick }: any) => {
   const location = useLocation().pathname;
   return (
-    <>
+    <div style={{ cursor: "pointer", width:"100%" }}>
       <TableContainer component={Paper}>
         <Table>
           <TableHead
@@ -38,7 +39,7 @@ export const TableDetails = ({ inventory, handleOnClick }: any) => {
               {location === "/dashboard/inventory" ||
               location === "/dashboard/driver" ? null : (
                 <TableCell align="center">
-                  <HeadTypography>Item name</HeadTypography>
+                  <HeadTypography >Item name</HeadTypography>
                 </TableCell>
               )}
               <TableCell align="center">
@@ -58,6 +59,7 @@ export const TableDetails = ({ inventory, handleOnClick }: any) => {
               </TableCell>
             </TableRow>
           </TableHead>
+
           {inventory?.map((row: any, index: any) => {
             return (
               <RowData
@@ -69,6 +71,6 @@ export const TableDetails = ({ inventory, handleOnClick }: any) => {
           })}
         </Table>
       </TableContainer>
-    </>
+    </div>
   );
 };

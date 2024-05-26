@@ -45,6 +45,7 @@ export default function CardVehicles({ DataPerfilVehicles, handleOnClick }) {
               objectFit: "cover",
               height: { xs: "76px", md: "100%" },
               width: "140px",
+              cursor: "pointer",
             }}
             onClick={() => {
               if (handleOnClick) {

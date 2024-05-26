@@ -10,7 +10,7 @@ type UserContextType = {
   LogoutFunc: () => Promise<void>;
   GetAllUser: () => Promise<void>;
   GetAllSearchBarOption: (
-    value: "vehicle" | "branch" | "product"
+    value: "vehicle" | "branch" | "product" | "route"
   ) => Promise<void>;
 } | null;
 
@@ -83,7 +83,7 @@ const UserState = (props: { children: any }) => {
   };
 
   const GetAllSearchBarOption = async (
-    value: "vehicle" | "branch" | "product"
+    value: "vehicle" | "branch" | "product" | "route"
   ) => {
     try {
       if (value === "vehicle") {
@@ -91,7 +91,7 @@ const UserState = (props: { children: any }) => {
         // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         const newOptions = res.data?.map((PerfilVehicles: any) => {
           console.log(PerfilVehicles);
-          
+
           const vehicle = {
             id: PerfilVehicles?.id,
             label: PerfilVehicles?.attributes?.plate,
@@ -118,6 +118,41 @@ const UserState = (props: { children: any }) => {
         });
         setSearchBarOption(newOptions);
       }
+
+      if (value === "route") {
+        const res = await Moralis.Cloud.run("getAllRoute");
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+
+        const allSucursales = res.data
+          .flatMap((route) => {
+            return route.branch;
+          })
+          .flat();
+        const uniqueSucursales = Array.from(
+          new Set(allSucursales.map((obj) => JSON.stringify(obj)))
+        ).map((str) => JSON.parse(str));
+
+        const sucursalesFormat = uniqueSucursales.map((sucursal) => {
+          const routes = res.data.filter((route) =>
+            route.branch.includes(sucursal)
+          );
+          return routes;
+        });
+        console.log(sucursalesFormat);
+
+        // const newOptions = res.data?.map((Route: any) => {
+        //   console.log(Route);
+
+        //   const vehicle = {
+        //     id: Route?.id,
+        //     label: Route?.attributes?.plate,
+        //     data: Route,
+        //   };
+        //   return vehicle;
+        // });
+        // setSearchBarOption(newOptions);
+      }
+
       // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     } catch (error: any) {
       console.error("🚀 error al obtener todos los vehiculos", error);

@@ -1,9 +1,9 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, styled } from "@mui/material";
 import CardVehicles from "@/components/cards/cards-vehicles";
 import InputSearchGlobal from "@/components/inputs/inputs-search-global";
-import RegisterVehicles from "../components/forms/register-vehicles";
 import { useContext, useEffect, useState } from "react";
 import { VehiclesContext } from "@/context/Vehicles/VehiclesContext";
+import { BranchContext } from "@/context/Branch/BranchContext";
 import { useBoundStore } from "@/stores/index";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
@@ -14,18 +14,39 @@ import { TableDetails } from "@/components/tracking/table/table-details";
 import LinearProgress from "@mui/material/LinearProgress";
 import calculateVolumetric from "../utils/calculateVolumetric";
 import Accordion from "@mui/material/Accordion";
-import AccordionActions from "@mui/material/AccordionActions";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-
+import CardBranchOffice from "@/components/cards/cards-branch-office";
+import CardRoutesV2 from "../components/cards/cardRouteV2";
 const steps = ["Select Vehicle", "Upload Product", "Dispach"];
+
+const BoxTitle = styled(Box)({
+  display: "flex",
+  width: "100%",
+  alignItems: "flex-start",
+  gap: "2.5rem",
+});
+const Title = styled(Typography)({
+  color: "#00294F",
+  fontFamily: "Jost",
+  fontSize: "1.5625rem",
+  fontStyle: "normal",
+  fontWeight: "600",
+  lineHeight: "normal",
+});
 
 export default function Shipping() {
   const { getAllVehicles } = useContext(VehiclesContext);
-  const { getAllInventory } = useContext(InventoryContext);
+  const { getAllInventory, CreateShipping } = useContext(InventoryContext);
+  const { getAllBranch, GetAllRoute } = useContext(BranchContext);
 
-  const { DataPerfilVehicles, DataPerfilInventory } = useBoundStore();
+  const {
+    DataPerfilVehicles,
+    DataPerfilInventory,
+    DataPerfilBranch,
+    AllRoute,
+  } = useBoundStore();
 
   const [loading, setLoading] = useState(true);
   const [vehicleSelect, setVehicleSelect] = useState([]);
@@ -38,18 +59,40 @@ export default function Shipping() {
     usedCapacity: 0,
     percentageCapacity: 0,
   });
+  const [availableRoutes, setAvailableRoutes] = useState([]);
+
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     const allVehicles = async () => await getAllVehicles(1);
     allVehicles();
     const allProduct = async () => await getAllInventory(1);
     allProduct();
+    const getAllRoute = async () => await GetAllRoute();
+    getAllRoute();
   }, []);
+
+  useEffect(() => {
+    console.log({ AllRoute });
+    if (shippingData.vehicle) {
+      const dataRoute = AllRoute.filter((route) => {
+        return route.vehicle.id === shippingData.vehicle.id;
+      });
+      setAvailableRoutes(dataRoute);
+      console.log({ a: dataRoute?.[0].branch });
+    }
+  }, [AllRoute, shippingData.vehicle]);
+
   useEffect(() => {
     if (DataPerfilInventory?.length) {
       setLocalProduct(DataPerfilInventory);
     }
   }, [DataPerfilInventory]);
+
+  const selectProduct = (data) => {
+    if (data) {
+      setLocalProduct([data]);
+    }
+  };
 
   const selectPlate = (data) => {
     if (data) {
@@ -119,6 +162,29 @@ export default function Shipping() {
     window.alert("Te pasaste de rosca perri");
   };
 
+  const selectRouter = (data) => {
+    setShippingData({ ...shippingData, route: data });
+    console.log({ ...shippingData, route: data });
+  };
+
+  const createOrder = () => {
+    const formatData = {
+      productId: shippingData.product.map((po) => {
+        return po.id;
+      }),
+      vehicleId: shippingData.vehicle.id,
+      routeId: shippingData.route.id,
+      inventoryCoD: "string",
+      entryDate: new Date()
+        .toLocaleString("es-AR", { hour12: false })
+        .replace(",", ""),
+      deliveryDate: "",
+      status: "programado",
+    };
+    console.log({ formatData });
+    CreateShipping(formatData);
+  };
+
   return (
     <Box
       sx={{
@@ -160,10 +226,12 @@ export default function Shipping() {
           </Box>
         </Box>
       )}
-      <InputSearchGlobal
-        handleClick={selectPlate}
-        type={activeStep === 0 ? "vehicle" : "product"}
-      />
+      {activeStep !== 2 && (
+        <InputSearchGlobal
+          handleClick={activeStep === 0 ? selectPlate : selectProduct}
+          type={activeStep === 0 ? "vehicle" : "route"}
+        />
+      )}
       {activeStep === 0 && (
         <Box
           sx={{
@@ -292,6 +360,53 @@ export default function Shipping() {
                 <Box sx={{ flex: "1 1 auto" }} />
                 <Button onClick={() => handleNext(2)} sx={{ mr: 1 }}>
                   Next
+                </Button>
+              </Box>
+            </>
+          </div>
+        </>
+      )}
+      {activeStep === 2 && (
+        <>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: { xs: "row", md: "column" },
+              gap: "20px",
+              flexWrap: "wrap",
+              justifyContent: { xs: "center", sm: "start" },
+            }}
+          >
+            {/* <TableDetails
+              inventory={localProduct}
+              handleOnClick={selectShippingProduct}
+            /> */}
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: "3.3125rem",
+            }}
+          >
+            <BoxTitle>
+              <Title>Route</Title>
+            </BoxTitle>
+            <Box sx={{ width: "100%" }}>
+              {availableRoutes.map((route) => {
+                return (
+                  <CardRoutesV2 data={route} handleOnclick={selectRouter} />
+                );
+              })}
+            </Box>
+          </Box>
+          <div>
+            <>
+              <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
+                <Box sx={{ flex: "1 1 auto" }} />
+                <Button onClick={() => createOrder()} sx={{ mr: 1 }}>
+                  back
                 </Button>
               </Box>
             </>
