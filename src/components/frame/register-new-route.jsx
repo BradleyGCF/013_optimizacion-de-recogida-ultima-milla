@@ -1,7 +1,8 @@
 import { Box, Typography } from "@mui/material";
-import AccordionGlobal from "@/components/accordion/accordion";
+import TextField from "@/components/TextField/TextField";
 import ButtonPrimary from "@/components/buttons/button-primary";
 import { useNavigate } from "react-router-dom";
+import {Input} from '@mui/material/Input';
 
 export default function RegisterNewRoute() {
   const navigate = useNavigate();
@@ -26,10 +27,17 @@ export default function RegisterNewRoute() {
           justifyContent: { xs: "center", md: "center" },
         }}
       >
-        <AccordionGlobal title="starting point" />
+        <TextField
+          id="outlined-basic"
+          label="Outlined"
+          variant="outlined"
+          title="starting point"
+        />
+
+        {/* <AccordionGlobal />
         <AccordionGlobal title="Branch B" />
         <AccordionGlobal title="Branch C" />
-        <AccordionGlobal title="Branch E" />
+        <AccordionGlobal title="Branch E" /> */}
       </Box>
       <Box sx={{ display: "flex", justifyContent: "center" }}>
         <ButtonPrimary

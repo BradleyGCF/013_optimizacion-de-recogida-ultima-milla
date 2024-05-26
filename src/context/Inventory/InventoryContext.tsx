@@ -10,6 +10,7 @@ type InventoryContextType = {
   getAllInventorySearch: () => Promise<void>;
   getInventoryId: (value: string) => Promise<void>;
   upDataInventory: (id: string, values: any) => Promise<void>;
+  CreateShipping: (data: any) => Promise<{ok: boolean}>;
 } | null;
 
 export const InventoryContext = createContext<InventoryContextType>(null);
@@ -114,6 +115,20 @@ const InventoryState = (props: { children: any }) => {
     }
   };
 
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+  const CreateShipping = async (data: any) => {
+    try {
+      const res = await Moralis.Cloud.run("createShipment", {
+        objectData: data,
+      });
+      return { ok: true };
+    } catch (error) {
+      const errorMessage = JSON.stringify(error);
+      const errorObjeto = JSON.parse(errorMessage);
+      console.error("🚀 error de registro", errorMessage);
+    }
+  };
+
   return (
     <InventoryContext.Provider
       value={{
@@ -122,6 +137,7 @@ const InventoryState = (props: { children: any }) => {
         getAllInventorySearch,
         getInventoryId,
         upDataInventory,
+        CreateShipping,
       }}
     >
       {props.children}
