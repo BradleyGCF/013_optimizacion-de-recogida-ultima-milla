@@ -341,32 +341,32 @@ export const CreateVehicles = yup.object().shape({
 export type NewVehicle = yup.InferType<typeof CreateVehicles>
 
 export const CreateBranchOffice = yup.object().shape({
-  fileigmbranchoffice: yup.mixed().nullable().required(),
+  // fileigmbranchoffice: yup.mixed().nullable().required(),
   fullname: yup
     .string()
-    .min(5, "fullname must be at least 5 characters long")
+    .min(3, "fullname must be at least 3 characters long")
     .max(65, "fullname must contain a maximum of 65 characters")
     .required("Require"),
 
   address: yup
     .string()
-    .min(5, "address must be at least 5 characters long")
+    .min(3, "address must be at least 3 characters long")
     .max(65, "address must contain a maximum of 65 characters")
     .required("Require"),
 
   country: yup
     .string()
-    .min(5, "country must be at least 5 characters long")
+    .min(3, "country must be at least 3 characters long")
     .max(65, "country must contain a maximum of 65 characters")
     .required("Require"),
   city: yup
     .string()
-    .min(5, "city must be at least 5 characters long")
+    .min(3, "city must be at least 3 characters long")
     .max(65, "city must contain a maximum of 65 characters")
     .required("Require"),
   manager: yup
     .string()
-    .min(5, "manager must be at least 5 characters long")
+    .min(3, "manager must be at least 3 characters long")
     .max(65, "manager must contain a maximum of 65 characters")
     .required("Require"),
 });
@@ -393,4 +393,47 @@ export const EditBranchOffice = yup.object().shape({
     .string()
     .min(5, "manager must be at least 5 characters long")
     .max(65, "manager must contain a maximum of 65 characters"),
+});
+
+
+
+export const EditVehicle = yup.object().shape({
+  objectId: yup
+  .string()
+  .required("Object ID is required"),
+  fileigmbranchoffice: yup.mixed().nullable(),
+  model: yup
+    .string()
+    .max(65, "model must contain a maximum of 65 characters")
+    .required("Require"),
+  ability: yup
+    .string()
+    .max(65, "ability must contain a maximum of 65 characters")
+    .required("Require"),
+    plate: yup
+    .string()
+    .min(5, "plate  must be at least 5 characters long")
+    .max(10, "plate must contain a maximum of 65 characters")
+    .required("Require"),
+  drivers: yup
+    .string()
+    .min(5, "drivers must be at least 5 characters long")
+    .max(65, "drivers must contain a maximum of 65 characters")
+    .required("Require"),
+    mileage: yup
+    .string()
+    .min(5, "mileage must be at least 5 characters long")
+    .max(65, "mileage must contain a maximum of 65 characters")
+    .required("Require"),
+    gps: yup
+    .string()
+    .min(5, "gps must be at least 5 characters long")
+    .max(65, "gps must contain a maximum of 65 characters")
+    .required("Require"),
+    branches: yup.array().of(
+      yup.string()
+        .min(5, "Branch office must be at least 5 characters long")
+        .max(65, "Branch office must contain a maximum of 65 characters")
+        .required("Branch office is required")
+    ).max(3, "You can only add up to 3 branch offices")
 });

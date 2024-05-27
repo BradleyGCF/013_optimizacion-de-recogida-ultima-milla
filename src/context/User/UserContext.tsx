@@ -8,43 +8,13 @@ type UserContextType = {
   LoginMail: (values: any) => void;
   SettingsUser: (userAddress: string) => Promise<void>;
   LogoutFunc: () => Promise<void>;
+  GetAllUser: () => Promise<void>;
+  GetAllSearchBarOption: (
+    value: "vehicle" | "branch" | "product" | "route"
+  ) => Promise<void>;
 } | null;
 
 export const UserContext = createContext<UserContextType>(null);
-
-async function assignRoleToUser(userId: string, roleName: string) {
-  try {
-    // Llamar a la función de nube en Moralis
-    const result = await Moralis.Cloud.run("assignRoleToUser", {
-      userId,
-      roleName,
-    });
-
-    console.log(result);
-  } catch (error) {
-    console.error("Error al asignar el rol:", error);
-  }
-}
-
-async function checkUserRole(roleName: string, ethAddress: string) {
-  try {
-    // Llamar a la función de nube en Parse Server
-    const result = await Moralis.Cloud.run("checkUserRoleFront", {
-      roleName,
-      ethAddress,
-    });
-
-    if (result && result.hasRole) {
-      console.log(`El usuario actual tiene el rol '${roleName}'.`);
-      return result.hasRole;
-    } else {
-      console.log(`El usuario actual NO tiene el rol '${roleName}'.`);
-      return result.hasRole;
-    }
-  } catch (error) {
-    console.error("Error al verificar el rol:", error);
-  }
-}
 
 const UserState = (props: { children: any }) => {
   const { logout, enableWeb3, authenticate } = useMoralis();
@@ -58,17 +28,17 @@ const UserState = (props: { children: any }) => {
     setDataPerfilUser,
     setUser,
     setAuthenticated,
+    setGetAllUsers,
+    setSearchBarOption,
   } = useBoundStore();
 
   const LoginMail = async (values: any) => {
     try {
       const res = await Moralis.User.logIn(values.username, values.password);
-      console.log(res, "USER LOGIN");
       if (res.id) {
         const userId = await Moralis.Cloud.run("getUserById", {
           userId: res.id,
         });
-        console.log(userId.user.attributes.type_user, "USER ID");
         setAuthenticated(true);
         setUser(userId);
         return {
@@ -84,6 +54,16 @@ const UserState = (props: { children: any }) => {
     }
   };
 
+  const GetAllUser = async () => {
+    try {
+      const res = await Moralis.Cloud.run("getAllUsers");
+      setGetAllUsers(res.users);
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+    } catch (error: any) {
+      console.error("🚀 error al traer todos los usuarios", error);
+    }
+  };
+
   const SettingsUser = async (userAddress: string) => {
     try {
       const SetSettingsUser = await Moralis.Cloud.run("SetSettingsUser", {
@@ -95,11 +75,88 @@ const UserState = (props: { children: any }) => {
   };
 
   const LogoutFunc = async () => {
-    const Authenticated = true;
+    localStorage.removeItem("Parse/023/currentUser");
     await logout();
     setAuthenticated(false);
     setUser([]);
     location.reload();
+  };
+
+  const GetAllSearchBarOption = async (
+    value: "vehicle" | "branch" | "product" | "route"
+  ) => {
+    try {
+      if (value === "vehicle") {
+        const res = await Moralis.Cloud.run("getAllVehicle", {});
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+        const newOptions = res.data?.map((PerfilVehicles: any) => {
+          console.log(PerfilVehicles);
+
+          const vehicle = {
+            id: PerfilVehicles?.id,
+            label: PerfilVehicles?.attributes?.plate,
+            data: PerfilVehicles,
+          };
+          return vehicle;
+        });
+        setSearchBarOption(newOptions);
+      }
+
+      if (value === "product") {
+        const res = await Moralis.Cloud.run("getAllProduct");
+        console.log(res);
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+        const newOptions = res.product?.map((products: any) => {
+          console.log(products);
+
+          const vehicle = {
+            id: products?.id,
+            label: products?.attributes?.name,
+            data: products,
+          };
+          return vehicle;
+        });
+        setSearchBarOption(newOptions);
+      }
+
+      if (value === "route") {
+        const res = await Moralis.Cloud.run("getAllRoute");
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+
+        const allSucursales = res.data
+          .flatMap((route) => {
+            return route.branch;
+          })
+          .flat();
+        const uniqueSucursales = Array.from(
+          new Set(allSucursales.map((obj) => JSON.stringify(obj)))
+        ).map((str) => JSON.parse(str));
+
+        const sucursalesFormat = uniqueSucursales.map((sucursal) => {
+          const routes = res.data.filter((route) =>
+            route.branch.includes(sucursal)
+          );
+          return routes;
+        });
+        console.log(sucursalesFormat);
+
+        // const newOptions = res.data?.map((Route: any) => {
+        //   console.log(Route);
+
+        //   const vehicle = {
+        //     id: Route?.id,
+        //     label: Route?.attributes?.plate,
+        //     data: Route,
+        //   };
+        //   return vehicle;
+        // });
+        // setSearchBarOption(newOptions);
+      }
+
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+    } catch (error: any) {
+      console.error("🚀 error al obtener todos los vehiculos", error);
+    }
   };
 
   return (
@@ -108,6 +165,8 @@ const UserState = (props: { children: any }) => {
         LoginMail,
         SettingsUser,
         LogoutFunc,
+        GetAllUser,
+        GetAllSearchBarOption,
       }}
     >
       {props.children}

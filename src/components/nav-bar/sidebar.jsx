@@ -13,10 +13,12 @@ import { useBoundStore } from "@/stores/index";
 import { shallow } from "zustand/shallow";
 import { UserContext } from "@/context/User/UserContext";
 import { useContext } from "react";
+import { getLocalStorage } from '../../hooks/getLocalStorage';
 
 export default function SideBar() {
   const navigate = useNavigate()
   const { Authenticated } = useBoundStore((state) => state, shallow);
+  const localStorage = getLocalStorage('Parse/013/currentUser')
   const { LogoutFunc } = useContext(UserContext);
   const drawerWidth = 272;
 
@@ -119,7 +121,18 @@ export default function SideBar() {
                       fontWeight: '800',
                     }}
                   >
-                    Bienvenido, administrador
+                    <Typography
+                      component="span"
+                      sx={{
+                        color: "#0062BC",
+                        fontWeight: 600,
+                        fontSize: 30,
+                      }}
+                    >
+                      Welcome,
+                    </Typography>{" "}
+                    <br />
+                    {localStorage?.type_user === "admin" ? "Administrator" : "Driver"}
                   </Typography>
                 </Box>
               </Box>
@@ -142,25 +155,25 @@ export default function SideBar() {
                 display={{ xs: 'flex', flexDirection: 'column', gap: '5px' }}
               >
                 <NavItem to="/dashboard">Home</NavItem>
-                <NavItem to="/dashboard/branch-office">Sucursales</NavItem>
+                <NavItem to="/dashboard/branch-office">Branch offices</NavItem>
                 <NavItem to="/dashboard/route-systems">
-                  Sistema de rutas
+                  Route System
                 </NavItem>
-                <NavItem to="/dashboard/vehicles">Vehículos</NavItem>
-                <NavItem to="/dashboard/parcel-service">Paquetería</NavItem>
-                <NavItem to="/dashboard/inventory">Inventario</NavItem>
+                <NavItem to="/dashboard/vehicles">Vehicles</NavItem>
+                <NavItem to="/dashboard/parcel-service">Parcel</NavItem>
+                <NavItem to="/dashboard/inventory">Inventory</NavItem>
 
                 <NavItem to="/dashboard/tracking">Tracking</NavItem>
                 <NavItem to="/dashboard/gps">GPS</NavItem>
-                <NavItem to="/dashboard/notifications">Notificaciones</NavItem>
+                <NavItem to="/dashboard/notifications">Notifications</NavItem>
                 <Box sx={{ mt: '20px', ml: '6px' }}>
 
-                  {Authenticated ? (
+                  {Authenticated || localStorage ? (
                     <Button sx={{ color: 'text.secondary', fontWeight: 600 }} onClick={() => LogoutFunc()}>
                       Logout
                     </Button>
                   ) : (
-                    <Button sx={{ color: 'text.secondary', fontWeight: 600 }} onClick={() => navigate('/sign-in')}>
+                    <Button sx={{ color: 'text.secondary', fontWeight: 600 }} onClick={() => navigate('/')}>
                       LogIn
                     </Button>
                   )}

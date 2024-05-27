@@ -5,22 +5,27 @@ import RegisterVehicles from "../components/forms/register-vehicles";
 import { useContext, useEffect, useState } from "react";
 import { VehiclesContext } from "@/context/Vehicles/VehiclesContext";
 import { useBoundStore } from "@/stores/index";
-import CircularProgress from "@mui/material/CircularProgress";
 
 export default function Vehicles() {
   const [loading, setLoading] = useState(true);
   const { getAllVehicles } = useContext(VehiclesContext);
-  // const [vehicles, setVehicles] = useState([]);
-
   const { DataPerfilVehicles } = useBoundStore();
+  const [vehicleSelect, setVehicleSelect] = useState([]);
+
+
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
-    const allVehicles = async () => await getAllVehicles();
+    const allVehicles = async () => await getAllVehicles(1);
     allVehicles();
-    setTimeout(() => {
-      setLoading(false);
-    }, 3000);
   }, []);
+
+  const selectPlate = (data) => {
+    if (data) {
+      console.log(data, 'DATA');
+      setVehicleSelect([data]);
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -33,7 +38,7 @@ export default function Vehicles() {
       <Typography variant="subtitle1" color="text.fourth">
         Vehicles
       </Typography>
-      <InputSearchGlobal />
+      <InputSearchGlobal handleClick={selectPlate} type={"vehicle"} />
       <Box
         sx={{
           display: "flex",
@@ -53,34 +58,55 @@ export default function Vehicles() {
               width: "100%",
             }}
           >
-            <CircularProgress size="100px" color="secondary" />
           </Box>
         )}
-        {DataPerfilVehicles?.length === 0 && !loading && (
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              height: "10rem",
-            }}
-          >
-            <Typography
-              variant="body1"
-              color="text.primary"
-              sx={{ fontSize: "20px !important" }}
+        {DataPerfilVehicles?.length === 0 &&
+          !loading &&
+          !vehicleSelect.length && (
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                height: "10rem",
+              }}
             >
-              Vehicles not found
-            </Typography>
-          </Box>
-        )}
-        {DataPerfilVehicles?.map((DataPerfilVehicles, index) => {
-          // biome-ignore lint/correctness/useJsxKeyInIterable: <explanation>
-          return (
+              <Typography
+                variant="body1"
+                color="text.primary"
+                sx={{ fontSize: "20px !important" }}
+              >
+                Vehicles not found
+              </Typography>
+            </Box>
+          )}
+        {!vehicleSelect.length &&
+          DataPerfilVehicles?.map((DataPerfilVehicles) => {
             // biome-ignore lint/correctness/useJsxKeyInIterable: <explanation>
-            <CardVehicles id={index} DataPerfilVehicles={DataPerfilVehicles} />
-          );
-        })}
+            return (
+              // biome-ignore lint/correctness/useJsxKeyInIterable: <explanation>
+              // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
+              // biome-ignore lint/complexity/useLiteralKeys: <explanation>
+              <div
+                key={DataPerfilVehicles.id}
+                onClick={() => handleVehicleClick(DataPerfilVehicles)}
+              >
+                <CardVehicles DataPerfilVehicles={DataPerfilVehicles} />
+              </div>
+            );
+          })}
+
+        {!!vehicleSelect.length && (
+          // biome-ignore lint/correctness/useJsxKeyInIterable: <explanation>
+          // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
+          // biome-ignore lint/complexity/useLiteralKeys: <explanation>
+          <div
+            key={vehicleSelect?.[0].id}
+            onClick={() => handleVehicleClick(vehicleSelect?.[0])}
+          >
+            <CardVehicles DataPerfilVehicles={vehicleSelect?.[0]} />
+          </div>
+        )}
       </Box>
       <RegisterVehicles />
     </Box>

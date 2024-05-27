@@ -8,11 +8,13 @@ import Navbar from "@/components/nav-bar/nav-bar";
 import Maps from "@/screens/maps";
 
 const Dashboard = React.lazy(() => import("@/screens/dashboard"));
+const DashboardDriver = React.lazy(() => import("@/screens/dashboard-driver"));
 const ProfileVehicle = React.lazy(() => import("@/screens/profile-vehicle"));
 const Package = React.lazy(() => import("@/screens/package"));
 const TrackingCurrent = React.lazy(() => import("@/screens/tracking-current"));
 const Tracking = React.lazy(() => import("@/screens/tracking"));
 const Vehicles = React.lazy(() => import("@/screens/vehicles"));
+const Shipping = React.lazy(() => import("@/screens/shipping"));
 const Settings = React.lazy(() => import("@/screens/settings"));
 const SignIn = React.lazy(() => import("@/screens/sign-in"));
 const BranchOffice = React.lazy(() => import("@/screens/branch-office"));
@@ -28,7 +30,7 @@ const Chat = React.lazy(() => import("@/screens/chat"));
 export default function Navigator() {
   const location = useLocation();
   const isSignInOrRecoverPassword =
-    location.pathname === "/sign-in" ||
+    location.pathname === "/" ||
     location.pathname === "/sign-in-admin" ||
     location.pathname === "/recover-password";
 
@@ -48,7 +50,7 @@ export default function Navigator() {
           }}
         >
           <CircularProgress
-            style={{ color: "#C02327" }}
+            style={{ color: "#00294F" }}
             sx={{ m: 2 }}
             size="68px"
           />
@@ -69,7 +71,7 @@ export default function Navigator() {
             display: { xs: "none", lg: "block" },
           }}
         >
-          {location.pathname !== "/sign-in" &&
+          {location.pathname !== "/" &&
             location.pathname !== "/sign-in-admin" &&
             location.pathname !== "/recover-password" && <Sidebar />}
         </Box>
@@ -95,7 +97,9 @@ export default function Navigator() {
             {/* <Route path="/" element={<Home />} /> */}
             <Route path="/dashboard">
               <Route index element={<Dashboard />} />
+              <Route path="driver/:id" element={<DashboardDriver />} />
               <Route path="vehicles" element={<Vehicles />} />
+              <Route path="shipping" element={<Shipping />} />
               <Route path="tracking" element={<Tracking />} />
               <Route path="branch-office" element={<BranchOffice />} />
               <Route path="profile-vehicle/:id" element={<ProfileVehicle />} />
@@ -107,17 +111,14 @@ export default function Navigator() {
               <Route path="inventory" element={<Inventory />} />
             </Route>
 
-            <Route path="/sign-in" element={<SignIn />} />
+            <Route path="/" element={<SignIn />} />
             <Route path="/recover-password" element={<RecoverPassword />} />
 
             <Route
               path="/profile-branch-office/:id"
               element={<ProfileBranchOffice />}
             />
-            <Route
-              path="/chat"
-              element={<Chat />}
-            />
+            <Route path="/chat" element={<Chat />} />
           </Routes>
         </Box>
       </Box>

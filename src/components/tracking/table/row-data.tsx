@@ -5,6 +5,7 @@ import {
   Typography,
   styled,
 } from "@mui/material";
+import { useLocation } from "react-router-dom";
 
 const DataTypography = styled(Typography)({
   color: "var(--Color-primario, #00294F)",
@@ -15,25 +16,52 @@ const DataTypography = styled(Typography)({
   lineHeight: "normal",
 });
 
-export const RowData = ({ data }: any) => {
+export const RowData = ({ data, handleOnClick }: any) => {
+  const location = useLocation().pathname;
   return (
     <>
       <TableBody sx={{ backgroundColor: "white" }}>
-        <TableRow>
+        <TableRow
+          onClick={() => {
+            if (handleOnClick) {
+              handleOnClick(data);
+            }
+          }}
+        >
+          {location === "/dashboard/inventory" ||
+          location === "/dashboard/driver" ? null : (
+            <TableCell align="center">
+              <DataTypography>
+                {data?.attributes?.name || data?.name}
+              </DataTypography>
+            </TableCell>
+          )}
           <TableCell align="center">
-            <DataTypography>{data.item}</DataTypography>
+            <DataTypography>
+              {data?.attributes?.entryDate
+                ? data?.attributes.entryDate
+                : data?.entryDate}
+            </DataTypography>
           </TableCell>
           <TableCell align="center">
-            <DataTypography>Entry date</DataTypography>
+            <DataTypography>
+              {data?.id ? data.id : data?.objectId}
+            </DataTypography>
           </TableCell>
+          {location === "/dashboard/inventory" ||
+          location === "/dashboard/driver" ? null : (
+            <TableCell align="center">
+              <DataTypography>
+                {data?.attributes?.productLength
+                  ? data?.attributes.productLength
+                  : data.productLength}
+              </DataTypography>
+            </TableCell>
+          )}
           <TableCell align="center">
-            <DataTypography>ID</DataTypography>
-          </TableCell>
-          <TableCell align="center">
-            <DataTypography>Quantity</DataTypography>
-          </TableCell>
-          <TableCell align="center">
-            <DataTypography>State</DataTypography>
+            <DataTypography>
+              {data?.attributes?.status || data?.status || "programado"}
+            </DataTypography>
           </TableCell>
         </TableRow>
       </TableBody>
