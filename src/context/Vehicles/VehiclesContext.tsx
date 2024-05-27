@@ -69,15 +69,12 @@ const VehicleState = (props: { children: any }) => {
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const LoginVehicles = async (values: any) => {
     try {
-      console.log(values, "CONTEXT");
-
       const res = await Moralis.Cloud.run("getVehicleByPlateAndCode", {
         plate: values.username,
         code: values.password,
       });
       console.log(res, "AUTO LOGIN");
       if (res?.status === "success") {
-        console.log("HOLA SOY AUTO");
         setAuthenticated(true);
         setDataPerfilVehicles(res.data.drivers);
         return { ok: true, admin: false, id: res.data.id };

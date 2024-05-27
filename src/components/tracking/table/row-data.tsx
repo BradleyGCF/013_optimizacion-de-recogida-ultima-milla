@@ -31,18 +31,22 @@ export const RowData = ({ data, handleOnClick }: any) => {
           {location === "/dashboard/inventory" ||
           location === "/dashboard/driver" ? null : (
             <TableCell align="center">
-              <DataTypography>{data?.attributes?.name}</DataTypography>
+              <DataTypography>
+                {data?.attributes?.name || data?.name}
+              </DataTypography>
             </TableCell>
           )}
           <TableCell align="center">
             <DataTypography>
               {data?.attributes?.entryDate
                 ? data?.attributes.entryDate
-                : "Entry date"}
+                : data?.entryDate}
             </DataTypography>
           </TableCell>
           <TableCell align="center">
-            <DataTypography>{data?.id ? data.id : "ID"}</DataTypography>
+            <DataTypography>
+              {data?.id ? data.id : data?.objectId}
+            </DataTypography>
           </TableCell>
           {location === "/dashboard/inventory" ||
           location === "/dashboard/driver" ? null : (
@@ -50,13 +54,13 @@ export const RowData = ({ data, handleOnClick }: any) => {
               <DataTypography>
                 {data?.attributes?.productLength
                   ? data?.attributes.productLength
-                  : "Quantity"}
+                  : data.productLength}
               </DataTypography>
             </TableCell>
           )}
           <TableCell align="center">
             <DataTypography>
-              {data?.attributes?.status ? data?.attributes.status : "State"}
+              {data?.attributes?.status || data?.status || "programado"}
             </DataTypography>
           </TableCell>
         </TableRow>

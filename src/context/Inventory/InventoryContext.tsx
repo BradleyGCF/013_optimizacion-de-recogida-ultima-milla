@@ -10,14 +10,18 @@ type InventoryContextType = {
   getAllInventorySearch: () => Promise<void>;
   getInventoryId: (value: string) => Promise<void>;
   upDataInventory: (id: string, values: any) => Promise<void>;
-  CreateShipping: (data: any) => Promise<{ok: boolean}>;
+  CreateShipping: (data: any) => Promise<{ ok: boolean }>;
 } | null;
 
 export const InventoryContext = createContext<InventoryContextType>(null);
 
 const InventoryState = (props: { children: any }) => {
-  const { setDataPerfilInventory, setInventory, setDataInventorySearch } =
-    useBoundStore();
+  const {
+    setDataPerfilInventory,
+    setInventory,
+    setDataInventorySearch,
+   
+  } = useBoundStore();
 
   const RegisterInventory = async (values: any, volumetricWeight: number) => {
     console.log(volumetricWeight, "REGISTER SUCURSAL");

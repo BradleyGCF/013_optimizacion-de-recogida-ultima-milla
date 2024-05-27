@@ -3,10 +3,14 @@ export const storeBranch = (set) => ({
   Branch: [], // DATA_Branch
   DataBranchSearch: [],
   AllRoute: [],
+  AllShipment: [],
+
   // Authenticated: false, // Branch_AUTHENTICATED
 
   setDataPerfilBranch: (value) => set({ DataPerfilBranch: value }),
   setBranch: (value) => set({ Branch: value }),
   setDataBranchSearch: (value) => set({ DataBranchSearch: value }),
   setAllRoute: (value) => set({ AllRoute: value }),
+  setAllShipment: (value) => set({ AllShipment: value }),
+
 });

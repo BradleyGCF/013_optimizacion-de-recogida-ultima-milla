@@ -13,6 +13,7 @@ import {
   IconButton,
   InputAdornment,
   Stack,
+  CircularProgress,
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
@@ -80,6 +81,7 @@ function FontStyle(size: any, weight: any) {
 
 export default function SignIn() {
   const navigate = useNavigate();
+  const [loading, setLoading] = React.useState(false);
   const [response, setResponse] = React.useState(false);
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const { Authenticated, Admin, setAdmin } = useBoundStore(
@@ -100,6 +102,7 @@ export default function SignIn() {
     },
     validationSchema: LoginScheme,
     onSubmit: async (values, { resetForm }) => {
+      setLoading(true);
       try {
         var res;
         if (Admin) {
@@ -116,8 +119,10 @@ export default function SignIn() {
             duration: 2000,
             position: "top-center",
           });
+          setLoading(false);
           return;
         } else {
+          setLoading(false);
           toast.error("Username o contraseña incorrecto, vuleve a intentarlo", {
             duration: 4000,
             position: "top-center",
@@ -125,6 +130,7 @@ export default function SignIn() {
           return;
         }
       } catch (error) {
+        setLoading(false);
         console.log(error);
         toast.error("Algo salio mal, vuelve a intentarlo", {
           duration: 3000,
@@ -314,7 +320,15 @@ export default function SignIn() {
                   width={"100%"}
                   type="submit"
                 >
-                  Sign In
+                  {!loading ? (
+                    "Sign In"
+                  ) : (
+                    <CircularProgress
+                      style={{ color: "white" }}
+                      // sx={{ m:  }}
+                      size="20px"
+                    />
+                  )}
                 </ButtonPrimary>
               </Box>
             </form>

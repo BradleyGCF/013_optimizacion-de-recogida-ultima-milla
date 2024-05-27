@@ -2,6 +2,7 @@ import { Box, Typography, styled } from "@mui/material";
 import CardVehicles from "@/components/cards/cards-vehicles";
 import InputSearchGlobal from "@/components/inputs/inputs-search-global";
 import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { VehiclesContext } from "@/context/Vehicles/VehiclesContext";
 import { BranchContext } from "@/context/Branch/BranchContext";
 import { useBoundStore } from "@/stores/index";
@@ -20,6 +21,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CardBranchOffice from "@/components/cards/cards-branch-office";
 import CardRoutesV2 from "../components/cards/cardRouteV2";
 const steps = ["Select Vehicle", "Upload Product", "Dispach"];
+import Swal from "sweetalert2";
 
 const BoxTitle = styled(Box)({
   display: "flex",
@@ -43,8 +45,8 @@ export default function Shipping() {
 
   const {
     DataPerfilVehicles,
-    DataPerfilInventory,
     DataPerfilBranch,
+    DataPerfilInventory,
     AllRoute,
   } = useBoundStore();
 
@@ -60,7 +62,7 @@ export default function Shipping() {
     percentageCapacity: 0,
   });
   const [availableRoutes, setAvailableRoutes] = useState([]);
-
+  const navigate = useNavigate();
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     const allVehicles = async () => await getAllVehicles(1);
@@ -77,8 +79,8 @@ export default function Shipping() {
       const dataRoute = AllRoute.filter((route) => {
         return route.vehicle.id === shippingData.vehicle.id;
       });
-      setAvailableRoutes(dataRoute);
-      console.log({ a: dataRoute?.[0].branch });
+      setAvailableRoutes([].concat(dataRoute));
+      // console.log({ a: dataRoute?.[0].branch });
     }
   }, [AllRoute, shippingData.vehicle]);
 
@@ -162,18 +164,30 @@ export default function Shipping() {
     window.alert("Te pasaste de rosca perri");
   };
 
-  const selectRouter = (data) => {
+  const selectRouter = async (data) => {
     setShippingData({ ...shippingData, route: data });
+    const result = await Swal.fire({
+      title: "dispatch route ",
+      showDenyButton: true,
+      confirmButtonText: "Dispatch",
+      denyButtonText: "Cancel",
+    });
+    /* Read more about isConfirmed, isDenied below */
+    if (result.isConfirmed) {
+      Swal.fire("Saved!", "", "success");
+      createOrder();
+    } else if (result.isDenied) {
+      return;
+    }
+
     console.log({ ...shippingData, route: data });
   };
 
   const createOrder = () => {
     const formatData = {
-      productId: shippingData.product.map((po) => {
-        return po.id;
-      }),
-      vehicleId: shippingData.vehicle.id,
-      routeId: shippingData.route.id,
+      productId: shippingData.product?.map((po) => {}),
+      vehicleId: shippingData.vehicle?.id,
+      routeId: shippingData.route?.id,
       inventoryCoD: "string",
       entryDate: new Date()
         .toLocaleString("es-AR", { hour12: false })
@@ -181,8 +195,10 @@ export default function Shipping() {
       deliveryDate: "",
       status: "programado",
     };
+
     console.log({ formatData });
     CreateShipping(formatData);
+    navigate("/dashboard/tracking");
   };
 
   return (
@@ -394,23 +410,13 @@ export default function Shipping() {
               <Title>Route</Title>
             </BoxTitle>
             <Box sx={{ width: "100%" }}>
-              {availableRoutes.map((route) => {
+              {availableRoutes?.map((route) => {
                 return (
                   <CardRoutesV2 data={route} handleOnclick={selectRouter} />
                 );
               })}
             </Box>
           </Box>
-          <div>
-            <>
-              <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-                <Box sx={{ flex: "1 1 auto" }} />
-                <Button onClick={() => createOrder()} sx={{ mr: 1 }}>
-                  back
-                </Button>
-              </Box>
-            </>
-          </div>
         </>
       )}
     </Box>
