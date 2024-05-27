@@ -59,6 +59,7 @@ const VehicleState = (props: { children: any }) => {
   const {
     setDataPerfilVehicles,
     setGetDataVehicle,
+    setVehiclesId,
     setUploadVehicle,
     setAuthenticated,
     setGetData,
@@ -73,13 +74,13 @@ const VehicleState = (props: { children: any }) => {
         plate: values.username,
         code: values.password,
       });
-      console.log(res, "AUTO LOGIN");
       if (res?.status === "success") {
         setAuthenticated(true);
         setDataPerfilVehicles(res.data.drivers);
-        return { ok: true, admin: false, id: res.data.id };
+        setVehiclesId(res);
+        return { ok: true, admin: false, id: res.data.objectId };
       }
-      return { ok: false, admin: false, id: "" };
+      return { ok: false, admin: false };
     } catch (error) {
       const errorMessage = JSON.stringify(error);
       const errorObjeto = JSON.parse(errorMessage);
@@ -136,7 +137,6 @@ const VehicleState = (props: { children: any }) => {
       const res = await Moralis.Cloud.run("getVehicleByIdOrPlate", {
         objectId,
       });
-      console.log(res.data, "datos del vehiculo obtenidos correctamente");
       setGetDataVehicle(res.data);
     } catch (error) {
       console.error("Error updating data:", error);

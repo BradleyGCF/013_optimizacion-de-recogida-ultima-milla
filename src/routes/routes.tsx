@@ -3,7 +3,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import * as React from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import Sidebar from "@/components/sidebar/sidebar";
-
+import { ProtectedRoute } from "@/components/routes/protectedRoute";
 import Navbar from "@/components/nav-bar/nav-bar";
 import Maps from "@/screens/maps";
 
@@ -95,30 +95,39 @@ export default function Navigator() {
         >
           <Routes>
             {/* <Route path="/" element={<Home />} /> */}
-            <Route path="/dashboard">
-              <Route index element={<Dashboard />} />
-              <Route path="driver/:id" element={<DashboardDriver />} />
-              <Route path="vehicles" element={<Vehicles />} />
-              <Route path="shipping" element={<Shipping />} />
-              <Route path="tracking" element={<Tracking />} />
-              <Route path="branch-office" element={<BranchOffice />} />
-              <Route path="profile-vehicle/:id" element={<ProfileVehicle />} />
-              <Route path="route-systems" element={<RouteSystems />} />
-              <Route path="profile-routes/:id" element={<ProfileRoutes />} />
-              <Route path="maps" element={<Maps />} />
-              <Route path="ubication/:id" element={<TrackingCurrent />} />
-              <Route path="parcel-service" element={<Package />} />
-              <Route path="inventory" element={<Inventory />} />
+            <Route element={<ProtectedRoute rol="driver" />}>
+              <Route
+                path="/dashboard/driver/:id"
+                element={<DashboardDriver />}
+              />
             </Route>
+            <Route element={<ProtectedRoute rol="admin" />}>
+              <Route path="/dashboard">
+                <Route index element={<Dashboard />} />
+                <Route path="vehicles" element={<Vehicles />} />
+                <Route path="shipping" element={<Shipping />} />
+                <Route path="tracking" element={<Tracking />} />
+                <Route path="branch-office" element={<BranchOffice />} />
+                <Route
+                  path="profile-vehicle/:id"
+                  element={<ProfileVehicle />}
+                />
+                <Route path="route-systems" element={<RouteSystems />} />
+                <Route path="profile-routes/:id" element={<ProfileRoutes />} />
+                <Route path="maps" element={<Maps />} />
+                <Route path="ubication/:id" element={<TrackingCurrent />} />
+                <Route path="parcel-service" element={<Package />} />
+                <Route path="inventory" element={<Inventory />} />
+              </Route>
+              <Route
+                path="/profile-branch-office/:id"
+                element={<ProfileBranchOffice />}
+              />
+            </Route>
+            <Route path="/chat" element={<Chat />} />
 
             <Route path="/" element={<SignIn />} />
             <Route path="/recover-password" element={<RecoverPassword />} />
-
-            <Route
-              path="/profile-branch-office/:id"
-              element={<ProfileBranchOffice />}
-            />
-            <Route path="/chat" element={<Chat />} />
           </Routes>
         </Box>
       </Box>

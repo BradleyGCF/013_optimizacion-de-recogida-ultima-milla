@@ -82,6 +82,7 @@ const UserState = (props: { children: any }) => {
 
   const LogoutFunc = async () => {
     localStorage.removeItem("Parse/023/currentUser");
+    localStorage.removeItem("vehicle");
     await logout();
     setAuthenticated(false);
     setUser([]);

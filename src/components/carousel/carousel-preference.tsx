@@ -99,14 +99,26 @@ const responsive = {
   },
 };
 
-export default function CarouselPreference({}) {
+interface VehicleId {
+  id: string;
+}
+
+export default function CarouselPreference({ vehicleId }: any) {
   const navigate = useNavigate();
   const [check, setCheck] = useState<any>();
-  const [driver, setDriver] = useState<number | null>();
+  // const [driver, setDriver] = useState<number | null>();
   const { DataPerfilVehicles } = useBoundStore();
 
   const handleClick = (values: string) => {
     setCheck(values);
+  };
+
+  const handleSelectDrive = () => {
+    localStorage.setItem(
+      "vehicle",
+      JSON.stringify({ driverId: check, vehicleId })
+    );
+    navigate(`/dashboard/driver/${check}`);
   };
 
   return (
@@ -230,7 +242,7 @@ export default function CarouselPreference({}) {
       <ButtonPrimary
         width="300px"
         disabled={check == null}
-        onClick={() => navigate(`/dashboard/driver/${check}`)}
+        onClick={handleSelectDrive}
       >
         Select
       </ButtonPrimary>

@@ -84,7 +84,7 @@ export default function SignIn() {
   const [loading, setLoading] = React.useState(false);
   const [response, setResponse] = React.useState(false);
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  const { Authenticated, Admin, setAdmin } = useBoundStore(
+  const { Authenticated, Admin, setAdmin, VehiclesId } = useBoundStore(
     (state: any) => state,
     shallow
   );
@@ -94,7 +94,6 @@ export default function SignIn() {
   const [values, setValues] = React.useState({
     showPassword: false,
   });
-
   const formik = useFormik({
     initialValues: {
       username: "",
@@ -106,6 +105,7 @@ export default function SignIn() {
       try {
         var res;
         if (Admin) {
+          console.log(Admin, "ADMIN");
           res = await LoginMail(values);
         } else if (!Admin) {
           res = await LoginVehicles(values);
@@ -114,7 +114,7 @@ export default function SignIn() {
           if (res?.admin === "admin") {
             navigate("/dashboard");
           }
-          // resetForm();
+          resetForm();
           toast.success("¡Bienvenido!", {
             duration: 2000,
             position: "top-center",
@@ -177,7 +177,7 @@ export default function SignIn() {
         />
       </Box>
 
-      {Authenticated === false && !response ? (
+      {(Authenticated === false && !response) || Admin ? (
         <Box
           sx={{
             display: "flex",
@@ -358,7 +358,7 @@ export default function SignIn() {
           </Box>
         </Box>
       ) : (
-        <CarouselPreference key={1} />
+        <CarouselPreference key={1} vehicleId={VehiclesId?.data?.objectId} />
       )}
     </Box>
   );

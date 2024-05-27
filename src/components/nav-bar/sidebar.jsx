@@ -18,7 +18,8 @@ import { getLocalStorage } from '../../hooks/getLocalStorage';
 export default function SideBar() {
   const navigate = useNavigate()
   const { Authenticated } = useBoundStore((state) => state, shallow);
-  const localStorage = getLocalStorage('Parse/013/currentUser')
+  const localStorage = getLocalStorage('Parse/013/currentUser');
+  const localStorageVehicle = getLocalStorage("vehicle");
   const { LogoutFunc } = useContext(UserContext);
   const drawerWidth = 272;
 
@@ -168,7 +169,7 @@ export default function SideBar() {
                 <NavItem to="/dashboard/notifications">Notifications</NavItem>
                 <Box sx={{ mt: '20px', ml: '6px' }}>
 
-                  {Authenticated || localStorage ? (
+                  {Authenticated || localStorage || localStorageVehicle ? (
                     <Button sx={{ color: 'text.secondary', fontWeight: 600 }} onClick={() => LogoutFunc()}>
                       Logout
                     </Button>
