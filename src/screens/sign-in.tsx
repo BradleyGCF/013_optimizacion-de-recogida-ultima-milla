@@ -86,7 +86,6 @@ export default function SignIn() {
     (state: any) => state,
     shallow
   );
-
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const { LoginMail }: any = React.useContext(UserContext);
   const { LoginVehicles }: any = React.useContext(VehiclesContext);
@@ -112,17 +111,18 @@ export default function SignIn() {
           if (res?.admin === "admin") {
             navigate("/dashboard");
           }
-          resetForm();
+          // resetForm();
           toast.success("¡Bienvenido!", {
             duration: 2000,
             position: "top-center",
           });
-          resetForm();
+          return;
         } else {
           toast.error("Username o contraseña incorrecto, vuleve a intentarlo", {
             duration: 4000,
             position: "top-center",
           });
+          return;
         }
       } catch (error) {
         console.log(error);
@@ -344,7 +344,7 @@ export default function SignIn() {
           </Box>
         </Box>
       ) : (
-        <CarouselPreference />
+        <CarouselPreference key={1} />
       )}
     </Box>
   );

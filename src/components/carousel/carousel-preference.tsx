@@ -8,6 +8,7 @@ import React, { useState } from "react";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import RadioButtonCheckedOutlinedIcon from "@mui/icons-material/RadioButtonCheckedOutlined";
 import { useBoundStore } from "@/stores/index";
+import { useNavigate } from "react-router-dom";
 
 const CustomButtonGroup = ({
   next,
@@ -99,19 +100,20 @@ const responsive = {
 };
 
 export default function CarouselPreference({}) {
+  const navigate = useNavigate();
   const [check, setCheck] = useState<any>();
   const [driver, setDriver] = useState<number | null>();
   const { DataPerfilVehicles } = useBoundStore();
 
-  const handleClick = (value: string) => {
-    setCheck(value);
+  const handleClick = (values: string) => {
+    setCheck(values);
   };
 
   return (
     <Box
       sx={{
         maxWidth: {
-          xs: "320px",
+          xs: "500px",
           sm: "500px",
           md: "780px",
           lg: "900px",
@@ -149,7 +151,7 @@ export default function CarouselPreference({}) {
           justifyContent: "center",
           alignItems: "center",
           gap: "3rem",
-          width: "20rem",
+          width: { xs: "100%", sm: "20rem" },
         }}
       >
         <Box
@@ -157,7 +159,7 @@ export default function CarouselPreference({}) {
             display: "flex",
             width: "100%",
             flexDirection: "column",
-            alignItems: "flex-start",
+            alignItems: "center",
             gap: "0.6875rem",
             height: DataPerfilVehicles.length > 0 ? "200px" : "none",
             overflowY: "auto",
@@ -177,17 +179,24 @@ export default function CarouselPreference({}) {
                   sx={{
                     display: "flex",
                     width: "100%",
+                    maxWidth: {
+                      xs: "300px",
+                      md: "100%",
+                    },
                     padding: ".5rem",
                     alignItems: "center",
                     justifyContent: "center",
                     gap: "3rem",
                     borderRadius: "0.625rem",
-                    border: `${check === index ? "4px solid #0062BC" : ""}`,
+                    border: `${
+                      check === data.objectId ? "4px solid #0062BC" : ""
+                    }`,
                     boxShadow: "-2px 11px 18px #0062bc38",
+                    cursor: "pointer",
                   }}
-                  onClick={() => handleClick(index)}
+                  onClick={() => handleClick(data.objectId)}
                 >
-                  {check === "value" ? (
+                  {check === data.objectId ? (
                     <RadioButtonCheckedOutlinedIcon
                       fontSize="small"
                       sx={{ color: "#0062BC" }}
@@ -202,6 +211,7 @@ export default function CarouselPreference({}) {
                   <Typography
                     sx={{
                       color: "#00294F",
+                      width: "10rem",
                       fontFamily: "Jost",
                       fontSize: "1.25 rem !important",
                       fontStyle: "normal",
@@ -209,13 +219,27 @@ export default function CarouselPreference({}) {
                       lineHeight: "normal",
                     }}
                   >
-                    {data?.name}
+                    {data?.username ? data?.username : "Nombre del conductor"}
                   </Typography>
                 </Box>
               );
             })}
         </Box>
-        {/* <Carousel
+        {/* CAROUSEL */}
+      </Box>
+      <ButtonPrimary
+        width="300px"
+        disabled={check == null}
+        onClick={() => navigate(`/dashboard/driver/${check}`)}
+      >
+        Select
+      </ButtonPrimary>
+    </Box>
+  );
+}
+
+{
+  /* <Carousel
           renderButtonGroupOutside={true}
           arrows={false}
           responsive={responsive}
@@ -250,11 +274,5 @@ export default function CarouselPreference({}) {
               </Box>
             );
           })}
-        </Carousel>  */}
-      </Box>
-      <ButtonPrimary width="300px" disabled={driver == null}>
-        Select
-      </ButtonPrimary>
-    </Box>
-  );
+        </Carousel>  */
 }
