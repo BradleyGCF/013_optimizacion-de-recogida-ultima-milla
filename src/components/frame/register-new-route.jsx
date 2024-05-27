@@ -24,6 +24,7 @@ export default function RegisterNewRoute() {
     validationSchema: createNewRouteScheme,
     onSubmit: async (values, { resetForm }) => {
 			const response = await createNewRoute(values);
+      console.log(response, 'Response desde el componente')
 			resetForm();
 			
 		},
