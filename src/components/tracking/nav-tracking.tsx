@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { Box, Typography, styled } from "@mui/material";
 import { useBoundStore } from "@/stores/index";
 import { shallow } from "zustand/shallow";

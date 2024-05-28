@@ -35,8 +35,6 @@ export const TableDetails = ({ inventory, handleOnClick }: any) => {
               backgroundColor: "#0062BC",
             }}
           >
-            {console.log({inventory})
-            }
             <TableRow>
               {location === "/dashboard/inventory" ||
               location === "/dashboard/driver" ? null : (

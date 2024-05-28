@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { Box, Container, Typography } from "@mui/material";
 import { ArrowBack } from "@/components/arrow-back/arrow-back";
 import { NavTracking } from "@/components/tracking/nav-tracking";

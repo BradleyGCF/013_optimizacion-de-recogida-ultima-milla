@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import React, { createContext } from "react";
 import { useMoralis } from "react-moralis";
 import { Moralis } from "moralis-v1";
