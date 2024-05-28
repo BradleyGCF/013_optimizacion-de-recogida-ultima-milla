@@ -13,6 +13,7 @@ import {
   IconButton,
   InputAdornment,
   Stack,
+  CircularProgress,
 } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import LockOpenIcon from "@mui/icons-material/LockOpen";
@@ -80,9 +81,10 @@ function FontStyle(size: any, weight: any) {
 
 export default function SignIn() {
   const navigate = useNavigate();
+  const [loading, setLoading] = React.useState(false);
   const [response, setResponse] = React.useState(false);
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  const { Authenticated, Admin, setAdmin } = useBoundStore(
+  const { Authenticated, Admin, setAdmin, VehiclesId } = useBoundStore(
     (state: any) => state,
     shallow
   );
@@ -92,7 +94,6 @@ export default function SignIn() {
   const [values, setValues] = React.useState({
     showPassword: false,
   });
-
   const formik = useFormik({
     initialValues: {
       username: "",
@@ -100,9 +101,11 @@ export default function SignIn() {
     },
     validationSchema: LoginScheme,
     onSubmit: async (values, { resetForm }) => {
+      setLoading(true);
       try {
         var res;
         if (Admin) {
+          console.log(Admin, "ADMIN");
           res = await LoginMail(values);
         } else if (!Admin) {
           res = await LoginVehicles(values);
@@ -111,13 +114,15 @@ export default function SignIn() {
           if (res?.admin === "admin") {
             navigate("/dashboard");
           }
-          // resetForm();
+          resetForm();
           toast.success("¡Bienvenido!", {
             duration: 2000,
             position: "top-center",
           });
+          setLoading(false);
           return;
         } else {
+          setLoading(false);
           toast.error("Username o contraseña incorrecto, vuleve a intentarlo", {
             duration: 4000,
             position: "top-center",
@@ -125,6 +130,7 @@ export default function SignIn() {
           return;
         }
       } catch (error) {
+        setLoading(false);
         console.log(error);
         toast.error("Algo salio mal, vuelve a intentarlo", {
           duration: 3000,
@@ -171,7 +177,7 @@ export default function SignIn() {
         />
       </Box>
 
-      {Authenticated === false && !response ? (
+      {(Authenticated === false && !response) || Admin ? (
         <Box
           sx={{
             display: "flex",
@@ -314,7 +320,15 @@ export default function SignIn() {
                   width={"100%"}
                   type="submit"
                 >
-                  Sign In
+                  {!loading ? (
+                    "Sign In"
+                  ) : (
+                    <CircularProgress
+                      style={{ color: "white" }}
+                      // sx={{ m:  }}
+                      size="20px"
+                    />
+                  )}
                 </ButtonPrimary>
               </Box>
             </form>
@@ -344,7 +358,7 @@ export default function SignIn() {
           </Box>
         </Box>
       ) : (
-        <CarouselPreference key={1} />
+        <CarouselPreference key={1} vehicleId={VehiclesId?.data?.objectId} />
       )}
     </Box>
   );

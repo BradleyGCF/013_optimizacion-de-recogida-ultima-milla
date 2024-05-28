@@ -5,9 +5,18 @@ import ButtonPrimary from "@/components/buttons/button-primary";
 import NearMeIcon from "@mui/icons-material/NearMe";
 import { TableDetails } from "@/components/select/table-details";
 import { useNavigate } from "react-router-dom";
+import { useContext, useEffect } from "react";
+import { VehiclesContext } from "@/context/Vehicles/VehiclesContext";
+import { getLocalStorage } from "@/hooks/getLocalStorage";
+import { useBoundStore } from "@/stores/index";
+import UpdateShipping from "@/components/tracking/shippingUpdate/shippingUpdate";
 
 export default function DashboardDriver() {
   const navigate = useNavigate();
+  const { IdGetVehicle }: any = useContext(VehiclesContext);
+  const { GetDataVehicle } = useBoundStore();
+  console.log(GetDataVehicle, "GETVEHICLE");
+
   const BoxTitle = styled(Box)({
     display: "flex",
     width: "100%",
@@ -23,6 +32,12 @@ export default function DashboardDriver() {
     lineHeight: "normal",
   });
 
+  useEffect(() => {
+    const vehilcleid = getLocalStorage("vehicle");
+    console.log(vehilcleid?.vehicleId, "ID DASHBOARD");
+    IdGetVehicle(vehilcleid.vehicleId);
+  }, []);
+
   return (
     <Box
       sx={{
@@ -36,7 +51,7 @@ export default function DashboardDriver() {
         <Title>Vehicles</Title>
       </BoxTitle>
       <Box sx={{ width: "100%" }}>
-        <CardVehicles />
+        <CardVehicles DataPerfilVehicles={GetDataVehicle[0]} />
       </Box>
       <BoxTitle>
         <Title>Route</Title>
@@ -76,6 +91,9 @@ export default function DashboardDriver() {
         }}
       >
         <TableDetails />
+      </Box>
+      <Box sx={{ width: "100%" }}>
+        <UpdateShipping />
       </Box>
     </Box>
   );

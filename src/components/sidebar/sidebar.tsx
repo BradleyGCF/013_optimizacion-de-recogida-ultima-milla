@@ -64,6 +64,7 @@ export default function SideBar() {
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const { Authenticated } = useBoundStore((state: any) => state, shallow);
   const localStorage = getLocalStorage("Parse/013/currentUser");
+  const localStorageVehicle = getLocalStorage("vehicle");
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const { LogoutFunc }: any = useContext(UserContext);
   const location = useLocation();
@@ -177,7 +178,7 @@ export default function SideBar() {
             mx: "20px",
           }}
         >
-          {Authenticated || localStorage ? (
+          {Authenticated || localStorage || localStorageVehicle ? (
             <Typography
               sx={{ color: "#fff", fontWeight: 600 }}
               onClick={() => LogoutFunc()}

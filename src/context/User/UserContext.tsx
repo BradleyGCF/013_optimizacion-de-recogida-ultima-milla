@@ -39,11 +39,17 @@ const UserState = (props: { children: any }) => {
         const userId = await Moralis.Cloud.run("getUserById", {
           userId: res.id,
         });
-        setAuthenticated(true);
-        setUser(userId);
+        if (userId?.user?.attributes?.type_user === "admin") {
+          setAuthenticated(true);
+          setUser(userId);
+          return {
+            ok: true,
+            admin: userId.user.attributes.type_user,
+          };
+        }
         return {
-          ok: true,
-          admin: userId.user.attributes.type_user,
+          ok: false,
+          admin: "",
         };
       }
       return;
@@ -76,6 +82,7 @@ const UserState = (props: { children: any }) => {
 
   const LogoutFunc = async () => {
     localStorage.removeItem("Parse/023/currentUser");
+    localStorage.removeItem("vehicle");
     await logout();
     setAuthenticated(false);
     setUser([]);
@@ -124,16 +131,16 @@ const UserState = (props: { children: any }) => {
         // biome-ignore lint/suspicious/noExplicitAny: <explanation>
 
         const allSucursales = res.data
-          .flatMap((route) => {
+          .flatMap((route: any) => {
             return route.branch;
           })
           .flat();
         const uniqueSucursales = Array.from(
-          new Set(allSucursales.map((obj) => JSON.stringify(obj)))
-        ).map((str) => JSON.parse(str));
+          new Set(allSucursales.map((obj: any) => JSON.stringify(obj)))
+        ).map((str: any) => JSON.parse(str));
 
         const sucursalesFormat = uniqueSucursales.map((sucursal) => {
-          const routes = res.data.filter((route) =>
+          const routes = res.data.filter((route: any) =>
             route.branch.includes(sucursal)
           );
           return routes;

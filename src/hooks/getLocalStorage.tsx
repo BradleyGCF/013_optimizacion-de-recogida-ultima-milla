@@ -1,14 +1,17 @@
 export const getLocalStorage = (path: string) => {
   const userLocal = localStorage.getItem(path);
-  if (userLocal) {
+  if (path === "vehicle" && userLocal) {
+    const userStorage = JSON.parse(userLocal);
+    if (userStorage.vehicleId) {
+      return userStorage;
+    }
+  }
+  if (path === "Parse/013/currentUser" && userLocal) {
     const userStorage = JSON.parse(userLocal);
     if (userStorage.objectId) {
       return userStorage;
     }
-    if (userLocal && path === "shoppingCard") {
-      const userStorage = JSON.parse(userLocal);
-      return userStorage;
-    }
+    return userStorage;
   }
   return;
 };

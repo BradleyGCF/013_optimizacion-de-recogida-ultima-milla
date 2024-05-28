@@ -168,7 +168,7 @@ export default function CardTracking({ card, branches }: any) {
       </AccordionSummary>
       <AccordionDetails>
         <DetailsTable card={card} />
-        <UpdateShipping id={card?.objectId}/>
+        <UpdateShipping id={card?.objectId} />
       </AccordionDetails>
     </Accordion>
   );
