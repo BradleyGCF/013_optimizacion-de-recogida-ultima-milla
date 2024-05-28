@@ -1,3 +1,4 @@
+
 declare module "@/components/nav-bar/nav-items";
 declare module "@/components/nav-bar/nav-items";
 declare module "@/components/nav-bar/sidebar";
@@ -39,6 +40,7 @@ declare module "@/screens/home";
 declare module "@/screens/vehicles";
 declare module "@/screens/shipping";
 declare module "@/screens/tracking";
+
 declare module "@/screens/package";
 declare module "@/screens/profile-vehicle";
 declare module "@/screens/settings";
