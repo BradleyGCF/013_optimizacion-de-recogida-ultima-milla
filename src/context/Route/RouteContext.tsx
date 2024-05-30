@@ -15,17 +15,22 @@ export const RouteContext = createContext<RouteContextType>(null);
 const RouteState = (props: { children: any }) => {
 
    const createNewRoute = async (values: any) => {
+      console.log('REGISTER ROUTE', values)
       try {
          const res = await Moralis.Cloud.run("createRoute", {
             objectData: {
                startingPoint: {
-                  latitude: '34.25',
-                  longitude: '119.41'
+                  latitude: values.startingPoint.lat,
+                  longitude: values.startingPoint.lon
+               },
+               endingPoint: {
+                  latitude: values.endingPoint.lat,
+                  longitude: values.endingPoint.lat,
                },
                vehicle: values.vehicle,
-               branch: values.branches[0],
+               branch: values.branches,
                state: 'programado',
-               products: ['Sin productos 1', 'Sin productos 2']
+               products: ['Producto 1', 'Producto 2']
             }
          })
          console.log(res)

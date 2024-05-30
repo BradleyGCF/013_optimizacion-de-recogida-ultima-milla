@@ -107,7 +107,16 @@ export const modalInventoryScheme = yup.object().shape({
 
 export const createNewRouteScheme = yup.object().shape({
   startingPoint: yup
-  .string().min(5).required('Starting point is required'),
+  .object().required('A starting point is required'),
+
+  endingPoint: yup
+  .object().required('An ending point is required'),
+
+  startingName: yup
+  .string().required('A starting point is required'),
+
+  endingName: yup
+  .string().required('An ending point is requiered'),
 
   vehicle: yup
   .string().min(5).required('A vehicle is required'),
