@@ -15,7 +15,7 @@ import { shallow } from "zustand/shallow";
 import { useFormik } from "formik";
 import { toast } from "react-hot-toast";
 import { useContext, useEffect } from "react";
-import { modalInventorySchema } from "@/schemas";
+import { modalInventoryScheme } from "@/schemas";
 import { BranchContext } from "@/context/Branch/BranchContext";
 import { InventoryContext } from "@/context/Inventory/InventoryContext";
 import { getWeight } from "@/hooks/getWeight";
@@ -77,7 +77,7 @@ export default function InventoryModal() {
       weight: 0,
       branch: "",
     },
-    validationSchema: modalInventorySchema,
+    validationSchema: modalInventoryScheme,
     onSubmit: (values: any, { resetForm }) => {
       const volumetricWeight = getWeight(
         values.width,

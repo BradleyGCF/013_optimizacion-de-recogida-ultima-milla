@@ -19,7 +19,8 @@ declare module "@/components/modal/inventoryModal";
 declare module "@/components/cards/cards-vehicles";
 declare module "@/components/cards/card-profile-routes";
 declare module "@/components/cards/cards-branch-office";
-declare module '@/components/routes/protectedRoute';
+declare module "@/components/routes/protectedRoute";
+declare module "@/components/map/MapView"
 
 declare module "@/components/buttons/button-primary";
 declare module "@/components/inputs/input-search-navbar";

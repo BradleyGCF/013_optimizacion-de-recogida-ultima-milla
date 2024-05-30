@@ -95,13 +95,13 @@ export default function Navigator() {
         >
           <Routes>
             {/* <Route path="/" element={<Home />} /> */}
-            <Route element={<ProtectedRoute rol="driver" />}>
+            {/* <Route element={<ProtectedRoute rol="driver" />}>
               <Route
                 path="/dashboard/driver/:id"
                 element={<DashboardDriver />}
               />
-            </Route>
-            <Route element={<ProtectedRoute rol="admin" />}>
+            </Route> */}
+            {/* <Route element={<ProtectedRoute rol="admin" />}> */}
               <Route path="/dashboard">
                 <Route index element={<Dashboard />} />
                 <Route path="vehicles" element={<Vehicles />} />
@@ -123,7 +123,7 @@ export default function Navigator() {
                 path="/profile-branch-office/:id"
                 element={<ProfileBranchOffice />}
               />
-            </Route>
+            {/* </Route> */}
             <Route path="/chat" element={<Chat />} />
 
             <Route path="/" element={<SignIn />} />
