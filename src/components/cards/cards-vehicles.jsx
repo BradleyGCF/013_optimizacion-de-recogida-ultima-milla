@@ -137,7 +137,7 @@ export default function CardVehicles({ DataPerfilVehicles, handleOnClick }) {
             Brach Office
           </Typography>
           <Typography variant="h6" sx={{ textAlign: "center" }}>
-            {DataPerfilVehicles?.attributes?.branches?.[0]?.attributes?.name ? 'Branch not found' : DataPerfilVehicles?.attributes?.branches?.[0]?.attributes?.name}
+            {DataPerfilVehicles?.attributes?.branches?.[0]?.attributes?.name ? DataPerfilVehicles?.attributes?.branches?.[0]?.attributes?.name : "branch not found"}
           </Typography>
         </Box>
       </CardContent>

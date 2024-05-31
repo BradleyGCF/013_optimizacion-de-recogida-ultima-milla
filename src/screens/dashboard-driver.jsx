@@ -5,16 +5,19 @@ import ButtonPrimary from "@/components/buttons/button-primary";
 import NearMeIcon from "@mui/icons-material/NearMe";
 import { TableDetails } from "@/components/select/table-details";
 import { useNavigate } from "react-router-dom";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { VehiclesContext } from "@/context/Vehicles/VehiclesContext";
 import { getLocalStorage } from "@/hooks/getLocalStorage";
 import { useBoundStore } from "@/stores/index";
-import UpdateShipping from "@/components/tracking/shippingUpdate/shippingUpdate";
+import ShippingUpdate from "@/components/tracking/shippingUpdate/shippingUpdate";
+import { BranchContext } from "@/context/Branch/BranchContext";
 
 export default function DashboardDriver() {
   const navigate = useNavigate();
-  const { IdGetVehicle }: any = useContext(VehiclesContext);
-  const { GetDataVehicle } = useBoundStore();
+  const { IdGetVehicle } = useContext(VehiclesContext);
+  const { GetDataVehicle, AllShipment } = useBoundStore();
+  const { GetAllShipment } = useContext(BranchContext);
+  const [lastShipment, setLastShipment] = useState(null);
   console.log(GetDataVehicle, "GETVEHICLE");
 
   const BoxTitle = styled(Box)({
@@ -32,11 +35,29 @@ export default function DashboardDriver() {
     lineHeight: "normal",
   });
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     const vehilcleid = getLocalStorage("vehicle");
     console.log(vehilcleid?.vehicleId, "ID DASHBOARD");
     IdGetVehicle(vehilcleid.vehicleId);
+    GetAllShipment();
   }, []);
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+    if (AllShipment.length > 0) {
+      const vehilcleid = getLocalStorage("vehicle");
+      const shipmentForVehicleId = AllShipment.reverse().filter(
+        (ship) => ship?.vehicleId?.id === vehilcleid?.vehicleId
+      );
+      console.log({ shipmentForVehicleId });
+      if (shipmentForVehicleId.length > 0) {
+        const shipmentFormat = shipmentForVehicleId?.[0];
+        setLastShipment(shipmentFormat);
+        console.log(shipmentFormat);
+      }
+    }
+  }, [AllShipment]);
 
   return (
     <Box
@@ -53,12 +74,6 @@ export default function DashboardDriver() {
       <Box sx={{ width: "100%" }}>
         <CardVehicles DataPerfilVehicles={GetDataVehicle[0]} />
       </Box>
-      <BoxTitle>
-        <Title>Route</Title>
-      </BoxTitle>
-      <Box sx={{ width: "100%" }}>
-        <CardBranchOffice />
-      </Box>
       <Box sx={{ display: "flex", width: "100%" }}>
         <Typography
           sx={{
@@ -71,6 +86,18 @@ export default function DashboardDriver() {
           }}
         >
           Fecha y hora de salida
+        </Typography>
+        <Typography
+          sx={{
+            color: "#00294F",
+            fontSize: "1.3rem",
+            fontStyle: "normal",
+            fontWeight: 500,
+            lineHeight: "normal",
+            flexGrow: 1,
+          }}
+        >
+          {lastShipment?.entryDate}
         </Typography>
         <ButtonPrimary
           backgroundColor={"#0062BC"}
@@ -90,10 +117,10 @@ export default function DashboardDriver() {
           width: "100%",
         }}
       >
-        <TableDetails />
+        {lastShipment && <TableDetails products={lastShipment.productId} />}
       </Box>
       <Box sx={{ width: "100%" }}>
-        <UpdateShipping />
+        <ShippingUpdate id={lastShipment?.objectId} />
       </Box>
     </Box>
   );

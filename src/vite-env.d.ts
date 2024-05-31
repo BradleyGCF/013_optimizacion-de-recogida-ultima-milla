@@ -8,6 +8,7 @@ declare module "@/components/tracking/nav-tracking";
 declare module "@/components/tracking/shippingUpdate/shippingUpdate";
 declare module "@/components/arrow-back/arrow-back";
 declare module "@/components/card/card-link";
+declare module "@/components/cards/cardRoutesV2";
 declare module "@/components/cards/card-tracking";
 declare module "@/components/carousel/carousel-preference";
 declare module "@/components/select/select-package";

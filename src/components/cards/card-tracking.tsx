@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 import VehiclesImg from "@/assets/Img/png/vehiclesimg.png";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { DetailsTable } from "../tracking/detailsTable";
-import UpdateShipping from "@/components/tracking/shippingUpdate/shippingUpdate";
+import ShippingUpdate from "@/components/tracking/shippingUpdate/shippingUpdate";
 const styleCard = {
   height: { xs: "100%", md: "140px" },
   width: "100%",
@@ -72,7 +72,7 @@ export default function CardTracking({ card, branches }: any) {
                   height: { xs: "76px", md: "100%" },
                   width: "140px",
                 }}
-                // onClick={() => navigate(`/profile-vehicle/${card.id}`)} // Navigating based on card ID
+               
               />
             </Box>
 
@@ -168,7 +168,7 @@ export default function CardTracking({ card, branches }: any) {
       </AccordionSummary>
       <AccordionDetails>
         <DetailsTable card={card} />
-        <UpdateShipping id={card?.objectId} />
+        {/* <UpdateShipping id={card?.objectId} /> */}
       </AccordionDetails>
     </Accordion>
   );

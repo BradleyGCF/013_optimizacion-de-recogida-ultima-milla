@@ -13,7 +13,7 @@ import { shallow } from "zustand/shallow";
 import { useFormik } from "formik";
 import { toast } from "react-hot-toast";
 import { useContext, useEffect } from "react";
-import { modalInventorySchema } from "@/schemas";
+import { modalInventoryScheme } from "@/schemas";
 import { BranchContext } from "@/context/Branch/BranchContext";
 import { InventoryContext } from "@/context/Inventory/InventoryContext";
 import {
@@ -29,6 +29,7 @@ export default function InventoryModal() {
   const { RegisterInventory, getAllInventory }: any =
     useContext(InventoryContext);
 
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const { getAllBranch }: any = useContext(BranchContext);
   console.log(DataPerfilBranch);
   const formik = useFormik({
@@ -41,7 +42,7 @@ export default function InventoryModal() {
       weight: 0,
       branch: "",
     },
-    validationSchema: modalInventorySchema,
+    validationSchema: modalInventoryScheme,
     onSubmit: (values: any, { resetForm }) => {
       console.log(JSON.stringify(values));
       RegisterInventory(values);
@@ -54,6 +55,7 @@ export default function InventoryModal() {
     },
   });
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     console.log("ENTREEE");
     getAllBranch();
@@ -263,7 +265,7 @@ export default function InventoryModal() {
                 {DataPerfilBranch?.length > 0 &&
                   DataPerfilBranch.map((branch: any) => {
                     return (
-                      <MenuItem value={branch.attributes.name} name={branch.id}>
+                      <MenuItem value={branch?.attributes?.name} name={branch?.id}>
                         Sucursal one
                       </MenuItem>
                     );

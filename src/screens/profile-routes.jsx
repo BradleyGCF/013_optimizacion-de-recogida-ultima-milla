@@ -17,7 +17,7 @@ const styleMap = {
 };
 
 export default function ProfileRoutes() {
-  let navigate = useNavigate();
+  const navigate = useNavigate();
 
   return (
     <Box
@@ -30,7 +30,7 @@ export default function ProfileRoutes() {
     >
       <Box sx={{ display: "flex", alignItems: "center" }}>
         <ArrowLeftOutlinedIcon
-          onClick={() => navigate(`/`)}
+          onClick={() => navigate("/")}
           sx={{ color: "background.paper" }}
         />
         <Typography variant="subtitle1" color="text.fourth">
