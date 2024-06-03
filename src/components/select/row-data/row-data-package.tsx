@@ -31,13 +31,13 @@ export const RowDataPackage = ({ data }: any) => {
               paddingLeft: "3rem",
             }}
           >
-            <DataTypography>{data.entry}</DataTypography>
+            <DataTypography>{data?.entryDate}</DataTypography>
           </TableCell>
           <TableCell align="left">
-            <DataTypography>{data.id}</DataTypography>
+            <DataTypography>{data?.objectId}</DataTypography>
           </TableCell>
           <TableCell align="right" sx={{ paddingRight: "3rem" }}>
-            <DataTypography>{data.state}</DataTypography>
+            <DataTypography>{data?.status || "programado"}</DataTypography>
           </TableCell>
         </TableRow>
       </TableBody>
