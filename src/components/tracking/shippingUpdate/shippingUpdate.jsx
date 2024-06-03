@@ -3,7 +3,7 @@ import { Typography, Button, Box } from "@mui/material";
 import { BranchContext } from "@/context/Branch/BranchContext";
 import Swal from "sweetalert2";
 
-const shippingUpdate = ({ id }) => {
+const ShippingUpdate = ({ id }) => {
   const { UpdateShipment } = useContext(BranchContext);
 
   const updateShippingStatus = (status) => {
@@ -69,4 +69,4 @@ const shippingUpdate = ({ id }) => {
   );
 };
 
-export default shippingUpdate;
+export default ShippingUpdate;

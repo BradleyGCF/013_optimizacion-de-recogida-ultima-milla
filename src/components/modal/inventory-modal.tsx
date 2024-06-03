@@ -6,9 +6,7 @@ import {
   Button,
   Select,
   MenuItem,
-  SelectChangeEvent,
   TextField,
-  FormHelperText,
 } from "@mui/material";
 import { useBoundStore } from "@/stores/index";
 import { shallow } from "zustand/shallow";
@@ -20,7 +18,7 @@ import { BranchContext } from "@/context/Branch/BranchContext";
 import { InventoryContext } from "@/context/Inventory/InventoryContext";
 import { getWeight } from "@/hooks/getWeight";
 
-const styledModal = {
+export const styledModal = {
   position: "absolute" as "absolute",
   top: "50%",
   left: "50%",
@@ -35,7 +33,7 @@ const styledModal = {
   overflowY: "scroll",
 };
 
-const CustomStyledInput = {
+export const CustomStyledInput = {
   "& .MuiInputBase-root": {
     padding: "8px 16px",
     borderRadius: "10px",
@@ -46,13 +44,13 @@ const CustomStyledInput = {
   },
 };
 
-const styledBoxContainer = {
+export const styledBoxContainer = {
   display: "flex",
   flexDirection: "column",
   gap: "8px",
 };
 
-const TypoStyled = {
+export const TypoStyled = {
   color: "#00294F",
   fontFamily: "Jost",
   fontSize: "20px",
@@ -62,6 +60,7 @@ const TypoStyled = {
 
 export default function InventoryModal() {
   const { openInventoryModal, setOpenInventoryModal, DataPerfilBranch } =
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     useBoundStore((state: any) => state, shallow);
   const { RegisterInventory, getAllInventory }: any =
     useContext(InventoryContext);
@@ -93,6 +92,7 @@ export default function InventoryModal() {
     },
   });
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     getAllBranch();
   }, []);

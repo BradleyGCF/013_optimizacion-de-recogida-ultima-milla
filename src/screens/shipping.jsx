@@ -19,7 +19,7 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CardBranchOffice from "@/components/cards/cards-branch-office";
-import CardRoutesV2 from "../components/cards/cardRouteV2";
+import CardRoutesV2 from "@/components/cards/cardRoutesV2";
 const steps = ["Select Vehicle", "Upload Product", "Dispach"];
 import Swal from "sweetalert2";
 
@@ -412,6 +412,7 @@ export default function Shipping() {
             <Box sx={{ width: "100%" }}>
               {availableRoutes?.map((route) => {
                 return (
+                  // biome-ignore lint/correctness/useJsxKeyInIterable: <explanation>
                   <CardRoutesV2 data={route} handleOnclick={selectRouter} />
                 );
               })}

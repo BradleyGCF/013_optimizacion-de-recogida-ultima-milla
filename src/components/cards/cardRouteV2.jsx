@@ -52,6 +52,7 @@ export default function CardRoutesV2({ handleOnclick, data }) {
         >
           {data?.branch?.map((branch) => {
             return (
+              // biome-ignore lint/correctness/useJsxKeyInIterable: <explanation>
               <Typography
                 variant="h4"
                 sx={{ color: "text.fourth", textAlign: "center" }}
