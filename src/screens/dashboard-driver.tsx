@@ -1,4 +1,3 @@
-
 import { Box, Button, Typography, styled } from "@mui/material";
 import CardVehicles from "@/components/cards/cards-vehicles";
 import CardBranchOffice from "@/components/cards/cards-branch-office";
@@ -39,7 +38,7 @@ export default function DashboardDriver() {
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     const vehilcleid = getLocalStorage("vehicle");
-    console.log(vehilcleid?.vehicleId, "ID DASHBOARD");
+    console.log(vehilcleid, "ID DASHBOARD");
     IdGetVehicle(vehilcleid.vehicleId);
     GetAllShipment();
   }, []);
@@ -102,7 +101,9 @@ export default function DashboardDriver() {
         </Typography>
         <ButtonPrimary
           backgroundColor={"#0062BC"}
-          onClick={() => navigate("/chat")}
+          onClick={() =>
+            navigate(`/chat/${getLocalStorage("vehicle")?.vehicleId}`)
+          }
         >
           <Box sx={{ display: "flex", gap: ".5rem" }}>
             <Typography>Chat</Typography>

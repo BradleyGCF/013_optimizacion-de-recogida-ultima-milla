@@ -157,7 +157,7 @@ export default function CardVehicles({
             <Box sx={{ display: "flex", width: "100%" }}>
               <ButtonPrimary
                 backgroundColor={"#0062BC"}
-                onClick={() => navigate("/chat")}
+                onClick={() => navigate(`/chat/${DataPerfilVehicles?.id}`)}
               >
                 <Box sx={{ display: "flex", gap: ".5rem" }}>
                   <Typography>Chat</Typography>
