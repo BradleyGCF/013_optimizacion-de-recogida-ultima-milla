@@ -1,6 +1,8 @@
 import { Card, CardContent, Box, Typography, CardMedia } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import VehiclesImg from "@/assets/Img/png/vehiclesimg.png";
+import ButtonPrimary from "@/components/buttons/button-primary";
+import NearMeIcon from "@mui/icons-material/NearMe";
 
 const styleCard = {
   height: { xs: "100%", md: "140px" },
@@ -23,8 +25,13 @@ const styleCardContent = {
   },
 };
 
-export default function CardVehicles({ DataPerfilVehicles, handleOnClick }) {
-  const img = DataPerfilVehicles?.[0]?.attributes?.fileigmvehicles || VehiclesImg
+export default function CardVehicles({
+  DataPerfilVehicles,
+  handleOnClick,
+  isChat,
+}) {
+  const img =
+    DataPerfilVehicles?.[0]?.attributes?.fileigmvehicles || VehiclesImg;
   const navigate = useNavigate();
   return (
     <Card sx={styleCard}>
@@ -126,19 +133,39 @@ export default function CardVehicles({ DataPerfilVehicles, handleOnClick }) {
             justifyContent: "center",
           }}
         >
-          <Typography
-            variant="h4"
-            sx={{
-              color: "text.fourth",
-              textAlign: "center",
-              paddingTop: "2rem",
-            }}
-          >
-            Brach Office
-          </Typography>
-          <Typography variant="h6" sx={{ textAlign: "center" }}>
-            {DataPerfilVehicles?.attributes?.branches?.[0]?.attributes?.name ? DataPerfilVehicles?.attributes?.branches?.[0]?.attributes?.name : "branch not found"}
-          </Typography>
+          {!isChat && (
+            <>
+              <Typography
+                variant="h4"
+                sx={{
+                  color: "text.fourth",
+                  textAlign: "center",
+                  paddingTop: "2rem",
+                }}
+              >
+                Brach Office
+              </Typography>
+              <Typography variant="h6" sx={{ textAlign: "center" }}>
+                {DataPerfilVehicles?.attributes?.branches?.[0]?.attributes?.name
+                  ? DataPerfilVehicles?.attributes?.branches?.[0]?.attributes
+                      ?.name
+                  : "branch not found"}
+              </Typography>
+            </>
+          )}
+          {isChat && (
+            <Box sx={{ display: "flex", width: "100%" }}>
+              <ButtonPrimary
+                backgroundColor={"#0062BC"}
+                onClick={() => navigate("/chat")}
+              >
+                <Box sx={{ display: "flex", gap: ".5rem" }}>
+                  <Typography>Chat</Typography>
+                  <NearMeIcon fontSize="small" sx={{ color: "white" }} />
+                </Box>
+              </ButtonPrimary>
+            </Box>
+          )}
         </Box>
       </CardContent>
     </Card>

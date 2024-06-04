@@ -6,6 +6,7 @@ import Sidebar from "@/components/sidebar/sidebar";
 import { ProtectedRoute } from "@/components/routes/protectedRoute";
 import Navbar from "@/components/nav-bar/nav-bar";
 import Maps from "@/screens/maps";
+// import Home from "@/screens/dashboard";
 
 const Dashboard = React.lazy(() => import("@/screens/dashboard"));
 const DashboardDriver = React.lazy(() => import("@/screens/dashboard-driver"));
@@ -95,13 +96,13 @@ export default function Navigator() {
         >
           <Routes>
             {/* <Route path="/" element={<Home />} /> */}
-            {/* <Route element={<ProtectedRoute rol="driver" />}>
+            <Route element={<ProtectedRoute rol="driver" />}>
               <Route
                 path="/dashboard/driver/:id"
                 element={<DashboardDriver />}
               />
-            </Route> */}
-            {/* <Route element={<ProtectedRoute rol="admin" />}> */}
+            </Route>
+            <Route element={<ProtectedRoute rol="admin" />}>
               <Route path="/dashboard">
                 <Route index element={<Dashboard />} />
                 <Route path="vehicles" element={<Vehicles />} />
@@ -113,7 +114,7 @@ export default function Navigator() {
                   element={<ProfileVehicle />}
                 />
                 <Route path="route-systems" element={<RouteSystems />} />
-                <Route path="profile-routes/:id" element={<ProfileRoutes />} />
+                <Route path="route-systems/profile-routes/:id" element={<ProfileRoutes />} />
                 <Route path="maps" element={<Maps />} />
                 <Route path="ubication/:id" element={<TrackingCurrent />} />
                 <Route path="parcel-service" element={<Package />} />
@@ -123,7 +124,7 @@ export default function Navigator() {
                 path="/profile-branch-office/:id"
                 element={<ProfileBranchOffice />}
               />
-            {/* </Route> */}
+            </Route>
             <Route path="/chat" element={<Chat />} />
 
             <Route path="/" element={<SignIn />} />
