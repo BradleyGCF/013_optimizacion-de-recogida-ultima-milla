@@ -19,7 +19,7 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CardBranchOffice from "@/components/cards/cards-branch-office";
-import CardRoutesV2 from "@/components/cards/cardRoutesV2";
+import CardRoutesV2 from "../components/cards/cardRouteV2";
 const steps = ["Select Vehicle", "Upload Product", "Dispach"];
 import Swal from "sweetalert2";
 
@@ -76,8 +76,8 @@ export default function Shipping() {
   useEffect(() => {
     console.log({ AllRoute });
     if (shippingData.vehicle) {
-      const dataRoute = AllRoute.filter((route) => {
-        return route.vehicle.id === shippingData.vehicle.id;
+      const dataRoute = AllRoute?.filter((route) => {
+        return route?.vehicle?.id === shippingData?.vehicle?.id;
       });
       setAvailableRoutes([].concat(dataRoute));
       // console.log({ a: dataRoute?.[0].branch });
@@ -140,12 +140,12 @@ export default function Shipping() {
   };
 
   const selectShippingProduct = (data) => {
-    const productData = data.attributes;
+    const productData = data?.attributes;
     const { height, weight, productLength } = productData;
     const useCapacity = calculateVolumetric({ height, weight, productLength });
-    const totalUseCapacity = capacity.usedCapacity + useCapacity;
+    const totalUseCapacity = capacity?.usedCapacity + useCapacity;
     const percentageUsedCapacity =
-      (totalUseCapacity / capacity.totalCapacity) * 100;
+      (totalUseCapacity / capacity?.totalCapacity) * 100;
     if (percentageUsedCapacity <= 100) {
       setLocalProduct(
         localProduct?.filter((product) => product?.id !== data?.id)
@@ -155,10 +155,10 @@ export default function Shipping() {
         usedCapacity: totalUseCapacity,
         percentageCapacity: Math.ceil(percentageUsedCapacity),
       });
-      const productChange = shippingData.product.concat(data);
+      const productChange = shippingData?.product?.concat(data);
       setShippingData({ ...shippingData, product: productChange });
 
-      console.log(productData, useCapacity);
+      console.log({productData, useCapacity});
       return;
     }
     window.alert("Te pasaste de rosca perri");
@@ -185,9 +185,9 @@ export default function Shipping() {
 
   const createOrder = () => {
     const formatData = {
-      productId: shippingData.product?.map((po) => {}),
-      vehicleId: shippingData.vehicle?.id,
-      routeId: shippingData.route?.id,
+      productId: shippingData?.product?.map((po) => {}),
+      vehicleId: shippingData?.vehicle?.id,
+      routeId: shippingData?.route?.id,
       inventoryCoD: "string",
       entryDate: new Date()
         .toLocaleString("es-AR", { hour12: false })
