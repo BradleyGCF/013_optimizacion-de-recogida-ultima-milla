@@ -125,7 +125,7 @@ export default function Navigator() {
                 element={<ProfileBranchOffice />}
               />
             </Route>
-            <Route path="/chat" element={<Chat />} />
+            <Route path="/chat/:id" element={<Chat />} />
 
             <Route path="/" element={<SignIn />} />
             <Route path="/recover-password" element={<RecoverPassword />} />
