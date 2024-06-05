@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import React, { useState, useEffect, useContext } from "react";
 import {
   Box,
@@ -24,6 +26,9 @@ import { useBoundStore } from "@/stores/index";
 import { useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import { UserContext } from "@/context/User/UserContext";
+import { BranchContext } from "@/context/Branch/BranchContext";
+import { LuPlusSquare } from "react-icons/lu";
+import { MdOutlineDeleteOutline } from "react-icons/md";
 
 const CustomStyledSelect = styled(Select)({
   borderRadius: "10px",
@@ -64,6 +69,7 @@ const CustomStyledElemet = styled(InputBase)({
     color: "text.primary",
   },
 });
+
 const styleForm = {
   height: "100%",
   display: "flex",
@@ -190,52 +196,116 @@ const ArrayFormElement = ({
 }: {
   type: string;
   data: { id: string }[];
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   updateElementArray: any;
 }) => {
   const { GetAllUser } = useContext(UserContext);
+  const { getAllBranchToVehicleUpdate } = useContext(BranchContext);
 
-  const { setGetAllUsers } = useBoundStore();
+  const { AllUser, Branch } = useBoundStore();
 
   const [element, setElement] = useState<IElement[]>([]);
-  const [newElement, setNewElement] = useState<string>("");
+  const [newElement, setNewElement] = useState<IElement | null>(null);
   const [selectedOption, setSelectedOption] = useState("");
+  const [options, setOptions] = useState([]);
 
   const handleChange = (event) => {
+    if (type === "drivers") {
+      const userDrivers = AllUser.filter(
+        (user) => user?.id === event.target.value
+      );
+      setNewElement({
+        value: userDrivers?.[0]?.attributes?.username,
+        id: event.target.value,
+      });
+    }
+    if (type === "branches") {
+      const selectBranch = Branch.filter(
+        (branch) => branch?.id === event.target.value
+      );
+      setNewElement({
+        value: selectBranch?.[0]?.attributes?.name,
+        id: event.target.value,
+      });
+    }
     setSelectedOption(event.target.value);
   };
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
-    if (type === "driver") {
-      setGetAllUsers();
+    if (type === "drivers") {
+      GetAllUser();
+    }
+    if (type === "branches") {
+      getAllBranchToVehicleUpdate();
     }
   }, [type]);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
-    if (data && GetAllUser) {
-      console.log({ data, GetAllUser });
+    if (data && AllUser && type === "drivers") {
+      const driversIds = data.map((driver) => driver?.id);
+      const userDrivers = AllUser?.filter((user) =>
+        driversIds.includes(user?.id)
+      ).map((user) => {
+        return {
+          value: user?.attributes.username,
+          id: user?.id,
+        };
+      });
+      setElement(userDrivers);
+
+      const UserOptions = AllUser?.filter(
+        (user) => !driversIds.includes(user?.id)
+      ).map((user) => {
+        return {
+          value: user?.attributes.username,
+          id: user?.id,
+        };
+      });
+      setOptions(UserOptions);
     }
-    const formatData = data?.map((d) => {
-      return { value: d.id, id: d.id };
-    });
-    setElement(formatData);
-  }, [data, GetAllUser]);
+    if (data && Branch && type === "branches") {
+      const branchesIds = data.map((branch) => branch?.id);
+      const Branches = Branch?.filter((branch) =>
+        branchesIds.includes(branch?.id)
+      ).map((branch) => {
+        return {
+          value: branch?.attributes.name,
+          id: branch?.id,
+        };
+      });
+      setElement(Branches);
+
+      const BrachesOptions = Branch?.filter(
+        (branch) => !branchesIds.includes(branch?.id)
+      ).map((branch) => {
+        return {
+          value: branch?.attributes.name,
+          id: branch?.id,
+        };
+      });
+      setOptions(BrachesOptions);
+    }
+  }, [data, AllUser, Branch]);
 
   const onDelete = (id: string) => {
+    const elementDeleted = element?.filter((d) => d.id === id);
     const newData = element?.filter((d) => d.id !== id);
     setElement(newData);
-  };
-  const onAdd = () => {
-    const newData = element.concat({ id: newElement, value: newElement });
-    updateElementArray({ [type]: newData });
-    setNewElement("");
-    setElement(newData);
+    setOptions(options.concat(elementDeleted));
   };
 
-  const options = [
-    { value: "option1", id: "Option 1" },
-    { value: "option2", id: "Option 2" },
-    { value: "option3", id: "Option 3" },
-  ];
+  const onAdd = () => {
+    if (newElement) {
+      const newData = element.concat(newElement);
+      updateElementArray({ [type]: newData });
+      setElement(newData);
+      setSelectedOption("");
+      setOptions(options.filter((option) => option?.id !== newElement?.id));
+      setNewElement(null);
+    }
+  };
 
   return (
     <FormControl sx={StyledFormControl}>
@@ -256,23 +326,20 @@ const ArrayFormElement = ({
               />
             </Grid>
             <Grid item xs={1} onClick={() => onDelete(elem.id)}>
-              X
+              <MdOutlineDeleteOutline
+                style={{
+                  cursor: "pointer",
+                  marginTop: "0.70rem",
+                  fontSize: "1.2rem",
+                  color: "#00294F",
+                }}
+              />
             </Grid>
           </Grid>
         );
       })}
       <Grid container spacing={2}>
         <Grid item xs={11}>
-          {/* <FormControl sx={StyledFormControl}>
-            <CustomStyledInput
-              onChange={(e) => setNewElement(e.target.value)}
-              value={newElement}
-              id="mileage"
-              name="mileage"
-              autoComplete="mileage"
-              placeholder={`Insertar nuevo ${type}`}
-            />
-          </FormControl> */}
           <FormControl sx={StyledFormControl}>
             <InputLabel id="select-label">{`Insertar nuevo ${type}`}</InputLabel>
             <CustomStyledSelect
@@ -292,15 +359,27 @@ const ArrayFormElement = ({
               }}
             >
               {options.map((option) => (
-                <MenuItem key={option.value} value={option.value}>
-                  {option.id}
+                <MenuItem key={option.id} value={option.id}>
+                  {option.value}
                 </MenuItem>
               ))}
             </CustomStyledSelect>
           </FormControl>
         </Grid>
-        <Grid item xs={1} onClick={() => onAdd()}>
-          add
+        <Grid
+          className="flex justify-center align-items-center"
+          item
+          xs={1}
+          onClick={() => onAdd()}
+          style={{ cursor: "pointer" }}
+        >
+          <LuPlusSquare
+            style={{
+              marginTop: "0.70rem",
+              fontSize: "1.2rem",
+              color: "#00294F",
+            }}
+          />
         </Grid>
       </Grid>
     </FormControl>
@@ -319,7 +398,8 @@ const objStateInitial = {
   branches: [],
 };
 
-const UpdateFormVehicle = (props) => {
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+const UpdateFormVehicle = (props: any) => {
   const { IdGetVehicle, UpdateVehicle } = useContext(VehiclesContext);
 
   const { GetDataVehicle } = useBoundStore();
@@ -335,6 +415,7 @@ const UpdateFormVehicle = (props) => {
     }
   }, [id, finishUpdate]);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (GetDataVehicle.length) {
       const dataVehicle = GetDataVehicle?.[0]?.attributes;
@@ -389,7 +470,8 @@ const UpdateFormVehicle = (props) => {
     },
   });
 
-  const updateElementArray = (data) => {
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+  const updateElementArray = (data: any) => {
     console.log({
       ...formik.values,
       ...data,
@@ -422,7 +504,7 @@ const UpdateFormVehicle = (props) => {
             }}
           >
             <ImageInputBanner
-              onChangeImageNft={(fileigmvehicles) =>
+              onChangeImageNft={(fileigmvehicles: string) =>
                 formik.setFieldValue("fileigmvehicles", fileigmvehicles)
               }
             />
@@ -492,7 +574,7 @@ const UpdateFormVehicle = (props) => {
             >
               <FormControl sx={StyledFormControl}>
                 <Typography variant="h4" color="text.fourth">
-                  Placa
+                  Plate
                 </Typography>
                 <CustomStyledInput
                   onBlur={formik.handleBlur}

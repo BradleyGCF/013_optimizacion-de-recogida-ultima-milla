@@ -1,6 +1,8 @@
 import { Card, CardContent, Box, Typography, CardMedia } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import VehiclesImg from "@/assets/Img/png/vehiclesimg.png";
+import ButtonPrimary from "@/components/buttons/button-primary";
+import NearMeIcon from "@mui/icons-material/NearMe";
 
 const styleCard = {
   height: { xs: "100%", md: "140px" },
@@ -23,10 +25,14 @@ const styleCardContent = {
   },
 };
 
-export default function CardVehicles({DataPerfilVehicles}) {
- 
+export default function CardVehicles({
+  DataPerfilVehicles,
+  handleOnClick,
+  isChat,
+}) {
+  const img =
+    DataPerfilVehicles?.[0]?.attributes?.fileigmvehicles || VehiclesImg;
   const navigate = useNavigate();
-
   return (
     <Card sx={styleCard}>
       <CardContent sx={styleCardContent}>
@@ -40,75 +46,126 @@ export default function CardVehicles({DataPerfilVehicles}) {
         >
           <CardMedia
             title="Vehicles"
-            image={VehiclesImg}
+            image={img}
             sx={{
               backgroundSize: "cover",
               objectFit: "cover",
               height: { xs: "76px", md: "100%" },
               width: "140px",
+              cursor: "pointer",
             }}
-            onClick={() => navigate(`/dashboard/profile-vehicle/${DataPerfilVehicles.id}`)}
+            onClick={() => {
+              if (handleOnClick) {
+                handleOnClick(DataPerfilVehicles);
+              } else {
+                navigate(`/dashboard/profile-vehicle/${DataPerfilVehicles.id}`);
+              }
+            }}
           />
         </Box>
         <Box
           sx={{
             flex: 1,
-            display: "flex",
             alignItems: "center",
             justifyContent: "center",
           }}
         >
           <Typography
             variant="h4"
-            sx={{ color: "text.fourth", textAlign: "center" }}
+            sx={{
+              color: "text.fourth",
+              textAlign: "center",
+              paddingTop: "2rem",
+            }}
           >
             Model
           </Typography>
+          <Typography variant="h6" sx={{ textAlign: "center" }}>
+            {DataPerfilVehicles?.attributes?.model}
+          </Typography>
         </Box>
         <Box
           sx={{
             flex: 1,
-            display: "flex",
             alignItems: "center",
             justifyContent: "center",
           }}
         >
           <Typography
             variant="h4"
-            sx={{ color: "text.fourth", textAlign: "center" }}
+            sx={{
+              color: "text.fourth",
+              textAlign: "center",
+              paddingTop: "2rem",
+            }}
           >
-            Ability
+            Capacity
+          </Typography>
+          <Typography variant="h6" sx={{ textAlign: "center" }}>
+            {DataPerfilVehicles?.attributes?.capacity}
           </Typography>
         </Box>
         <Box
           sx={{
             flex: 1,
-            display: "flex",
             alignItems: "center",
             justifyContent: "center",
           }}
         >
           <Typography
             variant="h4"
-            sx={{ color: "text.fourth", textAlign: "center" }}
+            sx={{
+              color: "text.fourth",
+              textAlign: "center",
+              paddingTop: "2rem",
+            }}
           >
-            Vehicle Registration
+            Plate
+          </Typography>
+          <Typography variant="h6" sx={{ textAlign: "center" }}>
+            {DataPerfilVehicles?.attributes?.plate}
           </Typography>
         </Box>
         <Box
           sx={{
             flex: 1,
-            display: "flex",
             alignItems: "center",
             justifyContent: "center",
           }}
         >
-          <Typography
-            variant="h4"
-            sx={{ color: "text.fourth", textAlign: "center" }}
-          >
-            Brach Office
-          </Typography>
+          {!isChat && (
+            <>
+              <Typography
+                variant="h4"
+                sx={{
+                  color: "text.fourth",
+                  textAlign: "center",
+                  paddingTop: "2rem",
+                }}
+              >
+                Brach Office
+              </Typography>
+              <Typography variant="h6" sx={{ textAlign: "center" }}>
+                {DataPerfilVehicles?.attributes?.branches?.[0]?.attributes?.name
+                  ? DataPerfilVehicles?.attributes?.branches?.[0]?.attributes
+                      ?.name
+                  : "branch not found"}
+              </Typography>
+            </>
+          )}
+          {isChat && (
+            <Box sx={{ display: "flex", width: "100%" }}>
+              <ButtonPrimary
+                backgroundColor={"#0062BC"}
+                onClick={() => navigate(`/chat/${DataPerfilVehicles?.id}`)}
+              >
+                <Box sx={{ display: "flex", gap: ".5rem" }}>
+                  <Typography>Chat</Typography>
+                  <NearMeIcon fontSize="small" sx={{ color: "white" }} />
+                </Box>
+              </ButtonPrimary>
+            </Box>
+          )}
         </Box>
       </CardContent>
     </Card>

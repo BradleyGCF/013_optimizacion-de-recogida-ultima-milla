@@ -13,8 +13,10 @@ import {
   IconButton,
   InputAdornment,
   Stack,
+  CircularProgress,
 } from "@mui/material";
-
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import LockOpenIcon from "@mui/icons-material/LockOpen";
 import ButtonPrimary from "@/components/buttons/button-primary";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
@@ -26,6 +28,7 @@ import { useNavigate } from "react-router-dom";
 
 import CarouselPreference from "@/components/carousel/carousel-preference";
 import { UserContext } from "@/context/User/UserContext";
+import { VehiclesContext } from "@/context/Vehicles/VehiclesContext";
 
 const CustomStyledInput = styled(InputBase)({
   padding: "2px 12px",
@@ -78,14 +81,19 @@ function FontStyle(size: any, weight: any) {
 
 export default function SignIn() {
   const navigate = useNavigate();
+  const [loading, setLoading] = React.useState(false);
+  const [response, setResponse] = React.useState(false);
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  const { Authenticated } = useBoundStore((state: any) => state, shallow);
+  const { Authenticated, Admin, setAdmin, VehiclesId } = useBoundStore(
+    (state: any) => state,
+    shallow
+  );
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const { LoginMail }: any = React.useContext(UserContext);
+  const { LoginVehicles }: any = React.useContext(VehiclesContext);
   const [values, setValues] = React.useState({
     showPassword: false,
   });
-
   const formik = useFormik({
     initialValues: {
       username: "",
@@ -93,8 +101,15 @@ export default function SignIn() {
     },
     validationSchema: LoginScheme,
     onSubmit: async (values, { resetForm }) => {
+      setLoading(true);
       try {
-        const res = await LoginMail(values);
+        var res;
+        if (Admin) {
+          console.log(Admin, "ADMIN");
+          res = await LoginMail(values);
+        } else if (!Admin) {
+          res = await LoginVehicles(values);
+        }
         if (res?.ok) {
           if (res?.admin === "admin") {
             navigate("/dashboard");
@@ -104,14 +119,18 @@ export default function SignIn() {
             duration: 2000,
             position: "top-center",
           });
-          resetForm();
+          setLoading(false);
+          return;
         } else {
+          setLoading(false);
           toast.error("Username o contraseña incorrecto, vuleve a intentarlo", {
             duration: 4000,
             position: "top-center",
           });
+          return;
         }
       } catch (error) {
+        setLoading(false);
         console.log(error);
         toast.error("Algo salio mal, vuelve a intentarlo", {
           duration: 3000,
@@ -158,142 +177,188 @@ export default function SignIn() {
         />
       </Box>
 
-      {Authenticated == false ? (
-        <Box sx={StyledForm}>
-          <form onSubmit={formik.handleSubmit}>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "24px",
-              }}
-            >
-              <Stack direction="row" spacing={1}>
-                <PersonIcon sx={{ height: "16px" }} />
-                <Typography
-                  sx={{ "&.MuiTypography-root": { fontSize: "12px" } }}
-                >
-                  Sign in
-                </Typography>
-              </Stack>
-
-              <FormControl sx={StyledBoxContainer}>
-                <Typography component="h4" sx={FontStyle(25, 400)}>
-                  Username / Plate
-                </Typography>
-                <CustomStyledInput
-                  onBlur={formik.handleBlur}
-                  error={
-                    formik.touched.username && Boolean(formik.errors.username)
-                  }
-                  onChange={formik.handleChange}
-                  value={formik.values.username}
-                  id="username"
-                  name="username"
-                  autoComplete="username"
-                />
-                {formik.touched.username && (
-                  <FormHelperText
-                    error
-                    id="username-error"
-                    sx={{
-                      textAlign: "center",
-                    }}
-                  >
-                    {formik.errors.username}
-                  </FormHelperText>
-                )}
-              </FormControl>
-
-              <FormControl sx={StyledBoxContainer}>
-                <Typography component="h4" sx={FontStyle(25, 400)}>
-                  Password
-                </Typography>
-                <CustomStyledInput
-                  id="password"
-                  onBlur={formik.handleBlur}
-                  type={values.showPassword ? "text" : "password"}
-                  value={formik.values.password}
-                  error={
-                    formik.touched.password && Boolean(formik.errors.password)
-                  }
-                  autoComplete="current-password"
-                  onChange={formik.handleChange}
-                  endAdornment={
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={handleClickShowPassword}
-                        onMouseDown={handleMouseDownPassword}
-                        edge="end"
-                        sx={{
-                          color: "icon.secondary",
-                        }}
-                      >
-                        {values.showPassword ? (
-                          <VisibilityOff />
-                        ) : (
-                          <Visibility />
-                        )}
-                      </IconButton>
-                    </InputAdornment>
-                  }
-                />
-                {formik.touched.password && (
-                  <FormHelperText
-                    error
-                    id="password-error"
-                    sx={{
-                      textAlign: "center",
-                    }}
-                  >
-                    {formik.errors.password}
-                  </FormHelperText>
-                )}
-              </FormControl>
-
-              <Stack spacing={0.3} direction="row" alignItems="center">
-                <Checkbox
-                  sx={{
-                    heigth: "15px",
-                    color: "#0062BC",
-                    "&.Mui-checked": {
-                      color: "#0062BC",
-                    },
-                    "& .MuiSvgIcon-root": { fontSize: 15 },
-                  }}
-                />
-                <Typography sx={FontStyle(16, 500)}>Remember me</Typography>
-              </Stack>
-
-              <Box display="flex" justifyContent="center">
-                <Typography
-                  sx={{
-                    "&.MuiTypography-root": {
-                      // fontSize: "10px !important",
-                      fontWeight: 700,
-                      fontFamily: "Jost",
-                      cursor: "pointer",
-                    },
-                  }}
-                  onClick={() => nav("/recover-password")}
-                >
-                  Forgot password?
-                </Typography>
-              </Box>
-
-              <ButtonPrimary
-                disabled={!(formik.dirty && formik.isValid)}
-                width={"100%"}
-                type="submit"
+      {(Authenticated === false && !response) || Admin ? (
+        <Box
+          sx={{
+            display: "flex",
+            width: "100%",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "2rem",
+          }}
+        >
+          <Box sx={StyledForm}>
+            <form onSubmit={formik.handleSubmit}>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "24px",
+                }}
               >
-                Sign In
-              </ButtonPrimary>
-            </Box>
-          </form>
+                <Stack direction="row" spacing={1}>
+                  <PersonIcon sx={{ height: "16px" }} />
+                  <Typography
+                    sx={{ "&.MuiTypography-root": { fontSize: "12px" } }}
+                  >
+                    Sign in
+                  </Typography>
+                </Stack>
+
+                <FormControl sx={StyledBoxContainer}>
+                  <Typography component="h4" sx={FontStyle(25, 400)}>
+                    {!Admin ? "Plate" : "Admin"}
+                  </Typography>
+                  <CustomStyledInput
+                    onBlur={formik.handleBlur}
+                    error={
+                      formik.touched.username && Boolean(formik.errors.username)
+                    }
+                    onChange={formik.handleChange}
+                    value={formik.values.username}
+                    id="username"
+                    name="username"
+                    autoComplete="username"
+                  />
+                  {formik.touched.username && (
+                    <FormHelperText
+                      error
+                      id="username-error"
+                      sx={{
+                        textAlign: "center",
+                      }}
+                    >
+                      {formik.errors.username}
+                    </FormHelperText>
+                  )}
+                </FormControl>
+
+                <FormControl sx={StyledBoxContainer}>
+                  <Typography component="h4" sx={FontStyle(25, 400)}>
+                    Password
+                  </Typography>
+                  <CustomStyledInput
+                    id="password"
+                    onBlur={formik.handleBlur}
+                    type={values.showPassword ? "text" : "password"}
+                    value={formik.values.password}
+                    error={
+                      formik.touched.password && Boolean(formik.errors.password)
+                    }
+                    autoComplete="current-password"
+                    onChange={formik.handleChange}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowPassword}
+                          onMouseDown={handleMouseDownPassword}
+                          edge="end"
+                          sx={{
+                            color: "icon.secondary",
+                          }}
+                        >
+                          {values.showPassword ? (
+                            <VisibilityOff />
+                          ) : (
+                            <Visibility />
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                  />
+                  {formik.touched.password && (
+                    <FormHelperText
+                      error
+                      id="password-error"
+                      sx={{
+                        textAlign: "center",
+                      }}
+                    >
+                      {formik.errors.password}
+                    </FormHelperText>
+                  )}
+                </FormControl>
+
+                {!Admin ? (
+                  <Stack spacing={0.3} direction="row" alignItems="center">
+                    <Checkbox
+                      sx={{
+                        heigth: "15px",
+                        color: "#0062BC",
+                        "&.Mui-checked": {
+                          color: "#0062BC",
+                        },
+                        "& .MuiSvgIcon-root": { fontSize: 15 },
+                      }}
+                    />
+                    <Typography sx={FontStyle(16, 500)}>Remember me</Typography>
+                  </Stack>
+                ) : null}
+
+                {!Admin ? (
+                  <Box display="flex" justifyContent="center">
+                    <Typography
+                      sx={{
+                        "&.MuiTypography-root": {
+                          // fontSize: "10px !important",
+                          fontWeight: 700,
+                          fontFamily: "Jost",
+                          cursor: "pointer",
+                        },
+                      }}
+                      onClick={() => nav("/recover-password")}
+                    >
+                      Forgot password?
+                    </Typography>
+                  </Box>
+                ) : null}
+
+                <ButtonPrimary
+                  disabled={!(formik.dirty && formik.isValid)}
+                  width={"100%"}
+                  type="submit"
+                >
+                  {!loading ? (
+                    "Sign In"
+                  ) : (
+                    <CircularProgress
+                      style={{ color: "white" }}
+                      // sx={{ m:  }}
+                      size="20px"
+                    />
+                  )}
+                </ButtonPrimary>
+              </Box>
+            </form>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              width: "100%",
+              alignItems: "flex-end",
+              pr: { xs: 0, md: "1rem" },
+              justifyContent: "center",
+            }}
+          >
+            {Admin ? (
+              <LockOpenIcon
+                fontSize="large"
+                sx={{ color: "white", cursor: "pointer" }}
+                onClick={() => setAdmin(false)}
+              />
+            ) : (
+              <LockOutlinedIcon
+                fontSize="large"
+                sx={{ color: "white", cursor: "pointer" }}
+                onClick={() => setAdmin(true)}
+              />
+            )}
+          </Box>
         </Box>
       ) : (
-        <CarouselPreference />
+        <CarouselPreference key={1} vehicleId={VehiclesId?.data?.objectId} />
       )}
     </Box>
   );

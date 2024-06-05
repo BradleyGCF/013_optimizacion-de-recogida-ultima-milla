@@ -2,16 +2,19 @@ import React, { createContext } from "react";
 import { useMoralis } from "react-moralis";
 import { Moralis } from "moralis-v1";
 import { useBoundStore } from "@/stores/index";
+import { object } from "yup";
 
-type VehiclesContextType = {
+export type VehiclesContextType = {
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   RegisterVehicles: (values: any) => void;
-  getAllVehicles: () => Promise<void>;
+  getAllVehicles: (page: number) => Promise<void>;
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   UpdateVehicle: (objectId: string, objectData: any) => Promise<void>;
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   IdGetVehicle: (objectId: string) => Promise<void>;
-  // DataGetVehicle: (objectData: string) => Promise<void>;
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+  LoginVehicles: (values: any) => void;
+  GetAllPlateVehicle: (VehicleId: string, plate: string) => Promise<void>;
 } | null;
 
 export const VehiclesContext = createContext<VehiclesContextType>(null);
@@ -56,10 +59,34 @@ const VehicleState = (props: { children: any }) => {
   const {
     setDataPerfilVehicles,
     setGetDataVehicle,
+    setVehiclesId,
     setUploadVehicle,
+    setAuthenticated,
     setGetData,
     setVehicles,
+    setGetAllPlateByIdVehicle,
   } = useBoundStore();
+
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+  const LoginVehicles = async (values: any) => {
+    try {
+      const res = await Moralis.Cloud.run("getVehicleByPlateAndCode", {
+        plate: values.username,
+        code: values.password,
+      });
+      if (res?.status === "success") {
+        setAuthenticated(true);
+        setDataPerfilVehicles(res.data.drivers);
+        setVehiclesId(res);
+        return { ok: true, admin: false, id: res.data.objectId };
+      }
+      return { ok: false, admin: false };
+    } catch (error) {
+      const errorMessage = JSON.stringify(error);
+      const errorObjeto = JSON.parse(errorMessage);
+      console.error("🚀 error de login", errorMessage);
+    }
+  };
 
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const RegisterVehicles = async (values: any) => {
@@ -78,10 +105,10 @@ const VehicleState = (props: { children: any }) => {
     }
   };
 
-  const getAllVehicles = async () => {
+  const getAllVehicles = async (page?: number) => {
     try {
-      const res = await Moralis.Cloud.run("getAllVehicle", {        
-        page: "1",
+      const res = await Moralis.Cloud.run("getAllVehicle", {
+        page,
       });
       console.log(res.data, "console de res getallvehicles");
       setDataPerfilVehicles(res.data);
@@ -107,11 +134,28 @@ const VehicleState = (props: { children: any }) => {
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const IdGetVehicle = async (objectId: string) => {
     try {
-      const res = await Moralis.Cloud.run("getVehicleByIdOrName", {
+      const res = await Moralis.Cloud.run("getVehicleByIdOrPlate", {
         objectId,
       });
-      console.log(res.data, "datos del vehiculo obtenidos correctamente");
       setGetDataVehicle(res.data);
+    } catch (error) {
+      console.error("Error updating data:", error);
+      throw error;
+    }
+  };
+
+  const GetAllPlateVehicle = async (VehicleId: string, plate: string) => {
+    try {
+      console.log("datos de GetAllPlateVehicle", GetAllPlateVehicle);
+      const res = await Moralis.Cloud.run("getVehicleByIdOrPlate", {
+        VehicleId,
+        plate,
+      });
+      console.log(
+        res.data,
+        "datos de la placa del vehiculo obtenidos correctamente"
+      );
+      setGetAllPlateByIdVehicle(res.data);
     } catch (error) {
       console.error("Error updating data:", error);
       throw error;
@@ -125,8 +169,8 @@ const VehicleState = (props: { children: any }) => {
         getAllVehicles,
         UpdateVehicle,
         IdGetVehicle,
-        // DataGetVehicle,
-        // LogoutFunc,
+        LoginVehicles,
+        GetAllPlateVehicle,
       }}
     >
       {props.children}

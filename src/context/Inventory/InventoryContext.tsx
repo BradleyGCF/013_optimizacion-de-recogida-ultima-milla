@@ -1,22 +1,29 @@
+// @ts-nocheck
+
 import React, { createContext } from "react";
 import { useMoralis } from "react-moralis";
 import { Moralis } from "moralis-v1";
 import { getWeight } from "@/hooks/getWeight";
 import { useBoundStore } from "@/stores/index";
 
-type InventoryContextType = {
+export type InventoryContextType = {
   RegisterInventory: (values: any, index: number) => void;
-  getAllInventory: () => Promise<void>;
+  getAllInventory: (page: number) => Promise<void>;
   getAllInventorySearch: () => Promise<void>;
   getInventoryId: (value: string) => Promise<void>;
   upDataInventory: (id: string, values: any) => Promise<void>;
+  CreateShipping: (data: any) => Promise<{ ok: boolean }>;
 } | null;
 
 export const InventoryContext = createContext<InventoryContextType>(null);
 
 const InventoryState = (props: { children: any }) => {
-  const { setDataPerfilInventory, setInventory, setDataInventorySearch } =
-    useBoundStore();
+  const {
+    setDataPerfilInventory,
+    setInventory,
+    setDataInventorySearch,
+   
+  } = useBoundStore();
 
   const RegisterInventory = async (values: any, volumetricWeight: number) => {
     console.log(volumetricWeight, "REGISTER SUCURSAL");
@@ -92,10 +99,10 @@ const InventoryState = (props: { children: any }) => {
     }
   };
 
-  const getAllInventory = async () => {
+  const getAllInventory = async (page: number) => {
     try {
       const res = await Moralis.Cloud.run("getAllProduct", {
-        page: "9",
+        page,
       });
       setDataPerfilInventory(res.product);
     } catch (error: any) {
@@ -114,6 +121,20 @@ const InventoryState = (props: { children: any }) => {
     }
   };
 
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+  const CreateShipping = async (data: any) => {
+    try {
+      const res = await Moralis.Cloud.run("createShipment", {
+        objectData: data,
+      });
+      return { ok: true };
+    } catch (error) {
+      const errorMessage = JSON.stringify(error);
+      const errorObjeto = JSON.parse(errorMessage);
+      console.error("🚀 error de registro", errorMessage);
+    }
+  };
+
   return (
     <InventoryContext.Provider
       value={{
@@ -122,6 +143,7 @@ const InventoryState = (props: { children: any }) => {
         getAllInventorySearch,
         getInventoryId,
         upDataInventory,
+        CreateShipping,
       }}
     >
       {props.children}

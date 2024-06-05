@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { Box, Typography, styled } from "@mui/material";
 import { useBoundStore } from "@/stores/index";
 import { shallow } from "zustand/shallow";
@@ -12,7 +14,7 @@ const TypographyNav = styled(Typography)({
   cursor: "pointer",
 });
 
-export const NavTracking = () => {
+export const NavTracking = ({ setStep }) => {
   const { Tracking, setTracking } = useBoundStore(
     (state: any) => state,
     shallow
@@ -29,7 +31,10 @@ export const NavTracking = () => {
         sx={{
           textDecorationLine: Tracking === "programmed" ? "underline" : "none",
         }}
-        onClick={(e) => setTracking("programmed")}
+        onClick={(e) => {
+          setStep("programmed");
+          setTracking("programmed");
+        }}
       >
         Programmed
       </TypographyNav>
@@ -37,7 +42,10 @@ export const NavTracking = () => {
         sx={{
           textDecorationLine: Tracking === "road" ? "underline" : "none",
         }}
-        onClick={(e) => setTracking("road")}
+        onClick={(e) => {
+          setStep("road");
+          setTracking("road");
+        }}
       >
         On road
       </TypographyNav>
@@ -46,7 +54,10 @@ export const NavTracking = () => {
           textDecorationLine:
             Tracking === "finished" ? "underline" : "finished",
         }}
-        onClick={(e) => setTracking("finished")}
+        onClick={(e) => {
+          setStep("finished");
+          setTracking("finished");
+        }}
       >
         Finished
       </TypographyNav>

@@ -1,23 +1,33 @@
+// @ts-nocheck
+
 import React, { createContext } from "react";
 import { useMoralis } from "react-moralis";
 import { Moralis } from "moralis-v1";
-
 import { useBoundStore } from "@/stores/index";
 import { object } from "yup";
 
-type BranchContextType = {
+export type BranchContextType = {
   RegisterBranch: (values: any) => void;
-  getAllBranch: () => Promise<void>;
+  getAllBranch: (page: number) => Promise<void>;
   getAllBranchSearch: () => Promise<void>;
   getBranchId: (value: string) => Promise<void>;
   upDataBranch: (id: string, values: any) => Promise<void>;
+  getAllBranchToVehicleUpdate: () => Promise<void>;
+  GetAllRoute: () => Promise<void>;
+  GetAllShipment: () => Promise<void>;
+  UpdateShipment: (data: any) => Promise<string>;
 } | null;
 
 export const BranchContext = createContext<BranchContextType>(null);
 
 const BranchState = (props: { children: any }) => {
-  const { setDataPerfilBranch, setBranch, setDataBranchSearch } =
-    useBoundStore();
+  const {
+    setDataPerfilBranch,
+    setAllShipment,
+    setDataBranchSearch,
+    setBranch,
+    setAllRoute,
+  } = useBoundStore();
 
   const RegisterBranch = async (values: any) => {
     console.log(values, "REGISTER SUCURSAL");
@@ -85,12 +95,21 @@ const BranchState = (props: { children: any }) => {
     }
   };
 
-  const getAllBranch = async () => {
+  const getAllBranch = async (page: number) => {
     try {
       const res = await Moralis.Cloud.run("getAllBranch", {
-        page: "1",
+        page,
       });
       setDataPerfilBranch(res.data);
+    } catch (error: any) {
+      console.error("🚀 error de branches", error);
+    }
+  };
+
+  const getAllBranchToVehicleUpdate = async () => {
+    try {
+      const res = await Moralis.Cloud.run("getAllBranch", {});
+      setBranch(res.data);
     } catch (error: any) {
       console.error("🚀 error de SettingsUser", error);
     }
@@ -107,6 +126,37 @@ const BranchState = (props: { children: any }) => {
     }
   };
 
+  const GetAllRoute = async () => {
+    try {
+      const res = await Moralis.Cloud.run("getAllRoute", {});
+      setAllRoute(res.data);
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+    } catch (error: any) {
+      console.error("🚀 error de branches", error);
+    }
+  };
+
+  const GetAllShipment = async () => {
+    try {
+      const res = await Moralis.Cloud.run("getAllShipment");
+      console.log({ res });
+      setAllShipment(res.data);
+    } catch (error) {
+      console.error("🚀 error de SettingsUser", error);
+    }
+  };
+
+  const UpdateShipment = async (data: any) => {
+    try {
+      const res = await Moralis.Cloud.run("updateShipment", data);
+      console.log({ res });
+
+      return "update ok";
+    } catch (error) {
+      console.error("🚀 error de SettingsUser", error);
+    }
+  };
+
   return (
     <BranchContext.Provider
       value={{
@@ -115,6 +165,10 @@ const BranchState = (props: { children: any }) => {
         getAllBranchSearch,
         getBranchId,
         upDataBranch,
+        getAllBranchToVehicleUpdate,
+        GetAllRoute,
+        GetAllShipment,
+        UpdateShipment,
       }}
     >
       {props.children}

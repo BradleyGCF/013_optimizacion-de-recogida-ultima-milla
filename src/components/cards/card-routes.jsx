@@ -22,8 +22,8 @@ const styleCardContent = {
   },
 };
 
-export default function CardRoutes() {
-  let navigate = useNavigate();
+export default function CardRoutes({ route }) {
+  const navigate = useNavigate();
 
   return (
     <Card sx={styleCard}>
@@ -35,13 +35,19 @@ export default function CardRoutes() {
             alignItems: "center",
             justifyContent: "center",
           }}
-          onClick={() => navigate(`/profile-routes/5`)}
+          onClick={() => navigate(`profile-routes/${route.id}`)}
         >
           <Typography
             variant="h4"
             sx={{ color: "text.fourth", textAlign: "center" }}
           >
             Start
+          </Typography>
+          <Typography
+            variant="h6"
+            sx={{ color: "text.fourth", textAlign: "center" }}
+          >
+            {route.branch?.[0]?.attributes?.name}
           </Typography>
         </Box>
         <Box
@@ -58,6 +64,12 @@ export default function CardRoutes() {
           >
             Branch B
           </Typography>
+          <Typography
+            variant="h6"
+            sx={{ color: "text.fourth", textAlign: "center" }}
+          >
+            {route.branch?.[1]?.attributes?.name}
+          </Typography>
         </Box>
         <Box
           sx={{
@@ -73,6 +85,12 @@ export default function CardRoutes() {
           >
             Distance
           </Typography>
+          <Typography
+            variant="h6"
+            sx={{ color: "text.fourth", textAlign: "center" }}
+          >
+            ----
+          </Typography>
         </Box>
         <Box
           sx={{
@@ -87,6 +105,12 @@ export default function CardRoutes() {
             sx={{ color: "text.fourth", textAlign: "center" }}
           >
             Approximate Time
+          </Typography>
+          <Typography
+            variant="h6"
+            sx={{ color: "text.fourth", textAlign: "center" }}
+          >
+            -------
           </Typography>
         </Box>
       </CardContent>

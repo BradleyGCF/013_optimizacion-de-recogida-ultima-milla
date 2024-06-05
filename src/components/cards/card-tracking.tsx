@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 import VehiclesImg from "@/assets/Img/png/vehiclesimg.png";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { DetailsTable } from "../tracking/detailsTable";
-
+import ShippingUpdate from "@/components/tracking/shippingUpdate/shippingUpdate";
 const styleCard = {
   height: { xs: "100%", md: "140px" },
   width: "100%",
@@ -31,8 +31,9 @@ const styleCardContent = {
   },
 };
 
-export default function CardTracking({ card }: any) {
-  let navigate = useNavigate();
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+export default function CardTracking({ card, branches }: any) {
+  const navigate = useNavigate();
   return (
     <Accordion
       sx={{
@@ -70,67 +71,95 @@ export default function CardTracking({ card }: any) {
                   height: { xs: "76px", md: "100%" },
                   width: "140px",
                 }}
-                // onClick={() => navigate(`/profile-vehicle/554`)}
+               
               />
             </Box>
+
             <Box
               sx={{
                 flex: 1,
-                display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
               }}
             >
               <Typography
                 variant="h4"
-                sx={{ color: "text.fourth", textAlign: "center" }}
+                sx={{
+                  color: "text.fourth",
+                  textAlign: "center",
+                  paddingTop: "2rem",
+                }}
               >
                 Model
               </Typography>
-            </Box>
-            <Box
-              sx={{
-                flex: 1,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Typography
-                variant="h4"
-                sx={{ color: "text.fourth", textAlign: "center" }}
-              >
-                Ability
+              <Typography variant="h6" sx={{ textAlign: "center" }}>
+                {card.vehicleId.attributes.model}
               </Typography>
             </Box>
+
             <Box
               sx={{
                 flex: 1,
-                display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
               }}
             >
               <Typography
                 variant="h4"
-                sx={{ color: "text.fourth", textAlign: "center" }}
+                sx={{
+                  color: "text.fourth",
+                  textAlign: "center",
+                  paddingTop: "2rem",
+                }}
               >
-                Vehicle Registration
+                Capacity
+              </Typography>
+              <Typography variant="h6" sx={{ textAlign: "center" }}>
+                {card.vehicleId.attributes.capacity}
               </Typography>
             </Box>
+
             <Box
               sx={{
                 flex: 1,
-                display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
               }}
             >
               <Typography
                 variant="h4"
-                sx={{ color: "text.fourth", textAlign: "center" }}
+                sx={{
+                  color: "text.fourth",
+                  textAlign: "center",
+                  paddingTop: "2rem",
+                }}
+              >
+                Plate
+              </Typography>
+              <Typography variant="h6" sx={{ textAlign: "center" }}>
+                {card.vehicleId.attributes.plate}
+              </Typography>
+            </Box>
+
+            <Box
+              sx={{
+                flex: 1,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Typography
+                variant="h4"
+                sx={{
+                  color: "text.fourth",
+                  textAlign: "center",
+                  paddingTop: "2rem",
+                }}
               >
                 Brach Office
+              </Typography>
+              <Typography variant="h6" sx={{ textAlign: "center" }}>
+                {card.vehicleId.attributes?.branches?.[0]?.attributes?.name}
               </Typography>
             </Box>
           </CardContent>
@@ -138,6 +167,7 @@ export default function CardTracking({ card }: any) {
       </AccordionSummary>
       <AccordionDetails>
         <DetailsTable card={card} />
+        {/* <UpdateShipping id={card?.objectId} /> */}
       </AccordionDetails>
     </Accordion>
   );

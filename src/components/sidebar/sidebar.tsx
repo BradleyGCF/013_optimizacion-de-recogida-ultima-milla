@@ -33,6 +33,11 @@ const routes = [
     active: true,
   },
   {
+    path: "/dashboard/shipping",
+    text: "Shipping",
+    active: true,
+  },
+  {
     path: "/dashboard/parcel-service",
     text: "Parcel",
     active: true,
@@ -56,8 +61,11 @@ const routes = [
 
 export default function SideBar() {
   const navigate = useNavigate();
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const { Authenticated } = useBoundStore((state: any) => state, shallow);
   const localStorage = getLocalStorage("Parse/013/currentUser");
+  const localStorageVehicle = getLocalStorage("vehicle");
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const { LogoutFunc }: any = useContext(UserContext);
   const location = useLocation();
   return (
@@ -87,10 +95,10 @@ export default function SideBar() {
               fontSize: 30,
             }}
           >
-            Welcome,
+            Welcome
           </Typography>{" "}
           <br />
-          {localStorage?.type_user === "admin" ? "Administrator" : "Driver"}
+          {localStorage?.type_user === "admin" ? "Administrator" : "Admin"}
         </Typography>
         <Menu
           menuItemStyles={{
@@ -115,7 +123,7 @@ export default function SideBar() {
                   to="/dashboard"
                   sx={{
                     backgroundColor:
-                      location.pathname == "/dashboard"
+                      location.pathname === "/dashboard"
                         ? "#0062BC"
                         : "transparent",
                   }}
@@ -131,7 +139,7 @@ export default function SideBar() {
                     to={route.path}
                     sx={{
                       backgroundColor:
-                        location.pathname == route.path
+                        location.pathname === route.path
                           ? "#0062BC"
                           : "transparent",
                     }}
@@ -150,7 +158,7 @@ export default function SideBar() {
                 to="/settings"
                 sx={{
                   textDecoration:
-                    location.pathname == "/notifications"
+                    location.pathname === "/notifications"
                       ? "#0062BC"
                       : "transparent",
                 }}
@@ -170,7 +178,7 @@ export default function SideBar() {
             mx: "20px",
           }}
         >
-          {Authenticated || localStorage ? (
+          {Authenticated || localStorage || localStorageVehicle ? (
             <Typography
               sx={{ color: "#fff", fontWeight: 600 }}
               onClick={() => LogoutFunc()}
@@ -180,7 +188,7 @@ export default function SideBar() {
           ) : (
             <Typography
               sx={{ color: "#fff", fontWeight: 600 }}
-              onClick={() => navigate("/sign-in")}
+              onClick={() => navigate("/")}
             >
               LogIn
             </Typography>

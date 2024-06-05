@@ -63,7 +63,7 @@ export const LoginScheme = yup.object().shape({
     ),
 });
 
-export const modalInventorySchema = yup.object().shape({
+export const modalInventoryScheme = yup.object().shape({
   date: yup
     .string()
     .strict(true)
@@ -99,10 +99,30 @@ export const modalInventorySchema = yup.object().shape({
     .moreThan(0, "Weight must be greater than 0")
     .required("Weight is required"),
 
-  branch: yup
+    branch: yup
     .string()
     .strict(true)
     .required("Branch is required"),
+})
+
+export const createNewRouteScheme = yup.object().shape({
+  startingPoint: yup
+  .object().required('A starting point is required'),
+
+  endingPoint: yup
+  .object().required('An ending point is required'),
+
+  startingName: yup
+  .string().required('A starting point is required'),
+
+  endingName: yup
+  .string().required('An ending point is requiered'),
+
+  vehicle: yup
+  .string().min(5).required('A vehicle is required'),
+
+  branches: 
+  yup.array().min(1, 'There has to be at least one branch'),
 })
 
 export const CreateUserScheme = yup.object().shape({
