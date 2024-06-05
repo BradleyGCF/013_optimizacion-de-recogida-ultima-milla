@@ -4,7 +4,7 @@ import { Moralis } from "moralis-v1";
 import { useBoundStore } from "@/stores/index";
 import { object } from "yup";
 
-type VehiclesContextType = {
+export type VehiclesContextType = {
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   RegisterVehicles: (values: any) => void;
   getAllVehicles: (page: number) => Promise<void>;

@@ -6,7 +6,7 @@ import { Moralis } from "moralis-v1";
 import { useBoundStore } from "@/stores/index";
 import { object } from "yup";
 
-type BranchContextType = {
+export type BranchContextType = {
   RegisterBranch: (values: any) => void;
   getAllBranch: (page: number) => Promise<void>;
   getAllBranchSearch: () => Promise<void>;

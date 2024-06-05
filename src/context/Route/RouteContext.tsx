@@ -3,7 +3,7 @@ import { useMoralis } from "react-moralis";
 import { Moralis } from "moralis-v1";
 import { useBoundStore } from "@/stores/index";
 
-type RouteContextType = {
+export type RouteContextType = {
   createNewRoute: (values: any) => void;
 } | null;
 

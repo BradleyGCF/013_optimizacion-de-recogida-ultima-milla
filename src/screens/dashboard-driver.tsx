@@ -6,19 +6,31 @@ import NearMeIcon from "@mui/icons-material/NearMe";
 import { TableDetails } from "@/components/select/table-details";
 import { useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
-import { VehiclesContext } from "@/context/Vehicles/VehiclesContext";
+import  { VehiclesContext, VehiclesContextType } from "@/context/Vehicles/VehiclesContext";
+import  { BranchContext, BranchContextType } from "@/context/Branch/BranchContext";
 import { getLocalStorage } from "@/hooks/getLocalStorage";
 import { useBoundStore } from "@/stores/index";
 import ShippingUpdate from "@/components/tracking/shippingUpdate/shippingUpdate";
-import { BranchContext } from "@/context/Branch/BranchContext";
+
+interface Vehicle {
+  id?: string;
+  vehicleId?: string;
+}
+
+interface Shipment {
+  id?: string;
+  vehicleId?: Vehicle;
+  entryDate?: string;
+  productId?: string[];
+  objectId?: string;
+}
 
 export default function DashboardDriver() {
   const navigate = useNavigate();
-  const { IdGetVehicle } = useContext(VehiclesContext);
+  const vehiclesContext = useContext<VehiclesContextType>(VehiclesContext);
+  const branchContext = useContext<BranchContextType>(BranchContext);
   const { GetDataVehicle, AllShipment } = useBoundStore();
-  const { GetAllShipment } = useContext(BranchContext);
-  const [lastShipment, setLastShipment] = useState(null);
-  console.log(GetDataVehicle, "GETVEHICLE");
+  const [lastShipment, setLastShipment] = useState<Shipment | null>(null);
 
   const BoxTitle = styled(Box)({
     display: "flex",
@@ -26,6 +38,7 @@ export default function DashboardDriver() {
     alignItems: "flex-start",
     gap: "2.5rem",
   });
+
   const Title = styled(Typography)({
     color: "#00294F",
     fontFamily: "Jost",
@@ -35,26 +48,25 @@ export default function DashboardDriver() {
     lineHeight: "normal",
   });
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
-    const vehilcleid = getLocalStorage("vehicle");
-    console.log(vehilcleid, "ID DASHBOARD");
-    IdGetVehicle(vehilcleid.vehicleId);
-    GetAllShipment();
-  }, []);
+    const vehicleid = getLocalStorage("vehicle");
+    if (vehicleid?.vehicleId && vehiclesContext) {
+      vehiclesContext.IdGetVehicle(vehicleid.vehicleId);
+      if (branchContext) {
+        branchContext.GetAllShipment();
+      }
+    }
+  }, [vehiclesContext, branchContext]);
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (AllShipment.length > 0) {
-      const vehilcleid = getLocalStorage("vehicle");
+      const vehicleid = getLocalStorage("vehicle");
       const shipmentForVehicleId = AllShipment.reverse().filter(
-        (ship) => ship?.vehicleId?.id === vehilcleid?.vehicleId
+        (ship: Shipment) => ship?.vehicleId?.id === vehicleid?.vehicleId
       );
-      console.log({ shipmentForVehicleId });
       if (shipmentForVehicleId.length > 0) {
         const shipmentFormat = shipmentForVehicleId?.[0];
         setLastShipment(shipmentFormat);
-        console.log(shipmentFormat);
       }
     }
   }, [AllShipment]);
