@@ -1,17 +1,34 @@
-/* eslint-disable no-unused-vars */
-import { useState, useEffect, useContext } from "react";
+import type React from "react";
+import { useState, useEffect } from "react";
 import Parse from "parse";
 import { useParams } from "react-router-dom";
 import { getLocalStorage } from "../hooks/getLocalStorage";
 
-const Chat = () => {
-  const { id } = useParams();
-  const [userId, setUserId] = useState(null);
-  const [usernameAdmin, setUsernameAdmin] = useState(null);
-  const [messages, setMessages] = useState([]);
-  const [newMessage, setNewMessage] = useState("");
-  const [isAdmin, setIsAdmin] = useState(true);
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+// Define los type
+interface ClientAttributes {
+  username?: string;
+  type_user?: string;
+}
+
+interface Client {
+  objectId?: string;
+  attributes?: ClientAttributes;
+}
+
+interface Message {
+  id?: string;
+  content?: string;
+  clientId?: Client;
+}
+
+const Chat: React.FC = () => {
+  const { id } = useParams<{ id: string }>();
+  const [userId, setUserId] = useState<string | null>(null);
+  const [usernameAdmin, setUsernameAdmin] = useState<string | null>(null);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [newMessage, setNewMessage] = useState<string>("");
+  const [isAdmin, setIsAdmin] = useState<boolean>(true);
+
   useEffect(() => {
     const localStorage = getLocalStorage("Parse/013/currentUser");
     const vehicle = getLocalStorage("vehicle");
@@ -24,17 +41,16 @@ const Chat = () => {
     }
   }, []);
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (!isAdmin && !usernameAdmin && messages.length > 0) {
-      const admin = messages?.find(
-        (mess) => mess?.clientId?.objectId?.attributes?.type_user === "admin"
+      const admin = messages.find(
+        (mess) => mess?.clientId?.attributes?.type_user === "admin"
       );
       if (admin) {
-        setUsernameAdmin(admin?.clientId?.objectId?.attributes?.username);
+        setUsernameAdmin(admin.clientId?.attributes?.username || null);
       }
     }
-  }, [isAdmin, messages]);
+  }, [isAdmin, messages, usernameAdmin]);
 
   Parse.initialize("013");
   Parse.serverURL = "http://localhost:2337/server";
@@ -45,12 +61,11 @@ const Chat = () => {
     masterKey: "Yzhl06W5O7Vhf8iwlYBQCxs6hY8Fs2PQewNGjsl0",
   });
 
-  client.open("open", () => {
-    console.log("connect");
-  });
+  client.open();
 
-  client.on("error", (error) => {
-    console.log(error);
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+  client.on("error", (error: any) => {
+    console.error(error);
   });
 
   const ChatMessage = Parse.Object.extend("Chat_Message");
@@ -61,50 +76,56 @@ const Chat = () => {
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     const subscription = client.subscribe(query);
-    subscription.on("create", (message) => {
+
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+    subscription.on("create", (message: any) => {
       setMessages((prevMessages) => {
-        const newMessage = {
+        const newMessage: Message = {
+          id: message.id,
           content: message.get("content"),
           clientId: {
-            __type: "Pointer",
-            className: "_User",
-            objectId: message.get("clientId"),
+            objectId: message.get("clientId")?.id,
+            attributes: {
+              username: message.get("clientId")?.get("username"),
+              type_user: message.get("clientId")?.get("type_user"),
+            },
           },
-          id: message.id,
         };
 
         const allMessages = [...prevMessages, newMessage];
 
         const uniqueMessages = Array.from(
           new Set(allMessages.map((msg) => msg.id))
-        ).map((id) => allMessages.find((msg) => msg.id === id));
+          // biome-ignore lint/style/noNonNullAssertion: <explanation>
+        ).map((id) => allMessages.find((msg) => msg.id === id)!);
 
         return uniqueMessages;
       });
     });
 
     if (messages.length === 0) {
-      query.find().then((data) => {
-        const messArray = data.map((mess) => {
-          return {
-            id: mess.id,
-            content: mess.get("content"),
-            clientId: {
-              __type: "Pointer",
-              className: "_User",
-              objectId: mess.get("clientId"),
+      // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+      query.find().then((data: any) => {
+        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+        const messArray = data.map((mess: any) => ({
+          id: mess.id,
+          content: mess.get("content"),
+          clientId: {
+            objectId: mess.get("clientId")?.id,
+            attributes: {
+              username: mess.get("clientId")?.get("username"),
+              type_user: mess.get("clientId")?.get("type_user"),
             },
-          };
-        });
+          },
+        }));
         setMessages(messArray);
       });
     }
 
-    //Notificacion
     subscription.on("update", () => {
       Notification.requestPermission().then((perm) => {
         if (perm === "granted") {
-          new Notification("Notificacion update");
+          new Notification("notification update");
         }
       });
     });
@@ -112,9 +133,9 @@ const Chat = () => {
     return () => {
       subscription.unsubscribe();
     };
-  }, []);
+  }, [client, id, messages.length, query]);
 
-  const sendMessage = (content) => {
+  const sendMessage = (content: string) => {
     const message = new ChatMessage();
     message.set("content", content);
     message.set("clientId", {
@@ -123,15 +144,17 @@ const Chat = () => {
       objectId: userId,
     });
     message.set("chatroomId", id);
-    message.save().catch((error) => {
-      console.log("Error al enviar mensaje: ", error);
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+    message.save().catch((error: any) => {
+      console.error("Error send error: ", error);
     });
   };
-  const handleInputChange = (event) => {
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setNewMessage(event.target.value);
   };
 
-  const handleFormSubmit = (event) => {
+  const handleFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     sendMessage(newMessage);
     setNewMessage("");
@@ -139,15 +162,14 @@ const Chat = () => {
 
   return (
     <div>
-      <div>{usernameAdmin || "usuario"}</div>
+      <div>{usernameAdmin || "user"}</div>
       <hr />
       <div>
         chat
-        {console.log({ messages })}
-        {messages.map((message, index) => (
-          <p key={index}>
-            <strong>{message?.clientId?.objectId?.attributes?.username}</strong>
-            : {message.content}
+        {messages.map((message) => (
+          <p key={message.id}>
+            <strong>{message.clientId?.attributes?.username}</strong>:{" "}
+            {message.content}
           </p>
         ))}
       </div>
@@ -162,4 +184,5 @@ const Chat = () => {
     </div>
   );
 };
+
 export default Chat;

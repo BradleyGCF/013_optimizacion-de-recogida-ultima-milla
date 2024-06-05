@@ -196,6 +196,7 @@ const ArrayFormElement = ({
 }: {
   type: string;
   data: { id: string }[];
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   updateElementArray: any;
 }) => {
   const { GetAllUser } = useContext(UserContext);

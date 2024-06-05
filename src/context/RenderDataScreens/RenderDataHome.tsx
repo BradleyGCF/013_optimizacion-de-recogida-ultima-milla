@@ -3,7 +3,7 @@ import { useMoralis } from "react-moralis";
 
 import { useBoundStore } from "@/stores/index";
 
-type ContextType = {
+export type ContextType = {
   getDataContentLive: () => Promise<void>;
   getDataContentExplore: (id: any) => Promise<void>;
   getDataContentUsers: (id: any) => Promise<void>;

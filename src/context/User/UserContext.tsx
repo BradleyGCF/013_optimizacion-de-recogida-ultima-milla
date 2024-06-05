@@ -4,7 +4,7 @@ import { Moralis } from "moralis-v1";
 
 import { useBoundStore } from "@/stores/index";
 
-type UserContextType = {
+export type UserContextType = {
   LoginMail: (values: any) => void;
   SettingsUser: (userAddress: string) => Promise<void>;
   LogoutFunc: () => Promise<void>;

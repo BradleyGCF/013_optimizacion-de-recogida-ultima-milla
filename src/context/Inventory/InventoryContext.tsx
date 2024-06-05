@@ -6,7 +6,7 @@ import { Moralis } from "moralis-v1";
 import { getWeight } from "@/hooks/getWeight";
 import { useBoundStore } from "@/stores/index";
 
-type InventoryContextType = {
+export type InventoryContextType = {
   RegisterInventory: (values: any, index: number) => void;
   getAllInventory: (page: number) => Promise<void>;
   getAllInventorySearch: () => Promise<void>;

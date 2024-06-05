@@ -19,7 +19,7 @@ const HeadTypography = styled(Typography)({
   transform: "rotate(-0.014deg)",
 });
 
-export const TableDetails = ({products}) => {
+export const TableDetails = ({products}: any) => {
 
   return (
     <TableContainer component={Paper} sx={{ borderRadius: "0.625rem" }}>
