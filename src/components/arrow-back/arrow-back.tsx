@@ -2,6 +2,7 @@ import { Box, Typography } from "@mui/material";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import { useNavigate } from "react-router-dom";
 
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 export const ArrowBack = ({ children }: any) => {
   console.log(children, "CHILDREN");
   const navigate = useNavigate();

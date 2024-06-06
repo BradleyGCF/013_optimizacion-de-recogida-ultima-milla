@@ -48,7 +48,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 export default function AccordionGlobal(props) {
   const [expanded, setExpanded] = React.useState(false);
   const [expandedTwo, setExpandedTwo] = React.useState(false);
-  let title = props.title;
+  const title = props.title;
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
@@ -75,6 +75,7 @@ export default function AccordionGlobal(props) {
               Vehicle
             </Typography>
           </AccordionSummary>
+          {/* biome-ignore lint/style/useSelfClosingElements: <explanation> */}
           <AccordionDetails></AccordionDetails>
         </Accordion>
       </AccordionDetails>
