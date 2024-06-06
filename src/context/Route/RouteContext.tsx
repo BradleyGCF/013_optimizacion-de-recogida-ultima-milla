@@ -4,11 +4,14 @@ import { Moralis } from "moralis-v1";
 import { useBoundStore } from "@/stores/index";
 
 export type RouteContextType = {
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   createNewRoute: (values: any) => void;
 } | null;
 
 export const RouteContext = createContext<RouteContextType>(null);
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 const RouteState = (props: { children: any }) => {
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const createNewRoute = async (values: any) => {
     console.log("REGISTER ROUTE", values);
     try {

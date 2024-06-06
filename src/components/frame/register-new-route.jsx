@@ -11,18 +11,40 @@ import {
 import ButtonPrimary from "@/components/buttons/button-primary";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "@mui/material/styles";
+import { useBoundStore } from "@/stores/index";
 import { useFormik } from "formik";
 import { createNewRouteScheme } from "@/schemas/index";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { RouteContext } from "@/context/Route/RouteContext";
+import { BranchContext } from "../../context/Branch/BranchContext";
+import { VehiclesContext } from "@/context/Vehicles/VehiclesContext";
 
 export default function RegisterNewRoute() {
   const theme = useTheme();
   const { createNewRoute } = useContext(RouteContext);
+  const { getAllBranch } = useContext(BranchContext);
 
   const [startLocation, setStartLocation] = useState("");
   const [endLocation, setEndLocation] = useState("");
   const [info, setInfo] = useState([null, null]);
+  const { DataPerfilBranch, DataPerfilVehicles } = useBoundStore();
+  const [vehicleSelect, setVehicleSelect] = useState([]);
+  const { getAllVehicles } = useContext(VehiclesContext);
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  useEffect(() => {
+    const allBranches = async () => await getAllBranch();
+    allBranches();
+    const allVehicles = async () => await getAllVehicles(1);
+    allVehicles();
+    console.log(DataPerfilBranch, DataPerfilVehicles);
+  }, []);
+
+  useEffect(() => {
+    if (DataPerfilBranch?.length > 0) {
+      console.log(DataPerfilBranch);
+    }
+  }, [DataPerfilBranch]);
 
   const formik = useFormik({
     initialValues: {
@@ -155,8 +177,6 @@ export default function RegisterNewRoute() {
     };
   }
 
-  const branchesMock = ["Branch 1", "Branch 2", "Branch 3", "Branch 4"];
-
   return (
     <Box
       sx={{
@@ -253,9 +273,11 @@ export default function RegisterNewRoute() {
                 },
               }}
             >
-              <MenuItem value={"Vehicle A"}>Vehicle A</MenuItem>
-              <MenuItem value={"Vehicle B"}>Vehicle B</MenuItem>
-              <MenuItem value={"Vehicle C"}>Vehicle C</MenuItem>
+              {DataPerfilVehicles?.map((vehicle) => (
+                <MenuItem key={vehicle?.id} value={vehicle?.id}>
+                  {vehicle?.attributes?.model}
+                </MenuItem>
+              ))}
             </Select>
             {formik.touched.vehicle && formik.errors.vehicle && (
               <FormHelperText error id="vehicle-error">
@@ -301,13 +323,18 @@ export default function RegisterNewRoute() {
                 },
               }}
             >
-              {branchesMock.map((branch) => (
+              {DataPerfilBranch?.map((branch, index) => (
                 <MenuItem
-                  key={branch}
-                  style={getStyles(branch, formik.values.branches, theme)}
-                  value={branch}
+                  // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+                  key={index}
+                  style={getStyles(
+                    branch.attributes.name,
+                    formik.values.branches,
+                    theme
+                  )}
+                  value={branch.id}
                 >
-                  {branch}
+                  {branch.attributes.name}
                 </MenuItem>
               ))}
             </Select>

@@ -42,6 +42,7 @@ declare module "@/screens/vehicles";
 declare module "@/screens/shipping";
 declare module "@/screens/tracking";
 
+declare module "@/screens/gps";
 declare module "@/screens/package";
 declare module "@/screens/profile-vehicle";
 declare module "@/screens/settings";
