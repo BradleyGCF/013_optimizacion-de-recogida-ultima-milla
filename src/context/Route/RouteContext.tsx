@@ -23,7 +23,7 @@ const RouteState = (props: { children: any }) => {
           },
           endingPoint: {
             latitude: values.endingPoint.lat,
-            longitude: values.endingPoint.lat,
+            longitude: values.endingPoint.lon,
           },
           vehicle: values.vehicle,
           branch: values.branches,
@@ -36,7 +36,6 @@ const RouteState = (props: { children: any }) => {
       console.error(error);
     }
   };
-
 
   return (
     <RouteContext.Provider

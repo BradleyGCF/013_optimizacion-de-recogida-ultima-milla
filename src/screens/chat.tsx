@@ -3,8 +3,7 @@ import { useState, useEffect } from "react";
 import Parse from "parse";
 import { useParams } from "react-router-dom";
 import { getLocalStorage } from "../hooks/getLocalStorage";
-import Maps from "../screens/maps";
-import { Card, CardContent, Box } from "@mui/material";
+import { Box, TextField, Button, Avatar } from "@mui/material";
 
 // Define los type
 interface ClientAttributes {
@@ -22,27 +21,6 @@ interface Message {
   content?: string;
   clientId?: Client;
 }
-
-export const styleCardMap = {
-  height: { xs: "100vh" },
-  width: { md: "100%" },
-  borderRadius: "10px",
-  backgroundImage: "none",
-  backgroundColor: "background.default",
-  boxShadow:
-    " 0px 2.76726px 2.21381px 0px rgba(0, 98, 188, 0.02), 0px 6.6501px 5.32008px 0px rgba(0, 98, 188, 0.03), 0px 12.52155px 10.01724px 0px rgba(0, 98, 188, 0.04), 0px 22.33631px 17.86905px 0px rgba(0, 98, 188, 0.04), 0px 41.77761px 33.42209px 0px rgba(0, 98, 188, 0.05), 0px 100px 80px 0px rgba(0, 98, 188, 0.07)",
-};
-
-export const styleCardContentMap = {
-  height: "100%",
-  display: "flex",
-  flexDirection: { xs: "column", md: "row" },
-  gap: { xs: "20px", md: "0px" },
-  p: { xs: "10px", md: "10px" },
-  "&:last-child": {
-    paddingBottom: { xs: "10px", md: "10px" },
-  },
-};
 
 const Chat: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -183,41 +161,61 @@ const Chat: React.FC = () => {
     setNewMessage("");
   };
 
+  const getInitial = (username?: string) => {
+    return username ? username[0] : "?";
+  };
+
   return (
     <div>
       <div>{usernameAdmin || "user"}</div>
       <hr />
       <div>
-        chat
         {messages.map((message) => (
-          <p key={message.id}>
-            <strong>{message.clientId?.attributes?.username}</strong>:{" "}
-            {message.content}
-          </p>
+          <div style={{ paddingRight: "4em" }} key={message.id}>
+            {message.clientId?.attributes?.type_user === "admin" ? (
+              <Box display="flex" justifyContent="flex-start" mb={2}>
+                <Avatar>
+                  {getInitial(message.clientId?.attributes?.username)}
+                </Avatar>
+                <Box bgcolor="#e0e0e0" borderRadius="10px" p={1} ml={2}>
+                  <strong>{message.clientId?.attributes?.username}</strong>:{" "}
+                  {message.content}
+                </Box>
+              </Box>
+            ) : (
+              <Box display="flex" justifyContent="flex-end" mb={2}>
+                <Box bgcolor="#b3d9ff" borderRadius="10px" p={1} mr={2}>
+                  <strong>{message.clientId?.attributes?.username}</strong>:{" "}
+                  {message.content}
+                </Box>
+                <Avatar>
+                  {getInitial(message.clientId?.attributes?.username)}
+                </Avatar>
+              </Box>
+            )}
+          </div>
         ))}
       </div>
       <hr />
       <div>
-        input
         <form onSubmit={handleFormSubmit}>
-          <textarea value={newMessage} onChange={handleInputChange} />
-          <button type="submit">Enviar mensaje</button>
+          <TextField
+            label="Message"
+            variant="outlined"
+            value={newMessage}
+            onChange={handleInputChange}
+            fullWidth
+          />
+          <Button
+            style={{ marginTop: "6px" }}
+            type="submit"
+            variant="contained"
+            color="primary"
+          >
+            Send
+          </Button>
         </form>
       </div>
-      <Card sx={styleCardMap}>
-        <CardContent sx={styleCardContentMap}>
-          <Box
-            sx={{
-              flex: 1,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "start",
-            }}
-          >
-            <Maps />
-          </Box>
-        </CardContent>
-      </Card>
     </div>
   );
 };

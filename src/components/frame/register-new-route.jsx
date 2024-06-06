@@ -18,7 +18,7 @@ import { useContext, useState, useEffect } from "react";
 import { RouteContext } from "@/context/Route/RouteContext";
 import { BranchContext } from "../../context/Branch/BranchContext";
 import { VehiclesContext } from "@/context/Vehicles/VehiclesContext";
-
+import Swal from "sweetalert2";
 export default function RegisterNewRoute() {
   const theme = useTheme();
   const { createNewRoute } = useContext(RouteContext);
@@ -41,7 +41,7 @@ export default function RegisterNewRoute() {
   }, []);
 
   useEffect(() => {
-    if (DataPerfilBranch?.length > 0) {
+    if (DataPerfilBranch) {
       console.log(DataPerfilBranch);
     }
   }, [DataPerfilBranch]);
@@ -64,7 +64,13 @@ export default function RegisterNewRoute() {
     validationSchema: createNewRouteScheme,
     onSubmit: async (values, { resetForm }) => {
       const response = await createNewRoute(values);
-      // resetForm();
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "route successfully created ",
+        showConfirmButton: false,
+        timer: 1500,
+      });
     },
   });
 
@@ -86,6 +92,7 @@ export default function RegisterNewRoute() {
   const handleEndLocationChange = (event) => {
     const value = event.target.value;
     setEndLocation(value);
+    console.log({ value });
     formik.setFieldValue("endingName", value);
 
     if (value === "") {

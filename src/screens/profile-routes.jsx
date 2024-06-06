@@ -6,9 +6,9 @@ import { BranchContext } from "@/context/Branch/BranchContext";
 import { useEffect, useContext, useState } from "react";
 import { useBoundStore } from "@/stores/index";
 import { useParams } from "react-router-dom";
-import Maps from "../screens/maps";
+import MapLeaflet from "../screens/MapLeaflet";
 
-export  const styleCard2 = {
+export const styleCard2 = {
   height: { xs: "100%", md: "60px" },
   width: { xs: "fit-content", md: "100%" },
   borderRadius: "10px",
@@ -18,7 +18,7 @@ export  const styleCard2 = {
     " 0px 2.76726px 2.21381px 0px rgba(0, 98, 188, 0.02), 0px 6.6501px 5.32008px 0px rgba(0, 98, 188, 0.03), 0px 12.52155px 10.01724px 0px rgba(0, 98, 188, 0.04), 0px 22.33631px 17.86905px 0px rgba(0, 98, 188, 0.04), 0px 41.77761px 33.42209px 0px rgba(0, 98, 188, 0.05), 0px 100px 80px 0px rgba(0, 98, 188, 0.07)",
 };
 
-export  const styleCardContent2 = {
+export const styleCardContent2 = {
   height: "100%",
   display: "flex",
   flexDirection: { xs: "column", md: "row" },
@@ -150,7 +150,18 @@ export default function ProfileRoutes() {
           </Box>
         )}
       </Box>
-      <Maps />
+      <MapLeaflet
+        address2={[
+          {
+            lat: availableRoute?.startingPoint?.latitude,
+            lng: availableRoute?.startingPoint?.longitude,
+          },
+          {
+            lat: availableRoute?.endingPoint?.latitude,
+            lng: availableRoute?.endingPoint?.longitude,
+          },
+        ]}
+      />
       <Typography variant="body1" color="text.fourth">
         00.000 km
       </Typography>
