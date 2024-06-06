@@ -13,17 +13,18 @@ export default function BranchOffice() {
   // const { getAllBranch } = useContext(BranchContext);
   const { DataPerfilBranch, DataPerfilVehicles } = useBoundStore();
   const { getAllVehicles } = useContext(VehiclesContext);
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     // const allBranch = async () => await getAllBranch();
     // allBranch();
     const allVehicles = async () => await getAllVehicles(1);
-    allVehicles()
-    setLoading(false)
-  }, [])
+    allVehicles();
+    setLoading(false);
+  }, []);
 
   const selectPlate = (data) => {
     if (data) {
-      console.log(data, 'DATA');
+      console.log(data, "DATA");
       setVehicleSelect([data]);
     }
   };
@@ -47,42 +48,54 @@ export default function BranchOffice() {
           gap: "20px",
           flexWrap: "wrap",
           justifyContent: { xs: "center", sm: "start" },
-        }}>
-        {loading &&
+        }}
+      >
+        {loading && (
           <Box
             sx={{
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               height: "100px",
-              width: '100%'
+              width: "100%",
             }}
           >
             <CircularProgress style={{ color: "#00294F" }} size="100px" />
           </Box>
-        }
-        {DataPerfilVehicles?.length === 0 && !loading && !vehicleSelect.length && (
-          <Box sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            height: '10rem',
-          }}>
-            <Typography variant="body1" color="text.primary" sx={{ fontSize: '20px !important', }}>
-              Vehicles not found
-            </Typography>
-          </Box>
         )}
-        {DataPerfilVehicles?.length > 0 && DataPerfilVehicles.map((e, index) => {
-          return (
-            <div
-              key={DataPerfilVehicles.id}
-              onClick={() => handleVehicleClick(DataPerfilVehicles)}
+        {DataPerfilVehicles?.length === 0 &&
+          !loading &&
+          !vehicleSelect.length && (
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                height: "10rem",
+              }}
             >
-              <CardBranchOffice key={index} branch={e} />
-            </div>
-          )
-        })}
+              <Typography
+                variant="body1"
+                color="text.primary"
+                sx={{ fontSize: "20px !important" }}
+              >
+                Vehicles not found
+              </Typography>
+            </Box>
+          )}
+        {DataPerfilVehicles?.length > 0 &&
+          DataPerfilVehicles.map((e, index) => {
+            return (
+              // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
+              <div
+                key={DataPerfilVehicles.id}
+                onClick={() => handleVehicleClick(DataPerfilVehicles)}
+              >
+                {/* biome-ignore lint/suspicious/noArrayIndexKey: <explanation> */}
+                <CardBranchOffice key={index} branch={e} />
+              </div>
+            );
+          })}
         {!!vehicleSelect.length && (
           // biome-ignore lint/correctness/useJsxKeyInIterable: <explanation>
           // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>

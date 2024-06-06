@@ -16,6 +16,7 @@ export default function Maps() {
   const setDestination = useMapStore((state) => state.setDestination)
   const setResponse = useMapStore((state) => state.setResponse)
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {

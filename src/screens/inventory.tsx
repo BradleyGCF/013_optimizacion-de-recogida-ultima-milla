@@ -9,7 +9,7 @@ import { shallow } from "zustand/shallow";
 import { useContext, useEffect } from "react";
 import { InventoryContext } from "@/context/Inventory/InventoryContext";
 
-const TypographyStyled = {
+export const TypographyStyled = {
   color: "var(--Color-primario, #00294F)",
   fontFamily: "Jost",
   fontSize: "1.3625rem",
@@ -21,10 +21,13 @@ const TypographyStyled = {
 export default function Inventory() {
   const nav = useNavigate();
   const { setOpenInventoryModal, DataPerfilInventory } = useBoundStore(
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     (state: any) => state,
     shallow
   );
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const { getAllInventory }: any = useContext(InventoryContext);
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     getAllInventory(1);
   }, [DataPerfilInventory]);

@@ -15,6 +15,8 @@ const Package = React.lazy(() => import("@/screens/package"));
 const TrackingCurrent = React.lazy(() => import("@/screens/tracking-current"));
 const Tracking = React.lazy(() => import("@/screens/tracking"));
 const Vehicles = React.lazy(() => import("@/screens/vehicles"));
+const GPS = React.lazy(() => import("@/screens/gps"));
+
 const Shipping = React.lazy(() => import("@/screens/shipping"));
 const Settings = React.lazy(() => import("@/screens/settings"));
 const SignIn = React.lazy(() => import("@/screens/sign-in"));
@@ -106,6 +108,8 @@ export default function Navigator() {
               <Route path="/dashboard">
                 <Route index element={<Dashboard />} />
                 <Route path="vehicles" element={<Vehicles />} />
+                <Route path="gps" element={<GPS />} />
+
                 <Route path="shipping" element={<Shipping />} />
                 <Route path="tracking" element={<Tracking />} />
                 <Route path="branch-office" element={<BranchOffice />} />
@@ -114,7 +118,10 @@ export default function Navigator() {
                   element={<ProfileVehicle />}
                 />
                 <Route path="route-systems" element={<RouteSystems />} />
-                <Route path="route-systems/profile-routes/:id" element={<ProfileRoutes />} />
+                <Route
+                  path="route-systems/profile-routes/:id"
+                  element={<ProfileRoutes />}
+                />
                 <Route path="maps" element={<Maps />} />
                 <Route path="ubication/:id" element={<TrackingCurrent />} />
                 <Route path="parcel-service" element={<Package />} />

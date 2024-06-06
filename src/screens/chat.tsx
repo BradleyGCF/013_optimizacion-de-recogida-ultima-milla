@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Parse from "parse";
 import { useParams } from "react-router-dom";
 import { getLocalStorage } from "../hooks/getLocalStorage";
+import { Box, TextField, Button, Avatar } from "@mui/material";
 
 // Define los type
 interface ClientAttributes {
@@ -160,25 +161,59 @@ const Chat: React.FC = () => {
     setNewMessage("");
   };
 
+  const getInitial = (username?: string) => {
+    return username ? username[0] : "?";
+  };
+
   return (
     <div>
       <div>{usernameAdmin || "user"}</div>
       <hr />
       <div>
-        chat
         {messages.map((message) => (
-          <p key={message.id}>
-            <strong>{message.clientId?.attributes?.username}</strong>:{" "}
-            {message.content}
-          </p>
+          <div style={{ paddingRight: "4em" }} key={message.id}>
+            {message.clientId?.attributes?.type_user === "admin" ? (
+              <Box display="flex" justifyContent="flex-start" mb={2}>
+                <Avatar>
+                  {getInitial(message.clientId?.attributes?.username)}
+                </Avatar>
+                <Box bgcolor="#e0e0e0" borderRadius="10px" p={1} ml={2}>
+                  <strong>{message.clientId?.attributes?.username}</strong>:{" "}
+                  {message.content}
+                </Box>
+              </Box>
+            ) : (
+              <Box display="flex" justifyContent="flex-end" mb={2}>
+                <Box bgcolor="#b3d9ff" borderRadius="10px" p={1} mr={2}>
+                  <strong>{message.clientId?.attributes?.username}</strong>:{" "}
+                  {message.content}
+                </Box>
+                <Avatar>
+                  {getInitial(message.clientId?.attributes?.username)}
+                </Avatar>
+              </Box>
+            )}
+          </div>
         ))}
       </div>
       <hr />
       <div>
-        input
         <form onSubmit={handleFormSubmit}>
-          <textarea value={newMessage} onChange={handleInputChange} />
-          <button type="submit">Enviar mensaje</button>
+          <TextField
+            label="Message"
+            variant="outlined"
+            value={newMessage}
+            onChange={handleInputChange}
+            fullWidth
+          />
+          <Button
+            style={{ marginTop: "6px" }}
+            type="submit"
+            variant="contained"
+            color="primary"
+          >
+            Send
+          </Button>
         </form>
       </div>
     </div>

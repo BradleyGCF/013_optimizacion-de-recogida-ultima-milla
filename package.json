@@ -77,6 +77,6 @@
     "vite-tsconfig-paths": "^4.2.0"
   },
   "engines": {
-    "node": "18.19.1"
+    "node": "20.11.0"
   }
 }
