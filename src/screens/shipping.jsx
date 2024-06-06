@@ -158,10 +158,14 @@ export default function Shipping() {
       const productChange = shippingData?.product?.concat(data);
       setShippingData({ ...shippingData, product: productChange });
 
-      console.log({productData, useCapacity});
+      console.log({ productData, useCapacity });
       return;
     }
-    window.alert("Te pasaste de rosca perri");
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: "Car capacity exceeded",
+    });
   };
 
   const selectRouter = async (data) => {

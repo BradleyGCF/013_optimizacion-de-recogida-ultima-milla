@@ -66,7 +66,8 @@ const GPS = () => {
                 {step.label}
               </StepLabel>
               <StepContent>
-                <Typography>{step.description}</Typography>
+                <Typography>{step.label}</Typography>
+                {/* biome-ignore lint/style/useSelfClosingElements: <explanation> */}
                 <Box sx={{ mb: 2 }}></Box>
               </StepContent>
             </Step>

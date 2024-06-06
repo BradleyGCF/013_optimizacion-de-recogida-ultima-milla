@@ -91,6 +91,7 @@ export default function BranchOffice() {
                 key={DataPerfilVehicles.id}
                 onClick={() => handleVehicleClick(DataPerfilVehicles)}
               >
+                {/* biome-ignore lint/suspicious/noArrayIndexKey: <explanation> */}
                 <CardBranchOffice key={index} branch={e} />
               </div>
             );
