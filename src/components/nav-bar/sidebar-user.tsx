@@ -14,23 +14,19 @@ import Stack from "@mui/material/Stack";
 import * as copy from "copy-to-clipboard";
 import React, { useState } from "react";
 
-
 import { NavLink } from "react-router-dom";
 
-
 const matic =
-"https://ipfs.moralis.io:2053/ipfs/QmfA199t9GRga69GwwAMfNYRUbLVCsjz3ESyiwVULyDV4i/0xE568887Bf75AeA78147730CC4101aDf09626759E/polygon_matic_logo.svg";
+  "https://ipfs.moralis.io:2053/ipfs/QmfA199t9GRga69GwwAMfNYRUbLVCsjz3ESyiwVULyDV4i/0xE568887Bf75AeA78147730CC4101aDf09626759E/polygon_matic_logo.svg";
 const fox =
-"https://ipfs.moralis.io:2053/ipfs/QmSeK9V1uMkqN44AwpJdGQAddnqBQ1Lb7GNqGDtU9XXPU5/0xE568887Bf75AeA78147730CC4101aDf09626759E/metamask.svg";
+  "https://ipfs.moralis.io:2053/ipfs/QmSeK9V1uMkqN44AwpJdGQAddnqBQ1Lb7GNqGDtU9XXPU5/0xE568887Bf75AeA78147730CC4101aDf09626759E/metamask.svg";
 const token_knrt =
-"https://ipfs.moralis.io:2053/ipfs/QmNx9ZtNnzAoHFWpBVXX7ow2W75Jm5bSNUu1rL67YE222W/0xE568887Bf75AeA78147730CC4101aDf09626759E/token_knrt.svg";
-
+  "https://ipfs.moralis.io:2053/ipfs/QmNx9ZtNnzAoHFWpBVXX7ow2W75Jm5bSNUu1rL67YE222W/0xE568887Bf75AeA78147730CC4101aDf09626759E/token_knrt.svg";
 
 export default function SideBarUser() {
-    
-  const ethAddress =   "";
+  const ethAddress = "";
 
-  const balanceKNRT =  0;
+  const balanceKNRT = 0;
 
   const [open, setOpen] = React.useState(false);
 
@@ -42,6 +38,7 @@ export default function SideBarUser() {
     setOpen(false);
   };
 
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   function MenuButtons(props: any) {
     return (
       <Box
@@ -88,7 +85,9 @@ export default function SideBarUser() {
       <IconButton onClick={handleDrawerOpen} color="inherit">
         <CardMedia
           component="img"
-          image={'https://ipfs.moralis.io:2053/ipfs/QmXJkzfUzaNPWpZn16H8CYbHEiXj2RKxngbfaJmSZdPfmy/0xa136632e5123be81d620ecbdf5669741e32e3d75/unnamed.gif'}
+          image={
+            "https://ipfs.moralis.io:2053/ipfs/QmXJkzfUzaNPWpZn16H8CYbHEiXj2RKxngbfaJmSZdPfmy/0xa136632e5123be81d620ecbdf5669741e32e3d75/unnamed.gif"
+          }
           alt="logo-user"
           sx={{
             width: { xs: 35, sm: 45, lg: 55 },
@@ -102,7 +101,7 @@ export default function SideBarUser() {
           }}
         />
       </IconButton>
-      
+
       <Drawer
         sx={{
           width: { xs: 230, sm: 290 },
@@ -124,7 +123,7 @@ export default function SideBarUser() {
         <Stack
           sx={{
             px: 3,
-            bgcolor: 'background.default',
+            bgcolor: "background.default",
           }}
         >
           <Stack spacing={2} sx={{ mt: 4, mb: 2 }}>
@@ -142,7 +141,9 @@ export default function SideBarUser() {
               >
                 <CardMedia
                   component="img"
-                  image={'https://ipfs.moralis.io:2053/ipfs/QmXJkzfUzaNPWpZn16H8CYbHEiXj2RKxngbfaJmSZdPfmy/0xa136632e5123be81d620ecbdf5669741e32e3d75/unnamed.gif'}
+                  image={
+                    "https://ipfs.moralis.io:2053/ipfs/QmXJkzfUzaNPWpZn16H8CYbHEiXj2RKxngbfaJmSZdPfmy/0xa136632e5123be81d620ecbdf5669741e32e3d75/unnamed.gif"
+                  }
                   alt="Logo"
                   sx={{
                     width: { xs: 35, sm: 45, lg: 55 },
@@ -165,7 +166,6 @@ export default function SideBarUser() {
                 >
                   @{"roselily"}
                 </Typography>
-              
               </Box>
               <ChevronRightIcon
                 sx={{ fontSize: 30, cursor: "pointer" }}
@@ -173,14 +173,14 @@ export default function SideBarUser() {
               />
             </Box>
 
-              <Divider
-                sx={{
-                  margin: "auto",
-                  height: "1px",
-                  width: "100%",
-                  backgroundColor: '#C0C0C0',
-                }}
-              />
+            <Divider
+              sx={{
+                margin: "auto",
+                height: "1px",
+                width: "100%",
+                backgroundColor: "#C0C0C0",
+              }}
+            />
           </Stack>
 
           <Stack
@@ -197,26 +197,23 @@ export default function SideBarUser() {
             <MenuButtons title="Link3" to="/" />
             <MenuButtons
               title="Logout"
-              clickOption={console.log('holaMundo')}
+              clickOption={console.log("holaMundo")}
               icon={<LogoutIcon sx={{ color: "secondary.icon" }} />}
             />
-
-
           </Stack>
-          
-          <Stack               
-            sx={{
-                border: "1px solid",
-                borderColor: "common.two",
-                borderRadius: 3,
-                my: 4,
-                py: 2,
-                px: { xs: 1, sm: 3 },
-                alignItems: 'center'
-              }}
-              gap={2}
-          >
 
+          <Stack
+            sx={{
+              border: "1px solid",
+              borderColor: "common.two",
+              borderRadius: 3,
+              my: 4,
+              py: 2,
+              px: { xs: 1, sm: 3 },
+              alignItems: "center",
+            }}
+            gap={2}
+          >
             <Box
               sx={{
                 display: "flex",
@@ -245,7 +242,7 @@ export default function SideBarUser() {
                 sx={{
                   color: "#C02327",
                 }}
-                onClick={() => 
+                onClick={() =>
                   copy(ethAddress, {
                     debug: true,
                     message: `ethAddress ${ethAddress} copy to clipboard`,
@@ -266,7 +263,7 @@ export default function SideBarUser() {
                 px: { xs: 1, sm: 2 },
               }}
             >
-              <Stack direction='row' gap={1} sx={{ alignItems: 'center'}}>
+              <Stack direction="row" gap={1} sx={{ alignItems: "center" }}>
                 <AttachMoneyIcon sx={{ color: "secondary.icon" }} />
                 <Typography
                   variant="subtitle1"
@@ -277,7 +274,7 @@ export default function SideBarUser() {
                 </Typography>
               </Stack>
 
-              <Stack direction='row' gap={1} sx={{ alignItems: 'center'}}>
+              <Stack direction="row" gap={1} sx={{ alignItems: "center" }}>
                 <CardMedia
                   component="img"
                   image={token_knrt}
@@ -298,7 +295,7 @@ export default function SideBarUser() {
                 </Typography>
               </Stack>
 
-              <Stack direction='row' gap={1} sx={{ alignItems: 'center'}}>
+              <Stack direction="row" gap={1} sx={{ alignItems: "center" }}>
                 <CardMedia
                   component="img"
                   image={matic}
@@ -318,11 +315,8 @@ export default function SideBarUser() {
                   {balanceKNRT} {"MATIC"}
                 </Typography>
               </Stack>
-
             </Box>
-
           </Stack>
-
         </Stack>
       </Drawer>
     </Box>

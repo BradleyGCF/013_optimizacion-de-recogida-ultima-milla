@@ -1,12 +1,11 @@
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
-
 import { useStoreInContext } from "@/stores/container/container";
-
 import SideBar from "@/components/nav-bar/sidebar";
 
 const Navbar = () => {
   const authenticated = useStoreInContext(
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     (state: { authenticated: any }) => state.authenticated
   );
 

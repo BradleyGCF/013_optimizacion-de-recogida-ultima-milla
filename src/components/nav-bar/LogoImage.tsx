@@ -1,10 +1,11 @@
-  import Box from "@mui/material/Box";
+import Box from "@mui/material/Box";
 import CardMedia from "@mui/material/CardMedia";
 import { useNavigate } from "react-router-dom";
 
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 function LogoImage(props: any) {
 
-      let navigate = useNavigate();
+      const navigate = useNavigate();
 
     return (
       <>
@@ -27,7 +28,7 @@ function LogoImage(props: any) {
             }}
             style={{ cursor: "pointer" }}
             onClick={() => {
-              navigate(`/`);
+              navigate("/");
             }}
           />
         </Box>
@@ -51,7 +52,7 @@ function LogoImage(props: any) {
             }}
             style={{ cursor: "pointer" }}
             onClick={() => {
-              navigate(`/`);
+              navigate("/");
             }}
           />
         </Box>
