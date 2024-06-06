@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { NavLink, useLocation } from "react-router-dom";
 
-function NavItem(props) {
+ function NavItem(props) {
   const location = useLocation();
 
   return (

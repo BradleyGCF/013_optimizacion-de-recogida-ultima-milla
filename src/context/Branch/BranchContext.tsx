@@ -7,19 +7,23 @@ import { useBoundStore } from "@/stores/index";
 import { object } from "yup";
 
 export type BranchContextType = {
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   RegisterBranch: (values: any) => void;
   getAllBranch: (page: number) => Promise<void>;
   getAllBranchSearch: () => Promise<void>;
   getBranchId: (value: string) => Promise<void>;
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   upDataBranch: (id: string, values: any) => Promise<void>;
   getAllBranchToVehicleUpdate: () => Promise<void>;
   GetAllRoute: () => Promise<void>;
   GetAllShipment: () => Promise<void>;
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   UpdateShipment: (data: any) => Promise<string>;
 } | null;
 
 export const BranchContext = createContext<BranchContextType>(null);
 
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 const BranchState = (props: { children: any }) => {
   const {
     setDataPerfilBranch,
@@ -29,6 +33,7 @@ const BranchState = (props: { children: any }) => {
     setAllRoute,
   } = useBoundStore();
 
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const RegisterBranch = async (values: any) => {
     console.log(values, "REGISTER SUCURSAL");
     try {
@@ -61,11 +66,13 @@ const BranchState = (props: { children: any }) => {
         objectId: id,
       });
       setBranch(res.data[0].attributes);
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     } catch (error: any) {
       console.error("🚀 error de SettingsUser", error);
     }
   };
 
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const upDataBranch = async (id: string, values: any) => {
     console.log(values, "CONTEXT");
 
@@ -90,7 +97,8 @@ const BranchState = (props: { children: any }) => {
       });
       console.log(res, "RESPONSE UPDATA");
       // setBranch({ objectId: res.data.id, ...res.data.attributes });
-    } catch (error: any) {
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+          } catch (error: any) {
       console.error("🚀 error de SettingsUser", error);
     }
   };
@@ -101,6 +109,7 @@ const BranchState = (props: { children: any }) => {
         page,
       });
       setDataPerfilBranch(res.data);
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     } catch (error: any) {
       console.error("🚀 error de branches", error);
     }
@@ -110,6 +119,7 @@ const BranchState = (props: { children: any }) => {
     try {
       const res = await Moralis.Cloud.run("getAllBranch", {});
       setBranch(res.data);
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     } catch (error: any) {
       console.error("🚀 error de SettingsUser", error);
     }
@@ -121,6 +131,7 @@ const BranchState = (props: { children: any }) => {
         page: "1",
       });
       setDataBranchSearch(res.data);
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     } catch (error: any) {
       console.error("🚀 error de SettingsUser", error);
     }
@@ -146,6 +157,7 @@ const BranchState = (props: { children: any }) => {
     }
   };
 
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const UpdateShipment = async (data: any) => {
     try {
       const res = await Moralis.Cloud.run("updateShipment", data);

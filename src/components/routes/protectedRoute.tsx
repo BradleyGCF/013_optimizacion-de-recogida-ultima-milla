@@ -2,6 +2,7 @@ import { getLocalStorage } from "@/hooks/getLocalStorage";
 import { useBoundStore } from "@/stores/index";
 import { Navigate, Outlet } from "react-router-dom";
 
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 export const ProtectedRoute = ({ redirectPath = "/", rol }: any) => {
   const { Authenticated } = useBoundStore();
   const vehicle = getLocalStorage("vehicle");
