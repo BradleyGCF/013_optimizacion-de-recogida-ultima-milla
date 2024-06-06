@@ -34,6 +34,7 @@
     "formik": "^2.2.9",
     "javascript-time-ago": "^2.5.9",
     "leaflet": "^1.9.4",
+    "leaflet-control-geocoder": "^2.4.0",
     "magic-sdk": "7.0.0",
     "moralis": "2.22.2",
     "moralis-v1": "1.13.0",
@@ -77,6 +78,6 @@
     "vite-tsconfig-paths": "^4.2.0"
   },
   "engines": {
-    "node": "20.11.0"
+    "node": "18.19.1"
   }
 }
