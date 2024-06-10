@@ -47,7 +47,6 @@ export default function CardLink(props: Props) {
           <Typography
             sx={{ color: "text.third", textAlign: "center", fontWeight: 600 }}
           >
-            COMING SOON
           </Typography>
         )}
       </Link>

@@ -54,15 +54,15 @@ const Chat: React.FC = () => {
       if (admin) {
         setUsernameAdmin(admin.clientId?.attributes?.username || null);
       }
-    }    
+    }
   }, [isAdmin, messages, usernameAdmin]);
 
   Parse.initialize("013");
-  Parse.serverURL = "http://localhost:2337/server";
+  Parse.serverURL = "http://192.168.50.140:27013/server";
   const LiveQueryClient = Parse.LiveQueryClient;
   const client = new LiveQueryClient({
     applicationId: "013",
-    serverURL: "ws://localhost:2337",
+    serverURL: "ws://192.168.50.140:27013",
     masterKey: "Yzhl06W5O7Vhf8iwlYBQCxs6hY8Fs2PQewNGjsl0",
   });
 
