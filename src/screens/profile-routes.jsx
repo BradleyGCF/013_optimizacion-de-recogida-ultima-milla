@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import ArrowLeftOutlinedIcon from "@mui/icons-material/ArrowLeftOutlined";
 import CardVehicles from "@/components/cards/cards-vehicles";
 import { BranchContext } from "@/context/Branch/BranchContext";
-import { useEffect, useContext, useState } from "react";
 import { useBoundStore } from "@/stores/index";
+import { useEffect, useContext, useState } from "react";
 import { useParams } from "react-router-dom";
 import MapLeaflet from "../screens/MapLeaflet";
 
@@ -67,8 +67,8 @@ export const styleMap = {
 
 export default function ProfileRoutes() {
   const { GetAllRoute } = useContext(BranchContext);
-  const [availableRoute, setAvailableRoute] = useState(null);
   const { AllRoute } = useBoundStore();
+  const [availableRoute, setAvailableRoute] = useState(null);
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -172,6 +172,16 @@ export default function ProfileRoutes() {
         <CardVehicles
           DataPerfilVehicles={availableRoute?.vehicle}
           isChat={true}
+          address2={[
+            {
+              lat: availableRoute?.startingPoint?.latitude,
+              lng: availableRoute?.startingPoint?.longitude,
+            },
+            {
+              lat: availableRoute?.endingPoint?.latitude,
+              lng: availableRoute?.endingPoint?.longitude,
+            },
+          ]}
         />
       </Box>
     </Box>

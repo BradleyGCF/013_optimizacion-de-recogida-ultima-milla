@@ -29,6 +29,7 @@ export default function CardVehicles({
   DataPerfilVehicles,
   handleOnClick,
   isChat,
+  address2,
 }) {
   const img =
     DataPerfilVehicles?.[0]?.attributes?.fileigmvehicles || VehiclesImg;
@@ -157,7 +158,7 @@ export default function CardVehicles({
             <Box sx={{ display: "flex", width: "100%" }}>
               <ButtonPrimary
                 backgroundColor={"#0062BC"}
-                onClick={() => navigate(`/chat/${DataPerfilVehicles?.id}`)}
+                onClick={() => navigate(`/chat/${DataPerfilVehicles?.id}` , { state: address2 })}
               >
                 <Box sx={{ display: "flex", gap: ".5rem" }}>
                   <Typography>Chat</Typography>
