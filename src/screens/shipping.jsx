@@ -141,6 +141,7 @@ export default function Shipping() {
 
   const selectShippingProduct = (data) => {
     const productData = data?.attributes;
+    console.log({ data, productData });
     const { height, weight, productLength } = productData;
     const useCapacity = calculateVolumetric({ height, weight, productLength });
     const totalUseCapacity = capacity?.usedCapacity + useCapacity;
@@ -170,6 +171,7 @@ export default function Shipping() {
 
   const selectRouter = async (data) => {
     setShippingData({ ...shippingData, route: data });
+    console.log({ data, a: { ...shippingData, route: data } });
     const result = await Swal.fire({
       title: "dispatch route ",
       showDenyButton: true,
@@ -179,7 +181,7 @@ export default function Shipping() {
     /* Read more about isConfirmed, isDenied below */
     if (result.isConfirmed) {
       Swal.fire("Saved!", "", "success");
-      createOrder();
+      createOrder(data.id);
     } else if (result.isDenied) {
       return;
     }
@@ -187,11 +189,13 @@ export default function Shipping() {
     console.log({ ...shippingData, route: data });
   };
 
-  const createOrder = () => {
+  const createOrder = (routeId) => {
     const formatData = {
-      productId: shippingData?.product?.map((po) => {}),
+      productId: shippingData.product?.map((po) => {
+        return po.id;
+      }),
       vehicleId: shippingData?.vehicle?.id,
-      routeId: shippingData?.route?.id,
+      routeId: routeId,
       inventoryCoD: "string",
       entryDate: new Date()
         .toLocaleString("es-AR", { hour12: false })
