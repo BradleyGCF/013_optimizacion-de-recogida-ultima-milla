@@ -17,7 +17,7 @@ const styleCardContent = {
   flexDirection: { xs: "column", md: "row" },
   gap: { xs: "15px", md: "0px" },
   p: { xs: "20px 15px", md: "30px" },
-  cursor: 'pointer',
+  cursor: "pointer",
   "&:last-child": {
     paddingBottom: { xs: "20px 15px", md: "30px" },
   },
@@ -26,7 +26,10 @@ const styleCardContent = {
 export default function CardBranchOffice({ branch }) {
   const navigate = useNavigate();
   return (
-    <Card sx={styleCard} onClick={() => navigate(`/profile-branch-office/${branch.id}`)}>
+    <Card
+      sx={styleCard}
+      onClick={() => navigate(`/profile-branch-office/${branch.id}`)}
+    >
       <CardContent sx={styleCardContent}>
         <Box
           sx={{
@@ -35,7 +38,7 @@ export default function CardBranchOffice({ branch }) {
             alignItems: "center",
             justifyContent: { xs: "center", md: "start" },
           }}
-          onClick={() => navigate(`/profile-branch-office/${id}`)}
+          onClick={() => navigate(`/profile-branch-office/${branch?.id}`)}
         >
           <CardMedia
             title="Vehicles"
@@ -62,7 +65,7 @@ export default function CardBranchOffice({ branch }) {
             variant="h4"
             sx={{ color: "text.fourth", textAlign: "center" }}
           >
-            {branch?.attributes.name ? branch.attributes.name : 'Name'}
+            {branch?.attributes.name ? branch?.attributes?.name : "Name"}
           </Typography>
         </Box>
         <Box
@@ -77,7 +80,9 @@ export default function CardBranchOffice({ branch }) {
             variant="h4"
             sx={{ color: "text.fourth", textAlign: "center" }}
           >
-            {branch?.attributes.contry ? branch.attributes.contry : 'Country'}
+            {branch?.attributes?.contry
+              ? branch?.attributes?.contry
+              : "Country"}
           </Typography>
         </Box>
         <Box
@@ -92,7 +97,7 @@ export default function CardBranchOffice({ branch }) {
             variant="h4"
             sx={{ color: "text.fourth", textAlign: "center" }}
           >
-            {branch?.attributes.city ? branch.attributes.city : 'City'}
+            {branch?.attributes?.city ? branch?.attributes?.city : "City"}
           </Typography>
         </Box>
         <Box
@@ -107,7 +112,7 @@ export default function CardBranchOffice({ branch }) {
             variant="h4"
             sx={{ color: "text.fourth", textAlign: "center" }}
           >
-            {branch?.attributes.manager ? branch.attributes.manager : 'Manager'}
+            {branch?.attributes?.manager?.attributes?.username || "Manager"}
           </Typography>
         </Box>
       </CardContent>

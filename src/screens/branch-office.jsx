@@ -3,6 +3,8 @@ import InputSearchGlobal from "@/components/inputs/inputs-search-global";
 import CardBranchOffice from "@/components/cards/cards-branch-office";
 import RegisterBranchOffice from "@/components/forms/register-branch-office";
 import { VehiclesContext } from "@/context/Vehicles/VehiclesContext";
+import { BranchContext } from "@/context/Branch/BranchContext";
+
 import { useBoundStore } from "@/stores/index";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useContext, useEffect, useState } from "react";
@@ -10,17 +12,21 @@ import { useContext, useEffect, useState } from "react";
 export default function BranchOffice() {
   const [loading, setLoading] = useState(true);
   const [vehicleSelect, setVehicleSelect] = useState([]);
-  // const { getAllBranch } = useContext(BranchContext);
+  const { getAllBranch } = useContext(BranchContext);
   const { DataPerfilBranch, DataPerfilVehicles } = useBoundStore();
   const { getAllVehicles } = useContext(VehiclesContext);
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
-    // const allBranch = async () => await getAllBranch();
-    // allBranch();
+    const allBranch = async () => await getAllBranch();
+    allBranch();
     const allVehicles = async () => await getAllVehicles(1);
     allVehicles();
     setLoading(false);
   }, []);
+
+  useEffect(() => {
+    console.log({ DataPerfilBranch });
+  }, [DataPerfilBranch]);
 
   const selectPlate = (data) => {
     if (data) {
@@ -83,20 +89,23 @@ export default function BranchOffice() {
               </Typography>
             </Box>
           )}
-        {DataPerfilVehicles?.length > 0 &&
-          DataPerfilVehicles.map((e, index) => {
+        {DataPerfilBranch?.length > 0 &&
+          DataPerfilBranch?.map((e, index) => {
+            console.log({e});
             return (
-              // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
-              <div
-                key={DataPerfilVehicles.id}
-                onClick={() => handleVehicleClick(DataPerfilVehicles)}
-              >
-                {/* biome-ignore lint/suspicious/noArrayIndexKey: <explanation> */}
+              <div key={index}>
                 <CardBranchOffice key={index} branch={e} />
               </div>
             );
+            // return (
+            //   // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
+            //   <div key={e.id} onClick={() => handleVehicleClick(e)}>
+            //     {/* biome-ignore lint/suspicious/noArrayIndexKey: <explanation> */}
+            //     <CardBranchOffice key={index} branch={e} />
+            //   </div>
+            // );
           })}
-        {!!vehicleSelect.length && (
+        {/* {!!vehicleSelect.length && (
           // biome-ignore lint/correctness/useJsxKeyInIterable: <explanation>
           // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
           // biome-ignore lint/complexity/useLiteralKeys: <explanation>
@@ -106,7 +115,7 @@ export default function BranchOffice() {
           >
             <CardBranchOffice DataPerfilVehicles={vehicleSelect?.[0]} />
           </div>
-        )}
+        )} */}
       </Box>
       <RegisterBranchOffice />
     </Box>
