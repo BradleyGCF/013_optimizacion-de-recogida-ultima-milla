@@ -193,7 +193,7 @@ export default function RegisterNewRoute() {
       }}
     >
       <Typography variant="subtitle1" color="text.fourth">
-        Register New Route
+        <h3>Register New Route</h3>
       </Typography>
       <Box
         sx={{
@@ -205,7 +205,9 @@ export default function RegisterNewRoute() {
         }}
       >
         <form onSubmit={formik.handleSubmit}>
-          <Typography>Starting point</Typography>
+          <Typography sx={{ fontWeight: "bold", fontSize: "1rem" }}>
+            Starting point
+          </Typography>
           <FormControl sx={StyledForm} variant="standard">
             <TextField
               sx={styledTextField}
@@ -225,7 +227,9 @@ export default function RegisterNewRoute() {
             )}
           </FormControl>
 
-          <Typography>Ending point</Typography>
+          <Typography sx={{ fontWeight: "bold", fontSize: "1rem" }}>
+            Ending point
+          </Typography>
           <FormControl sx={StyledForm} variant="standard">
             <TextField
               sx={styledTextField}
@@ -255,7 +259,9 @@ export default function RegisterNewRoute() {
             </Button>
           </Box>
 
-          <Typography>Vehicle</Typography>
+          <Typography sx={{ fontWeight: "bold", fontSize: "1rem" }}>
+            Vehicle
+          </Typography>
           <FormControl sx={StyledForm} variant="standard">
             <Select
               value={formik.values.vehicle}
@@ -293,7 +299,9 @@ export default function RegisterNewRoute() {
             )}
           </FormControl>
 
-          <Typography>Select branches</Typography>
+          <Typography sx={{ fontWeight: "bold", fontSize: "1rem" }}>
+            Select branches
+          </Typography>
           <FormControl sx={StyledForm}>
             <Select
               value={formik.values.branches}
