@@ -13,6 +13,7 @@ import {
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import { TypographyStyled } from "../screens/inventory";
 import { useNavigate } from "react-router-dom";
+import MapLeaflet from "@/screens/MapLeaflet";
 
 const steps = [
   {
@@ -20,6 +21,17 @@ const steps = [
   },
   {
     label: "Destination",
+  },
+];
+
+const address2 = [
+  {
+    lat: "34.052235",
+    lng: "-118.243683",
+  },
+  {
+    lat: "36.169941",
+    lng: "-115.139832",
   },
 ];
 
@@ -74,7 +86,8 @@ const GPS = () => {
           ))}
         </Stepper>
       </Box>
-      <Maps />
+      <MapLeaflet address2={address2} />
+      {/* <Maps /> */}
     </div>
   );
 };

@@ -1,9 +1,10 @@
 import type React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Parse from "parse";
-import { useParams } from "react-router-dom";
 import { getLocalStorage } from "../hooks/getLocalStorage";
 import { Box, TextField, Button, Avatar } from "@mui/material";
+import MapLeaflet from "@/screens/MapLeaflet";
+import { useLocation, useParams } from "react-router-dom";
 
 // Define los type
 interface ClientAttributes {
@@ -23,6 +24,8 @@ interface Message {
 }
 
 const Chat: React.FC = () => {
+  const location = useLocation();
+  const address2 = location?.state;
   const { id } = useParams<{ id: string }>();
   const [userId, setUserId] = useState<string | null>(null);
   const [usernameAdmin, setUsernameAdmin] = useState<string | null>(null);
@@ -42,6 +45,7 @@ const Chat: React.FC = () => {
     }
   }, []);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (!isAdmin && !usernameAdmin && messages.length > 0) {
       const admin = messages.find(
@@ -50,7 +54,7 @@ const Chat: React.FC = () => {
       if (admin) {
         setUsernameAdmin(admin.clientId?.attributes?.username || null);
       }
-    }
+    }    
   }, [isAdmin, messages, usernameAdmin]);
 
   Parse.initialize("013");
@@ -207,7 +211,7 @@ const Chat: React.FC = () => {
             fullWidth
           />
           <Button
-            style={{ marginTop: "6px" }}
+            style={{ marginTop: "6px", marginBottom: "20px" }}
             type="submit"
             variant="contained"
             color="primary"
@@ -216,6 +220,7 @@ const Chat: React.FC = () => {
           </Button>
         </form>
       </div>
+      {!!address2?.length && <MapLeaflet address2={address2} />}
     </div>
   );
 };
