@@ -126,7 +126,7 @@ export default function DashboardDriver() {
         <ButtonPrimary
           backgroundColor={"#0062BC"}
           onClick={() =>
-            navigate(`/chat/${lastShipment?.id}`, {
+            navigate(`/chat/${lastShipment?.objectId}`, {
               state: [
                 {
                   lat: lastShipment?.routeId?.attributes?.startingPoint
@@ -143,6 +143,8 @@ export default function DashboardDriver() {
             })
           }
         >
+          {console.log({lastShipment})
+          }
           <Box sx={{ display: "flex", gap: ".5rem" }}>
             <Typography>Chat</Typography>
             <NearMeIcon fontSize="small" sx={{ color: "white" }} />

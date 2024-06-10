@@ -58,11 +58,11 @@ const Chat: React.FC = () => {
   }, [isAdmin, messages, usernameAdmin]);
 
   Parse.initialize("013");
-  Parse.serverURL = "http://192.168.50.140:27013/server";
+  Parse.serverURL = "http://192.168.50.126:2013/server";
   const LiveQueryClient = Parse.LiveQueryClient;
   const client = new LiveQueryClient({
     applicationId: "013",
-    serverURL: "ws://192.168.50.140:27013",
+    serverURL: "ws://192.168.50.126:2013",
     masterKey: "Yzhl06W5O7Vhf8iwlYBQCxs6hY8Fs2PQewNGjsl0",
   });
 
