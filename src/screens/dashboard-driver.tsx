@@ -25,6 +25,8 @@ interface Vehicle {
 
 interface Shipment {
   id?: string;
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+  routeId?: any;
   vehicleId?: Vehicle;
   entryDate?: string;
   productId?: string[];
@@ -124,7 +126,21 @@ export default function DashboardDriver() {
         <ButtonPrimary
           backgroundColor={"#0062BC"}
           onClick={() =>
-            navigate(`/chat/${getLocalStorage("vehicle")?.vehicleId}`)
+            navigate(`/chat/${lastShipment?.id}`, {
+              state: [
+                {
+                  lat: lastShipment?.routeId?.attributes?.startingPoint
+                    ?.latitude,
+                  lng: lastShipment?.routeId?.attributes?.startingPoint
+                    ?.longitude,
+                },
+                {
+                  lat: lastShipment?.routeId?.attributes?.endingPoint?.latitude,
+                  lng: lastShipment?.routeId?.attributes?.endingPoint
+                    ?.longitude,
+                },
+              ],
+            })
           }
         >
           <Box sx={{ display: "flex", gap: ".5rem" }}>
