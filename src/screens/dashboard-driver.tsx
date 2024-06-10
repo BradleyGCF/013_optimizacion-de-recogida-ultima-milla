@@ -6,8 +6,14 @@ import NearMeIcon from "@mui/icons-material/NearMe";
 import { TableDetails } from "@/components/select/table-details";
 import { useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
-import  { VehiclesContext, VehiclesContextType } from "@/context/Vehicles/VehiclesContext";
-import  { BranchContext, BranchContextType } from "@/context/Branch/BranchContext";
+import {
+  VehiclesContext,
+  type VehiclesContextType,
+} from "@/context/Vehicles/VehiclesContext";
+import {
+  BranchContext,
+  type BranchContextType,
+} from "@/context/Branch/BranchContext";
 import { getLocalStorage } from "@/hooks/getLocalStorage";
 import { useBoundStore } from "@/stores/index";
 import ShippingUpdate from "@/components/tracking/shippingUpdate/shippingUpdate";
@@ -27,6 +33,7 @@ interface Shipment {
 
 export default function DashboardDriver() {
   const navigate = useNavigate();
+  const [render, setRender] = useState(0);
   const vehiclesContext = useContext<VehiclesContextType>(VehiclesContext);
   const branchContext = useContext<BranchContextType>(BranchContext);
   const { GetDataVehicle, AllShipment } = useBoundStore();
@@ -48,20 +55,23 @@ export default function DashboardDriver() {
     lineHeight: "normal",
   });
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     const vehicleid = getLocalStorage("vehicle");
-    if (vehicleid?.vehicleId && vehiclesContext) {
+    if (vehicleid?.vehicleId && vehiclesContext && render < 5) {
       vehiclesContext.IdGetVehicle(vehicleid.vehicleId);
       if (branchContext) {
         branchContext.GetAllShipment();
       }
+      setRender(render + 1);
     }
   }, [vehiclesContext, branchContext]);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (AllShipment.length > 0) {
       const vehicleid = getLocalStorage("vehicle");
-      const shipmentForVehicleId = AllShipment.reverse().filter(
+      const shipmentForVehicleId = AllShipment?.reverse()?.filter(
         (ship: Shipment) => ship?.vehicleId?.id === vehicleid?.vehicleId
       );
       if (shipmentForVehicleId.length > 0) {
