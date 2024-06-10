@@ -32,6 +32,7 @@ export default function CardRoutes({ route }) {
           sx={{
             flex: 1,
             display: "flex",
+            flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
           }}
@@ -54,6 +55,7 @@ export default function CardRoutes({ route }) {
           sx={{
             flex: 1,
             display: "flex",
+            flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
           }}
@@ -75,6 +77,7 @@ export default function CardRoutes({ route }) {
           sx={{
             flex: 1,
             display: "flex",
+            flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
           }}
@@ -95,9 +98,10 @@ export default function CardRoutes({ route }) {
         <Box
           sx={{
             flex: 1,
-            display: "flex",
             alignItems: "center",
             justifyContent: "center",
+            display: "flex",
+            flexDirection: "column",
           }}
         >
           <Typography
