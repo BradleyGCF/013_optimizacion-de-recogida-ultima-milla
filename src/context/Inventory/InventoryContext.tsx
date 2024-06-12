@@ -7,23 +7,22 @@ import { getWeight } from "@/hooks/getWeight";
 import { useBoundStore } from "@/stores/index";
 
 export type InventoryContextType = {
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   RegisterInventory: (values: any, index: number) => void;
   getAllInventory: (page: number) => Promise<void>;
   getAllInventorySearch: () => Promise<void>;
   getInventoryId: (value: string) => Promise<void>;
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   upDataInventory: (id: string, values: any) => Promise<void>;
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   CreateShipping: (data: any) => Promise<{ ok: boolean }>;
 } | null;
 
 export const InventoryContext = createContext<InventoryContextType>(null);
 
 const InventoryState = (props: { children: any }) => {
-  const {
-    setDataPerfilInventory,
-    setInventory,
-    setDataInventorySearch,
-   
-  } = useBoundStore();
+  const { setDataPerfilInventory, setInventory, setDataInventorySearch } =
+    useBoundStore();
 
   const RegisterInventory = async (values: any, volumetricWeight: number) => {
     console.log(volumetricWeight, "REGISTER SUCURSAL");
@@ -42,9 +41,9 @@ const InventoryState = (props: { children: any }) => {
           entryDate: values.date,
           amount: "100",
           weight: values.width.toString(),
-          height: values.height,
-          productLength: values.length,
-          volumetricWeight,
+          height: Number.parseFloat(values.height),
+          productLength: Number.parseFloat(values.length),
+          volumetricWeight: Number.parseFloat(values.volumetricWeight),
           branch: values.branch,
         },
       });

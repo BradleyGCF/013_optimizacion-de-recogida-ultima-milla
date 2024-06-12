@@ -12,14 +12,14 @@ import { useBoundStore } from "@/stores/index";
 import { shallow } from "zustand/shallow";
 import { useFormik } from "formik";
 import { toast } from "react-hot-toast";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { modalInventoryScheme } from "@/schemas";
 import { BranchContext } from "@/context/Branch/BranchContext";
 import { InventoryContext } from "@/context/Inventory/InventoryContext";
 import { getWeight } from "@/hooks/getWeight";
-
+import calculateVolumetric from "../../utils/calculateVolumetric";
 export const styledModal = {
-  position: "absolute" as "absolute",
+  position: "absolute" as const,
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
@@ -59,13 +59,15 @@ export const TypoStyled = {
 };
 
 export default function InventoryModal() {
+  const [volumetricValue, setVolumetricValue] = useState(0);
   const { openInventoryModal, setOpenInventoryModal, DataPerfilBranch } =
     // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     useBoundStore((state: any) => state, shallow);
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const { RegisterInventory, getAllInventory }: any =
     useContext(InventoryContext);
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   const { getAllBranch }: any = useContext(BranchContext);
-  useEffect(() => {}, []);
   const formik = useFormik({
     initialValues: {
       date: "",
@@ -77,11 +79,12 @@ export default function InventoryModal() {
       branch: "",
     },
     validationSchema: modalInventoryScheme,
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
     onSubmit: (values: any, { resetForm }) => {
-      const volumetricWeight = getWeight(
-        values.width,
-        values.height,
-        values.length
+      const volumetricWeight = calculateVolumetric(
+        values.width.toString(),
+        values.height.toString(),
+        values.length.toString()
       );
       RegisterInventory(values, volumetricWeight);
       toast.success("¡Successfully created!", {
@@ -91,6 +94,26 @@ export default function InventoryModal() {
       resetForm();
     },
   });
+  useEffect(() => {
+    if (
+      formik.values.height > 0 &&
+      formik.values.width > 0 &&
+      formik.values.length > 0
+    ) {
+      console.log(
+        formik.values.width,
+        formik.values.height,
+        formik.values.length
+      );
+
+      const volumetricWeight = calculateVolumetric(
+        formik.values.width.toString(),
+        formik.values.height.toString(),
+        formik.values.length.toString()
+      );
+      setVolumetricValue(Number.parseFloat(volumetricWeight));
+    }
+  }, [formik.values]);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
@@ -169,7 +192,6 @@ export default function InventoryModal() {
               <FormControl sx={styledBoxContainer}>
                 <Typography sx={TypoStyled}>Height</Typography>
                 <TextField
-                  type="number"
                   sx={CustomStyledInput}
                   variant="standard"
                   InputProps={{ disableUnderline: true }}
@@ -191,7 +213,6 @@ export default function InventoryModal() {
               <FormControl sx={styledBoxContainer}>
                 <Typography sx={TypoStyled}>Width</Typography>
                 <TextField
-                  type="number"
                   sx={CustomStyledInput}
                   variant="standard"
                   InputProps={{ disableUnderline: true }}
@@ -213,7 +234,6 @@ export default function InventoryModal() {
               <FormControl sx={styledBoxContainer}>
                 <Typography sx={TypoStyled}>Length</Typography>
                 <TextField
-                  type="number"
                   sx={CustomStyledInput}
                   variant="standard"
                   InputProps={{ disableUnderline: true }}
@@ -239,7 +259,7 @@ export default function InventoryModal() {
               }}
             >
               <Typography sx={TypoStyled}>
-                Volumetric weight: 00,00kg
+                Volumetric weight: {volumetricValue}kg
               </Typography>
             </Box>
 
@@ -300,6 +320,7 @@ export default function InventoryModal() {
                   </MenuItem>
                 )}
                 {DataPerfilBranch?.length > 0 &&
+                  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
                   DataPerfilBranch.map((branch: any) => {
                     return (
                       <MenuItem key={branch.id} value={branch.id}>

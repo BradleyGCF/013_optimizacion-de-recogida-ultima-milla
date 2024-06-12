@@ -6,7 +6,7 @@ import { TableDetails } from "@/components/tracking/table/table-details";
 import InventoryModal from "@/components/modal/inventory-modal";
 import { useBoundStore } from "@/stores/index";
 import { shallow } from "zustand/shallow";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { InventoryContext } from "@/context/Inventory/InventoryContext";
 
 export const TypographyStyled = {
@@ -19,6 +19,7 @@ export const TypographyStyled = {
 };
 
 export default function Inventory() {
+  const [page, setPage] = useState(1);
   const nav = useNavigate();
   const { setOpenInventoryModal, DataPerfilInventory } = useBoundStore(
     // biome-ignore lint/suspicious/noExplicitAny: <explanation>
@@ -29,8 +30,8 @@ export default function Inventory() {
   const { getAllInventory }: any = useContext(InventoryContext);
   // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
-    getAllInventory(1);
-  }, [DataPerfilInventory]);
+    getAllInventory(page);
+  }, [page]);
   return (
     <Box
       sx={{
@@ -65,7 +66,11 @@ export default function Inventory() {
 
       <TableDetails inventory={DataPerfilInventory} />
       <Box display="flex" justifyContent="center" alignItems="center">
-        <Pagination count={12} size="small" />
+        <Pagination
+          count={12}
+          size="small"
+          onChange={(event, value) => setPage(value)}
+        />
       </Box>
 
       <Box display="flex" justifyContent="center" alignItems="center">

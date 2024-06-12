@@ -91,31 +91,13 @@ export default function BranchOffice() {
           )}
         {DataPerfilBranch?.length > 0 &&
           DataPerfilBranch?.map((e, index) => {
-            console.log({e});
+            console.log({ e });
             return (
               <div key={index}>
                 <CardBranchOffice key={index} branch={e} />
               </div>
             );
-            // return (
-            //   // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
-            //   <div key={e.id} onClick={() => handleVehicleClick(e)}>
-            //     {/* biome-ignore lint/suspicious/noArrayIndexKey: <explanation> */}
-            //     <CardBranchOffice key={index} branch={e} />
-            //   </div>
-            // );
-          })}
-        {/* {!!vehicleSelect.length && (
-          // biome-ignore lint/correctness/useJsxKeyInIterable: <explanation>
-          // biome-ignore lint/a11y/useKeyWithClickEvents: <explanation>
-          // biome-ignore lint/complexity/useLiteralKeys: <explanation>
-          <div
-            key={vehicleSelect?.[0].id}
-            onClick={() => handleVehicleClick(vehicleSelect?.[0])}
-          >
-            <CardBranchOffice DataPerfilVehicles={vehicleSelect?.[0]} />
-          </div>
-        )} */}
+          })}   
       </Box>
       <RegisterBranchOffice />
     </Box>
